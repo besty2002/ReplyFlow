@@ -2,7 +2,7 @@ import os
 import logging
 import json
 import asyncio
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, List
 import google.generativeai as genai
 from app.core.config import settings
 

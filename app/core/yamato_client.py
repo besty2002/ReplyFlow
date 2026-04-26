@@ -2,7 +2,7 @@ import httpx
 import logging
 import base64
 import asyncio
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, List
 from app.core.config import settings
 
 logger = logging.getLogger(__name__)
@@ -26,8 +26,8 @@ class YamatoClient:
             self.id_base_url = "https://test-id.kuronekoyamato.co.jp"
             self.api_base_url = "https://dev03-api.nrcs.kuronekoyamato.co.jp"
         
-        self.token_endpoint: Optional[str] = None
-        self.access_token: Optional[str] = None
+        self.token_endpoint: str | None = None
+        self.access_token: str | None = None
 
     async def discover_endpoints(self) -> bool:
         """
