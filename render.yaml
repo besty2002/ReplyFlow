@@ -1,0 +1,22 @@
+services:
+  # 1. FastAPI Web Service
+  - type: web
+    name: replyflow-web
+    env: docker
+    plan: free # 무료 티어 (필요 시 수정 가능)
+    region: singapore # 한국과 가까운 리전
+    envVars:
+      - key: SERVICE_TYPE
+        value: web
+      - fromGroup: replyflow-secrets # 공통 환경변수 그룹 사용
+
+  # 2. Background Sync Bot (Worker)
+  - type: worker
+    name: replyflow-worker
+    env: docker
+    plan: free
+    region: singapore
+    envVars:
+      - key: SERVICE_TYPE
+        value: worker
+      - fromGroup: replyflow-secrets
