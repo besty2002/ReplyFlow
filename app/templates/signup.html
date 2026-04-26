@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}新規登録 | CS Auto SaaS{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="login-card glass-panel">
+        <div class="login-header">
+            <h1 style="font-size: 1.5rem; text-align: center;">SaaS アカウント / 管理者登録</h1>
+        </div>
+        
+        <div id="error-msg" class="alert-error"></div>
+        <div id="success-msg" class="alert-error" style="background: rgba(16, 185, 129, 0.1); border-left-color: var(--success); color: var(--success); display: none;"></div>
+
+        <form id="signup-form">
+            <div class="form-group">
+                <label class="form-label" for="company">登録する会社（ショップ）名</label>
+                <input type="text" id="company" class="form-input" required placeholder="株式会社〇〇 または 〇〇ショップ">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="email">管理者アカウント (メールアドレス)</label>
+                <input type="email" id="email" class="form-input" required placeholder="admin@my-company.com">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="password">パスワード (6文字以上)</label>
+                <input type="password" id="password" class="form-input" required placeholder="••••••••" minlength="6">
+            </div>
+            <button type="submit" id="submit-btn" class="btn-primary" style="margin-bottom: 1rem;">アカウント作成および会社登録</button>
+            
+            <div style="text-align: center; font-size: 0.9rem;">
+                <span style="color: var(--text-muted)">すでに会社が登録されていますか？</span>
+                <a href="/login" style="color: var(--primary-color); text-decoration: none;">ログインはこちら</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.getElementById('signup-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    const errorBox = document.getElementById('error-msg');
+    const successBox = document.getElementById('success-msg');
+    
+    const company = document.getElementById('company').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    btn.textContent = '会員登録処理中...';
+    btn.disabled = true;
+    errorBox.style.display = 'none';
+    successBox.style.display = 'none';
+
+    try {
+        // [중요] 회원가입을 호출하며 raw_user_meta_data에 회사 이름을 끼워 넣습니다.
+        // 이것을 Supabase 내부의 트리거(Trigger)가 인식하여 데이터베이스를 지어줍니다.
+        const { data, error } = await supabaseClient.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                data: {
+                    company_name: company
+                }
+            }
+        });
+
+        if (error) throw error;
+        
+        // Supabase 대시보드 옵션에 맞춰 가입 확인 메일이 활성화된 경우와 그렇지 않은 경우 대응
+        if (data.session) {
+            document.cookie = `sb-access-token=${data.session.access_token}; path=/; max-age=${data.session.expires_in}; SameSite=Lax`;
+            window.location.href = '/dashboard';
+        } else {
+            // 이메일 인증이 필요하거나 기타 사유 시 리다이렉션
+            successBox.textContent = "登録が完了しました。登録されたメールアドレスの確認が必要な場合があります。まもなくログインページへ移動します。";
+            successBox.style.display = 'block';
+            setTimeout(() => window.location.href = '/login', 3500);
+        }
+
+    } catch (err) {
+        errorBox.textContent = err.message || "登録中に不明なエラーが発生しました。";
+        errorBox.style.display = 'block';
+        btn.textContent = 'アカウント作成および会社登録';
+        btn.disabled = false;
+    }
+});
+</script>
+{% endblock %}

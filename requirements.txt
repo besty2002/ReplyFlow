@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+supabase
+pydantic-settings
+python-dotenv
+python-jose[cryptography]
+httpx
+jinja2
+python-multipart
+google-generativeai
+apscheduler

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ReplyFlow{% endblock %}</title>
+    <!-- プレミアムスタイルシート統合 -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- Supabase JS ライブラリ (C2S 通引用) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      // サーバーサイドから注入された環境変数でSupabaseクライアントを初期化
+      const SUPABASE_URL = "{{ conf_supabase_url }}";
+      const SUPABASE_ANON_KEY = "{{ conf_supabase_key }}";
+      const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    </script>
+</head>
+<body>
+    {% block content %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block title %}ビジネス設定 | ReplyFlow{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <aside class="sidebar glass-panel" style="border-radius: 0;">
+        <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 2rem;">
+            <img src="/static/img/logo.png" alt="ReplyFlow Logo" style="width: 32px; height: 32px; border-radius: 6px;">
+            <h2 style="margin: 0; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.5rem; letter-spacing: -0.5px;">ReplyFlow</h2>
+        </div>
+        <nav>
+            <a href="/dashboard" class="nav-link">ホーム (ダッシュボード)</a>
+            <a href="#" class="nav-link">問い合わせ管理</a>
+            <a href="#" class="nav-link">AIドラフト管理</a>
+            <a href="/settings" class="nav-link active">ビジネス設定</a>
+            <a href="#" class="nav-link" id="logout-btn" style="color: var(--danger); margin-top: 2.5rem; opacity: 0.8;">ログアウト</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header style="margin-bottom: 2rem;">
+            <h1 style="margin: 0; font-weight: 600;">連携ショップ API 管理</h1>
+            <p style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.95rem;">
+                複数のモール(Rakuten, Yahoo, Qoo10など)のショップを無制限に連携し、お問い合わせを自動収集します。
+            </p>
+        </header>
+
+        <!-- 新規ショップ追加フォーム -->
+        <section class="glass-panel" style="padding: 1.5rem; margin-bottom: 2rem;">
+            <h3 style="margin-top: 0; color: var(--text-main);">➕ 新しいショップを連携する</h3>
+            <form id="add-shop-form" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; max-width: 600px;">
+                <div class="form-group" style="margin: 0;">
+                    <label class="form-label" for="platform">プラットフォーム (モール)</label>
+                    <select id="platform" class="form-input" required>
+                        <option value="rakuten">Rakuten (楽天市場)</option>
+                        <option value="yahoo">Yahoo!ショッピング</option>
+                        <option value="aupay">au PAY マーケット</option>
+                        <option value="qoo10">Qoo10 (キューテン)</option>
+                        <option value="amazon">Amazon.co.jp</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin: 0;">
+                    <label class="form-label" for="shop_name">ショップ名 (管理用)</label>
+                    <input type="text" id="shop_name" class="form-input" required placeholder="例：楽天本店、Yahoo2号店など">
+                </div>
+                <div class="form-group" style="margin: 0;">
+                    <label class="form-label" for="api_key">API Key (ServiceSecret)</label>
+                    <input type="password" id="api_key" class="form-input" required placeholder="RMSから発行されたServiceSecretを入力">
+                </div>
+                <div class="form-group" style="margin: 0;">
+                    <label class="form-label" for="api_secret">API Secret (LicenseKey)</label>
+                    <input type="password" id="api_secret" class="form-input" required placeholder="RMSから発行されたLicenseKeyを入力">
+                </div>
+                <button type="submit" id="add-btn" class="btn-primary" style="margin-top: 0.5rem; max-width: 200px;">連携を保存する</button>
+            </form>
+            <div id="shop-msg" style="margin-top: 1rem; display: none; font-size: 0.9rem;"></div>
+        </section>
+
+        <!-- 現在連携中のショップ一覧 -->
+        <section class="glass-panel" style="padding: 1.5rem;">
+            <h3 style="margin-top: 0;">🔗 連携中のショップ一覧</h3>
+            
+            {% if connected_shops %}
+                <div style="overflow-x: auto; margin-top: 1rem;">
+                <table style="width: 100%; text-align: left; border-collapse: collapse;">
+                    <tr style="border-bottom: 1px solid var(--glass-border);">
+                        <th style="padding: 0.75rem; color: var(--text-muted);">プラットフォーム</th>
+                        <th style="padding: 0.75rem; color: var(--text-muted);">ショップ名</th>
+                        <th style="padding: 0.75rem; color: var(--text-muted);">自動同期状態</th>
+                        <th style="padding: 0.75rem; color: var(--text-muted);">登録日時</th>
+                        <th style="padding: 0.75rem; color: var(--text-muted);">管理</th>
+                    </tr>
+                    {% for shop in connected_shops %}
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <td style="padding: 0.75rem; font-weight: bold; color: var(--primary-color);">
+                            {{ shop.platform | upper }}
+                        </td>
+                        <td style="padding: 0.75rem; color: #e2e8f0;">{{ shop.shop_name }}</td>
+                        <td style="padding: 0.75rem;">
+                            {% if shop.is_active %}
+                                <span style="background: rgba(16, 185, 129, 0.2); padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem; color: var(--success);">有効 (Active)</span>
+                            {% else %}
+                                <span style="background: rgba(239, 68, 68, 0.2); padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem; color: var(--danger);">停止中</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 0.75rem; color: var(--text-muted); font-size: 0.85rem;">{{ shop.created_at[:10] }}</td>
+                        <td style="padding: 0.75rem;">
+                            <button onclick="deleteShop('{{ shop.id }}', this)" class="btn-primary" style="background: rgba(239, 68, 68, 0.8); padding: 0.3rem 0.6rem; font-size: 0.8rem; border-radius: 6px;">削除</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                </div>
+            {% else %}
+                <p style="color: var(--text-muted); text-align: center; margin-top: 2rem; margin-bottom: 2rem;">
+                    まだ連携されているショップがありません。<br>上のフォームからAPI連携を追加してください。
+                </p>
+            {% endif %}
+        </section>
+    </main>
+</div>
+
+<script>
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+document.getElementById('logout-btn').addEventListener('click', async (e) => {
+    e.preventDefault();
+    document.cookie = "sb-access-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    window.location.href = '/login';
+});
+
+// ショップ追加ロジック
+document.getElementById('add-shop-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('add-btn');
+    const msgBox = document.getElementById('shop-msg');
+    
+    const platform = document.getElementById('platform').value;
+    const shop_name = document.getElementById('shop_name').value;
+    const api_key = document.getElementById('api_key').value;
+    const api_secret = document.getElementById('api_secret').value;
+    
+    btn.disabled = true;
+    btn.textContent = "保存中...";
+    msgBox.style.display = "none";
+
+    try {
+        const token = getCookie('sb-access-token');
+        const res = await fetch('/api/v1/shops/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ 
+                platform: platform, 
+                shop_name: shop_name, 
+                api_key: api_key, 
+                api_secret: api_secret 
+            })
+        });
+        
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || "APIエラー");
+
+        msgBox.textContent = "✅ 新しいショップが正常に連携されました！";
+        msgBox.style.color = "var(--success)";
+        msgBox.style.display = "block";
+        
+        setTimeout(() => window.location.reload(), 1000);
+
+    } catch (err) {
+        msgBox.textContent = "❌ エラー: " + err.message;
+        msgBox.style.color = "var(--danger)";
+        msgBox.style.display = "block";
+        btn.disabled = false;
+        btn.textContent = "連携を保存する";
+    }
+});
+
+// ショップ削除ロジック
+async function deleteShop(shopId, btnElement) {
+    if(!confirm("本当にこのショップ連携を削除しますか？\n(既存の問い合わせデータは保持されます)")) return;
+    
+    btnElement.disabled = true;
+    btnElement.textContent = "削除中...";
+    try {
+        const token = getCookie('sb-access-token');
+        const res = await fetch(`/api/v1/shops/${shopId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.detail || "削除に失敗しました");
+        
+        window.location.reload();
+    } catch (e) {
+        alert("エラー: " + e.message);
+        btnElement.disabled = false;
+        btnElement.textContent = "削除";
+    }
+}
+</script>
+{% endblock %}

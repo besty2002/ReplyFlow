@@ -1,0 +1,568 @@
+{% extends "base.html" %}
+
+{% block title %}ReplyFlow | Intelligent CS Automation{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <aside class="sidebar glass-panel" style="border-radius: 0;">
+        <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 2rem;">
+            <img src="/static/img/logo.png" alt="ReplyFlow Logo" style="width: 32px; height: 32px; border-radius: 6px;">
+            <h2 style="margin: 0; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.5rem; letter-spacing: -0.5px;">ReplyFlow</h2>
+        </div>
+        <nav>
+            <a href="/dashboard" class="nav-link active">ホーム (ダッシュボード)</a>
+            <a href="#" class="nav-link">問い合わせ管理</a>
+            <a href="#" class="nav-link">AIドラフト管理</a>
+            <a href="/settings" class="nav-link">ビジネス設定</a>
+            <a href="#" class="nav-link" id="logout-btn" style="color: var(--danger); margin-top: 2.5rem; opacity: 0.8;">ログアウト</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <h1 style="margin: 0; font-weight: 600;">統合ダッシュボード</h1>
+                <p style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.95rem;">
+                    ようこそ！現在の権限レベル： <strong style="color: var(--primary-color);">{{ user_context.role | upper }}</strong>
+                </p>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <!-- 데이터 통계나 다운로드 등 주요 비즈니스 액션 영역 -->
+                <button class="btn-primary" style="background: linear-gradient(135deg, #ec4899 0%, #a855f7 100%); font-weight: bold; border-radius: 8px; box-shadow: 0 4px 15px rgba(236,72,153,0.3);" onclick="downloadTrainingData(this)">
+                    📥 AIファインチューニングデータ(JSONL)抽出
+                </button>
+            </div>
+        </header>
+
+        <!-- 統計ウィジェット -->
+        <section class="stat-grid">
+            <div class="stat-card glass-panel" style="border-top: 3px solid var(--text-muted);">
+                <h3>待機中の問い合わせ</h3>
+                <p class="value">{{ stats.pending_inquiries }}</p>
+            </div>
+            <div class="stat-card glass-panel" style="border-top: 3px solid var(--primary-hover);">
+                <h3>承認待ちの回答 (Drafts)</h3>
+                <p class="value" style="color: var(--primary-hover);">{{ stats.pending_drafts }}</p>
+            </div>
+            <div class="stat-card glass-panel" style="border-top: 3px solid var(--success);">
+                <h3>本日の送信完了</h3>
+                <p class="value" style="color: var(--success);">{{ stats.sent_today }}</p>
+            </div>
+        </section>
+
+                <div class="form-group" style="flex: 1; min-width: 250px; margin: 0;">
+                    <label class="form-label" for="mock-title">問い合わせの件名</label>
+                    <input type="text" id="mock-title" class="form-input" required placeholder="例：配送はいつになりますか？">
+                </div>
+                <div class="form-group" style="flex: 2; min-width: 300px; margin: 0;">
+                    <label class="form-label" for="mock-content">詳細内容</label>
+                    <input type="text" id="mock-content" class="form-input" required placeholder="購入したズボンが小さいのですが、交換可能ですか？">
+                </div>
+                <button type="submit" id="mock-submit-btn" class="btn-primary" style="width: auto; padding-left: 2rem; padding-right: 2rem;">受付</button>
+            </form>
+            <div id="mock-msg" style="margin-top: 1rem; display: none; font-size: 0.9rem;"></div>
+        </section>
+
+        <!-- 임시 UI 영역 -> 실제 데이터 표출 영역 -->
+        <section class="glass-panel" style="padding: 1.5rem; min-height: 300px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <h3 style="margin: 0;">問い合わせリスト</h3>
+                
+                <!-- 필터 영역 -->
+                <div style="display: flex; gap: 0.75rem; align-items: center;">
+                    <select id="filter-shop" class="form-input" style="width: auto; padding: 0.3rem 0.6rem; font-size: 0.85rem;" onchange="applyFilters()">
+                        <option value="">🏪 すべてのショップ</option>
+                        {% for shop in connected_shops %}
+                        <option value="{{ shop.id }}" {% if shop.id == selected_shop %}selected{% endif %}>
+                            {{ shop.platform | upper }} | {{ shop.shop_name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+
+                    <select id="filter-category" class="form-input" style="width: auto; padding: 0.3rem 0.6rem; font-size: 0.85rem;" onchange="applyFilters()">
+                        <option value="">🏷️ すべてのカテゴリ</option>
+                        {% for cat in unique_categories %}
+                        <option value="{{ cat }}" {% if selected_category == cat %}selected{% endif %}>{{ cat }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            {% if inquiries %}
+                <div style="overflow-x: auto; margin-top: 1rem;">
+                <table class="modern-table" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid rgba(255,255,255,0.1); text-align: left;">
+                            <th style="padding: 1rem;">ステータス</th>
+                            <th style="padding: 1rem;">ショップ</th>
+                            <th style="padding: 1rem;">顧客 / 注文番号</th>
+                            <th style="padding: 1rem;">問い合わせ要約</th>
+                            <th style="padding: 1rem;">受付日時</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in inquiries %}
+                        <tr class="inquiry-row" onclick='openInspector({{ item | tojson | forceescape }})' style="border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer;">
+                            <td style="padding: 1rem;">
+                                <span class="badge badge-{{ item.status }}">
+                                    {{ '待機' if item.status == 'pending' else '完了' }}
+                                </span>
+                            </td>
+                            <td style="padding: 1rem; color: #fff; font-size: 0.9rem;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <span style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; color: var(--primary-color);">
+                                        {{ (item.connected_shops.platform if item.connected_shops else 'RMS') | upper }}
+                                    </span>
+                                    {{ item.connected_shops.shop_name if item.connected_shops else 'Unknown' }}
+                                </div>
+                            </td>
+                            <td style="padding: 1rem;">
+                                <div style="display: flex; flex-direction: column;">
+                                    <strong style="color: #fff;">{{ item.customer_id }}</strong>
+                                    <span style="font-size: 0.75rem; color: var(--primary-color);">{{ item.order_number or '注文番号なし' }}</span>
+                                </div>
+                            </td>
+                            <td style="padding: 1rem; color: #cbd5e1; max-width: 350px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                {{ item.content }}
+                            </td>
+                            <td style="padding: 1rem; color: var(--text-muted); font-size: 0.85rem; white-space: nowrap; width: 140px;">
+                                {{ item.received_at[:16].replace('T', ' ') }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+
+                <!-- 상세 인스펙터 패널 (숨김 상태로 시작) -->
+                <aside id="inspector-panel" class="inspector-panel glass-panel hidden" style="position: fixed; right: 0; top: 0; width: 450px; height: 100vh; z-index: 1000; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); border-left: 1px solid rgba(255,255,255,0.1); padding: 2rem; overflow-y: auto; box-shadow: -10px 0 30px rgba(0,0,0,0.5);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h2 style="margin: 0; font-size: 1.25rem; color: #fff;"><i class="fas fa-info-circle"></i> 問い合わせ詳細</h2>
+                        <button onclick="closeInspector()" style="background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;">&times;</button>
+                    </div>
+                    
+                    <div id="inspector-content">
+                        <!-- 정보 카드들 -->
+                        <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                            <div style="font-size: 0.8rem; color: var(--primary-color); font-weight: bold; margin-bottom: 0.5rem;">注文および顧客情報</div>
+                            <div style="margin-bottom: 0.5rem;"><label style="font-size: 0.7rem; color: var(--text-muted); display: block;" id="ins-received-at">受付日時: -</label></div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div><label style="font-size: 0.7rem; color: var(--text-muted); display: block;">顧客名</label><span id="ins-customer-name" style="color: #fff; font-weight: bold;">-</span></div>
+                                <div><label style="font-size: 0.7rem; color: var(--text-muted); display: block;">注文番号</label><span id="ins-order-number" style="color: var(--primary-hover); font-weight: bold;">-</span></div>
+                                <div><label style="font-size: 0.7rem; color: var(--text-muted); display: block;">注文ステータス</label><span id="ins-order-status" style="color: var(--success); font-weight: bold;">-</span></div>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                            <div style="font-size: 0.8rem; color: var(--primary-color); font-weight: bold; margin-bottom: 0.5rem;">商品情報</div>
+                            <div style="margin-bottom: 0.5rem;"><label style="font-size: 0.7rem; color: var(--text-muted); display: block;">商品名</label><span id="ins-item-name" style="color: #fff; font-size: 0.9rem;">-</span></div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                                <div><label style="font-size: 0.7rem; color: var(--text-muted); display: block;">商品コード</label><span id="ins-item-number" style="color: #fff;">-</span></div>
+                                <div><label style="font-size: 0.7rem; color: var(--text-muted); display: block;">サブコード</label><span id="ins-sub-code" style="color: #fff;">-</span></div>
+                                <div><label style="font-size: 0.7rem; color: var(--text-muted); display: block;">在庫</label><span id="ins-stock-count" style="color: var(--success);">-</span></div>
+                            </div>
+                        </div>
+
+                        <!-- ヤマト配送情報追加 -->
+                        <div id="ins-delivery-section" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; display: none;">
+                            <div style="font-size: 0.8rem; color: #fbbf24; font-weight: bold; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
+                                🚚 ヤマト運輸 リアルタイム配送追跡
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 1rem;">
+                                <div><label style="font-size: 0.7rem; color: var(--text-muted); display: block;">伝票番号</label><span id="ins-tracking-number" style="color: #fff; font-weight: bold;">-</span></div>
+                                <div><label style="font-size: 0.7rem; color: var(--text-muted); display: block;">現在の状態</label><span id="ins-delivery-status" style="color: #fbbf24;">-</span></div>
+                            </div>
+                            <div style="margin-top: 0.5rem;"><label style="font-size: 0.7rem; color: var(--text-muted); display: block;">現在の場所 / 配送予定</label><span id="ins-delivery-location" style="color: #fff; font-size: 0.85rem;">-</span></div>
+                        </div>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="font-weight: bold; display: block; margin-bottom: 0.5rem; color: #fff;">問い合わせ内容</label>
+                            <div id="ins-content" style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; font-size: 0.9rem; line-height: 1.6; color: #cbd5e1; max-height: 200px; overflow-y: auto;"></div>
+                        </div>
+
+                        <div style="margin-top: 2rem;">
+                            <label style="font-weight: bold; display: block; margin-bottom: 0.5rem; color: #fff;">回答エディタ</label>
+                            <textarea id="reply-textarea" style="width: 100%; height: 200px; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; color: #fff; padding: 1rem; font-family: inherit; resize: none;"></textarea>
+                            <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem;">
+                                <button id="regen-draft-btn" class="btn-draft-action" onclick="generateDraft(currentInquiryId, this)" style="padding: 0.75rem 1rem; border-radius: 8px; color: white; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; border: none; font-size: 0.85rem;">
+                                    ✨ リアルタイム情報反映 AI再作成
+                                </button>
+                                <button class="btn-primary" onclick="submitReply()" style="padding: 0.75rem 1.5rem; font-weight: bold; border-radius: 8px;">最終回答を送信</button>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                
+                <!-- ページネーション UI -->
+                <div class="pagination-container" style="margin-top: 1.5rem; display: flex; justify-content: center; align-items: center; gap: 0.5rem; padding: 1rem 0;">
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-right: 1rem;">
+                        合計 <strong>{{ total_count }}</strong> 件中 <strong>{{ current_page }}</strong> / {{ total_pages }} ページ
+                    </p>
+                    
+                    {% if current_page > 1 %}
+                    <a href="/dashboard?page={{ current_page - 1 }}{% if selected_shop %}&shop_id={{ selected_shop }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}" class="btn-pagination" style="text-decoration: none;">&lt; 前へ</a>
+                    {% endif %}
+
+                    <div style="display: flex; gap: 0.25rem;">
+                        {% for p in range(1, total_pages + 1) %}
+                            {% if p >= current_page - 2 and p <= current_page + 2 %}
+                                <a href="/dashboard?page={{ p }}{% if selected_shop %}&shop_id={{ selected_shop }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}" class="btn-pagination {% if p == current_page %}active{% endif %}" style="text-decoration: none;">
+                                    {{ p }}
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    {% if current_page < total_pages %}
+                    <a href="/dashboard?page={{ current_page + 1 }}{% if selected_shop %}&shop_id={{ selected_shop }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}" class="btn-pagination" style="text-decoration: none;">次へ &gt;</a>
+                    {% endif %}
+                </div>
+
+                <style>
+                    .btn-pagination {
+                        padding: 0.4rem 0.8rem;
+                        border-radius: 6px;
+                        background: rgba(255, 255, 255, 0.05);
+                        color: #cbd5e1;
+                        font-size: 0.9rem;
+                        border: 1px solid rgba(255, 255, 255, 0.1);
+                        transition: all 0.2s;
+                    }
+                    .btn-pagination:hover {
+                        background: rgba(255, 255, 255, 0.1);
+                        border-color: var(--primary-color);
+                        color: white;
+                    }
+                    .btn-pagination.active {
+                        background: var(--primary-color);
+                        color: white;
+                        border-color: var(--primary-color);
+                        box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+                    }
+
+                    /* 기본 숨김 처리 */
+                    .hidden { display: none !important; }
+                    
+                    /* 툴팁 컨테이너 */
+                    .tooltip-trigger {
+                        position: relative;
+                        display: inline-block;
+                    }
+                    /* 툴팁 내용 스타일 */
+                    .tooltip-content {
+                        visibility: hidden;
+                        opacity: 0;
+                        position: absolute;
+                        bottom: 125%;
+                        left: 50%;
+                        transform: translateX(-50%) translateY(10px);
+                        width: 320px;
+                        background: rgba(15, 23, 42, 0.95);
+                        backdrop-filter: blur(12px);
+                        border: 1px solid rgba(255, 255, 255, 0.15);
+                        color: #f8fafc;
+                        padding: 1rem;
+                        border-radius: 12px;
+                        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+                        z-index: 9999;
+                        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                        pointer-events: none; /* 마우스 간섭 방지 */
+                    }
+                    /* 화살표 */
+                    .tooltip-content::after {
+                        content: "";
+                        position: absolute;
+                        top: 100%;
+                        left: 50%;
+                        margin-left: -8px;
+                        border-width: 8px;
+                        border-style: solid;
+                        border-color: rgba(15, 23, 42, 0.95) transparent transparent transparent;
+                    }
+                    /* 호버 시 노출 */
+                    .tooltip-trigger:hover .tooltip-content {
+                        visibility: visible;
+                        opacity: 1;
+                        transform: translateX(-50%) translateY(0);
+                    }
+                    .btn-draft-action {
+                        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+                        border: none;
+                        font-weight: 600;
+                        transition: transform 0.2s;
+                    }
+                    .btn-draft-action:hover {
+                        transform: scale(1.05);
+                        box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+                    }
+                </style>
+            {% else %}
+                <p style="color: var(--text-muted); text-align: center; margin-top: 3rem; margin-bottom: 3rem;">
+                    まだ収集された顧客からの問い合わせはありません。<br>上のフォームから最初のテストデータを入力してください！
+                </p>
+            {% endif %}
+        </section>
+    </main>
+</div>
+
+<script>
+    let currentInquiryId = null;
+
+    // 1. 詳細インスペクターを開く
+    async function openInspector(data) {
+        console.log("🛠️ [Inspector] Opening with data:", data);
+        currentInquiryId = data.id;
+        const panel = document.getElementById('inspector-panel');
+        panel.classList.remove('hidden');
+        panel.scrollTop = 0; // 常に最上部へスクロール
+        
+        // 基本情報マッピング (DBデータ)
+        document.getElementById('ins-customer-name').innerText = data.customer_id || 'Anonymous';
+        document.getElementById('ins-order-number').innerText = data.order_number || '注文番号なし';
+        document.getElementById('ins-received-at').innerText = '受付日時: ' + (data.received_at ? data.received_at.substring(0, 16).replace('T', ' ') : '-');
+        document.getElementById('ins-item-name').innerText = '照会中...';
+        document.getElementById('ins-item-number').innerText = data.item_number || '-';
+        document.getElementById('ins-sub-code').innerText = '-';
+        document.getElementById('ins-stock-count').innerText = '照会中...';
+        document.getElementById('ins-order-status').innerText = '-';
+        document.getElementById('ins-content').innerText = data.content || '';
+        
+        const draft = (data.reply_drafts && data.reply_drafts.length > 0) ? data.reply_drafts[0].ai_suggested_reply : '';
+        document.getElementById('reply-textarea').value = draft;
+
+        // 실시간 정보 페칭 (라쿠텐 API 직접 호출 결과)
+        if (data.order_number && data.order_number !== '주문번호 없음') {
+            const url = `/api/v1/inquiries/${data.id}/realtime_details`;
+            try {
+                const token = getCookie('sb-access-token');
+                const res = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const details = await res.json();
+                
+                if (details.status === 'success') {
+                    const info = details.order_info;
+                    const statusMap = { '100': '新規注文', '300': '発送待ち', '400': '発送完了', '900': 'キャンセル' };
+                    document.getElementById('ins-order-status').innerText = statusMap[info.order_status] || info.order_status || '確認不可';
+                    
+                    if (details.items && details.items.length > 0) {
+                        const item = details.items[0];
+                        console.log("🎁 [Raw Item Data]:", item); // ブラウザコンソールに詳細データ出力
+                        document.getElementById('ins-item-name').innerText = item.itemName;
+                        document.getElementById('ins-item-number').innerText = item.itemNumber;
+                        document.getElementById('ins-sub-code').innerText = item.skuCode || '-';
+                        
+                        // リアルタイム在庫表示
+                        const stock = item.stockCount !== null ? `${item.stockCount}個` : '確認不可';
+                        document.getElementById('ins-stock-count').innerText = stock;
+                    }
+
+                    // ヤマト配送情報処理
+                    const deliverySection = document.getElementById('ins-delivery-section');
+                    if (details.delivery_info && details.delivery_info.status === 'success') {
+                        const d = details.delivery_info;
+                        document.getElementById('ins-tracking-number').innerText = d.tracking_number || '-';
+                        document.getElementById('ins-delivery-status').innerText = d.current_status || '確認不可';
+                        document.getElementById('ins-delivery-location').innerText = `${d.current_location || '-'} / ${d.estimated_delivery || '-'}`;
+                        deliverySection.style.display = 'block';
+                    } else {
+                        deliverySection.style.display = 'none';
+                    }
+                } else {
+                    document.getElementById('ins-item-name').innerText = '連携情報なし';
+                    document.getElementById('ins-delivery-section').style.display = 'none';
+                }
+            } catch (err) {
+                console.error("リアルタイム情報ロード失敗:", err);
+                document.getElementById('ins-item-name').innerText = '照会失敗';
+                document.getElementById('ins-delivery-section').style.display = 'none';
+            }
+        } else {
+            document.getElementById('ins-item-name').innerText = '連携された注文なし';
+            document.getElementById('ins-order-status').innerText = 'N/A';
+        }
+    }
+
+    // 2. 상세 인스펙터 닫기
+    function closeInspector() {
+        console.log("🔒 [Inspector] Closing");
+        document.getElementById('inspector-panel').classList.add('hidden');
+        currentInquiryId = null;
+    }
+
+    // 3. 답변 전송
+    async function submitReply() {
+        if (!currentInquiryId) return;
+        const replyText = document.getElementById('reply-textarea').value;
+        if (!replyText.trim()) {
+            alert('回答内容を入力してください。');
+            return;
+        }
+        if (!confirm('修正された回答を実際に楽天の顧客に送信しますか？')) return;
+
+        try {
+            const token = getCookie('sb-access-token');
+            const response = await fetch(`/api/v1/inquiries/${currentInquiryId}/send_reply`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ reply_text: replyText })
+            });
+
+            if (response.ok) {
+                alert('✅ 回答が正常に送信されました！');
+                location.reload();
+            } else {
+                const err = await response.json();
+                alert('❌ 送信失敗: ' + (err.detail || '不明なエラー'));
+            }
+        } catch (error) {
+            alert('❌ サーバー通信エラー');
+        }
+    }
+
+    // 4. 로그아웃
+    document.getElementById('logout-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.cookie = "sb-access-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        window.location.href = '/login';
+    });
+
+    // 유틸리티: 쿠키 읽기
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+// AI 초안 생성 호출
+async function generateDraft(inquiryId, btnElement) {
+    btnElement.disabled = true;
+    btnElement.textContent = "作成中...";
+    
+    // 현재 인스펙터에 표시된 실시간 정보 수집
+    const orderStatus = document.getElementById('ins-order-status').innerText;
+    const stockRaw = document.getElementById('ins-stock-count').innerText;
+    const stockCount = parseInt(stockRaw.replace(/[^0-9]/g, '')) || null;
+    const itemName = document.getElementById('ins-item-name').innerText;
+    const subCode = document.getElementById('ins-sub-code').innerText;
+
+    try {
+        const token = getCookie('sb-access-token');
+        const res = await fetch(`/api/v1/inquiries/${inquiryId}/draft`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                order_status: orderStatus,
+                stock_count: stockCount,
+                item_name: itemName,
+                sub_code: subCode,
+                delivery_info: {
+                    tracking_number: document.getElementById('ins-tracking-number').innerText,
+                    current_status: document.getElementById('ins-delivery-status').innerText,
+                    current_location: document.getElementById('ins-delivery-location').innerText
+                }
+            })
+        });
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.detail || "エラーが発生しました");
+        
+        // 再作成完了後、テキストエリアのみ即時更新 (ウィンドウ維持)
+        if (data.data && data.data.ai_suggested_reply) {
+            document.getElementById('reply-textarea').value = data.data.ai_suggested_reply;
+            btnElement.textContent = "✅ 再作成完了！";
+            setTimeout(() => {
+                btnElement.disabled = false;
+                btnElement.textContent = "✨ リアルタイム情報反映 AI再作成";
+            }, 2000);
+        } else {
+            window.location.reload(); // データがない場合のみ安全にリロード
+        }
+    } catch (e) {
+        alert("下書き作成の失敗： " + e.message);
+        btnElement.disabled = false;
+        btnElement.textContent = "✨ AI 回答下書き作成";
+    }
+}
+
+// 承認および送信の呼び出し
+async function approveDraft(draftId, btnElement) {
+    btnElement.disabled = true;
+    btnElement.textContent = "送信処理中...";
+    try {
+        const token = getCookie('sb-access-token');
+        const res = await fetch(`/api/v1/inquiries/drafts/${draftId}/approve`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.detail || "エラーが発生しました");
+        
+        // 送信完了後に画面更新
+        window.location.reload();
+    } catch (e) {
+        alert("承認の失敗： " + e.message);
+        btnElement.disabled = false;
+        btnElement.textContent = "送信承認";
+    }
+}
+
+// AI 学習データ(JSONL) ファイルダウンロードロジック
+async function downloadTrainingData(btnElement) {
+    const originalText = btnElement.textContent;
+    btnElement.disabled = true;
+    btnElement.textContent = "データ抽出および圧縮中...";
+    try {
+        const token = getCookie('sb-access-token');
+        const res = await fetch(`/api/v1/training/export/jsonl`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
+        if (!res.ok) {
+            const errData = await res.json();
+            throw new Error(errData.detail || "抽出エラーが発生しました");
+        }
+        
+        // Blobでファイルダウンロード処理
+        const blob = await res.blob();
+        if (blob.size === 0) {
+            throw new Error("ダウンロードされたデータがありません。");
+        }
+        
+        // Headerからfilenameの抽出試行、なければデフォルト名
+        let filename = "training_data.jsonl";
+        const disposition = res.headers.get('Content-Disposition');
+        if (disposition && disposition.indexOf('filename=') !== -1) {
+            filename = disposition.split('filename=')[1].replace(/"/g, '');
+        }
+        
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        
+        // 파일 추출 완료 안내 표출
+        alert(`正常に抽出が完了しました！ (${filename})`);
+    } catch (e) {
+        alert("データ抽出の失敗： " + e.message);
+    } finally {
+        btnElement.disabled = false;
+        btnElement.textContent = originalText;
+    }
+}
+</script>
+{% endblock %}

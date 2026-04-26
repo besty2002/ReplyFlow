@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}ログイン | ReplyFlow{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="login-card glass-panel">
+        <div class="login-header">
+            <img src="/static/img/logo.png" alt="ReplyFlow Logo" style="width: 48px; height: 48px; border-radius: 10px; margin-bottom: 1rem;">
+            <h1 style="margin-top: 0; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">ReplyFlow</h1>
+            <p>AI回答自動化ソリューション ログイン</p>
+        </div>
+        
+        <div id="error-msg" class="alert-error"></div>
+
+        <form id="login-form">
+            <div class="form-group">
+                <label class="form-label" for="email">メールアドレス</label>
+                <input type="email" id="email" class="form-input" required placeholder="admin@company.com">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="password">パスワード</label>
+                <input type="password" id="password" class="form-input" required placeholder="••••••••">
+            </div>
+            <button type="submit" id="submit-btn" class="btn-primary" style="margin-bottom: 1rem;">ログイン</button>
+            <div style="text-align: center; font-size: 0.9rem;">
+                <span style="color: var(--text-muted)">初めてですか？ 管理システムに登録する： </span>
+                <a href="/signup" style="color: var(--primary-color); text-decoration: none;">新規登録はこちら</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    const errorBox = document.getElementById('error-msg');
+    
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    btn.textContent = '認証処理中...';
+    btn.disabled = true;
+    errorBox.style.display = 'none';
+
+    try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password,
+        });
+
+        if (error) throw error;
+
+        // ログイン成功時に発行されたJWTトークンをクッキー(sb-access-token)に保存します。
+        // このクッキーをFastAPIが読み取ってユーザー認証を行います。
+        const session = data.session;
+        document.cookie = `sb-access-token=${session.access_token}; path=/; max-age=${session.expires_in}; SameSite=Lax`;
+        
+        // ダッシュボードへ移動
+        window.location.href = '/dashboard';
+
+    } catch (err) {
+        errorBox.textContent = err.message || "ログイン処理中にエラーが発生しました。";
+        errorBox.style.display = 'block';
+    } finally {
+        btn.textContent = 'ログイン';
+        btn.disabled = false;
+    }
+});
+</script>
+{% endblock %}
