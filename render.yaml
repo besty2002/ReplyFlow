@@ -1,35 +1,11 @@
 services:
-  # 1. FastAPI Web Service
+  # FastAPI Web Service (백그라운드 봇 포함)
   - type: web
     name: replyflow-web
     env: docker
     plan: free
     region: singapore
     envVars:
-      - key: SERVICE_TYPE
-        value: web
-      - key: SUPABASE_URL
-        sync: false # Render UI에서 직접 입력 유도
-      - key: SUPABASE_KEY
-        sync: false
-      - key: JWT_SECRET
-        sync: false
-      - key: GEMINI_API_KEY
-        sync: false
-      - key: YAMATO_SITE_ID
-        sync: false
-      - key: YAMATO_SITE_PASSWORD
-        sync: false
-
-  # 2. Background Sync Bot (Worker)
-  - type: worker
-    name: replyflow-worker
-    env: docker
-    plan: free
-    region: singapore
-    envVars:
-      - key: SERVICE_TYPE
-        value: worker
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_KEY
