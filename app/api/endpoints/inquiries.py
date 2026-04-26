@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from supabase import Client
 from datetime import datetime
 from pydantic import BaseModel
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 
 from app.models.inquiries import InquiryCreate
 from app.api.dependencies import get_current_user_context, get_user_supabase_client
@@ -45,16 +45,16 @@ def create_manual_inquiry(
         raise HTTPException(status_code=500, detail=f"テスト問い合わせの登録に失敗しました。エラー: {str(e)}")
 
 class DraftRequest(BaseModel):
-    order_status: Optional[str] = None
-    stock_count: Optional[int] = None
-    item_name: Optional[str] = None
-    sub_code: Optional[str] = None
-    delivery_info: Optional[Dict[str, Any]] = None
+    order_status: str | None = None
+    stock_count: int | None = None
+    item_name: str | None = None
+    sub_code: str | None = None
+    delivery_info: Dict[str, Any] | None = None
 
 @router.post("/{inquiry_id}/draft")
 async def generate_draft(
     inquiry_id: str,
-    request: Optional[DraftRequest] = None,
+    request: DraftRequest | None = None,
     user_context: dict = Depends(get_current_user_context),
     supabase_client: Client = Depends(get_user_supabase_client)
 ):

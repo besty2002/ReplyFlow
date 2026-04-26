@@ -5,7 +5,7 @@ import logging
 import base64
 import uuid
 import datetime
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List
 
 logger = logging.getLogger(__name__)
 
@@ -216,7 +216,7 @@ class RakutenRMSClient:
             
         return []
 
-    async def get_inventory_external(self, manage_number: str, variant_id: str) -> Optional[int]:
+    async def get_inventory_external(self, manage_number: str, variant_id: str) -> int | None:
         """
         [v2.1] 라쿠텐 Inventory API를 통해 특정 SKU의 현재 가용 재고를 조회합니다.
         429(QPS 초과) 에러 발생 시 1초 대기 후 최대 1회 재시도합니다.
