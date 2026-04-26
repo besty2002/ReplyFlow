@@ -3,12 +3,23 @@ services:
   - type: web
     name: replyflow-web
     env: docker
-    plan: free # 무료 티어 (필요 시 수정 가능)
-    region: singapore # 한국과 가까운 리전
+    plan: free
+    region: singapore
     envVars:
       - key: SERVICE_TYPE
         value: web
-      - fromGroup: replyflow-secrets # 공통 환경변수 그룹 사용
+      - key: SUPABASE_URL
+        sync: false # Render UI에서 직접 입력 유도
+      - key: SUPABASE_KEY
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: YAMATO_SITE_ID
+        sync: false
+      - key: YAMATO_SITE_PASSWORD
+        sync: false
 
   # 2. Background Sync Bot (Worker)
   - type: worker
@@ -19,4 +30,15 @@ services:
     envVars:
       - key: SERVICE_TYPE
         value: worker
-      - fromGroup: replyflow-secrets
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: YAMATO_SITE_ID
+        sync: false
+      - key: YAMATO_SITE_PASSWORD
+        sync: false
