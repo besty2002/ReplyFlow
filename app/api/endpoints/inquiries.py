@@ -4,11 +4,12 @@ from datetime import datetime
 from pydantic import BaseModel
 from typing import Dict, Any
 
-from app.models.inquiries import InquiryCreate
+from app.models.inquiries import InquiryCreate, InquiryUpdate, InternalNoteCreate
 from app.api.dependencies import get_current_user_context, get_user_supabase_client
 from app.core.ai_client import ai_client
 import logging
 from app.core.shop_api import ShopAPIAdapter
+from typing import List
 
 logger = logging.getLogger(__name__)
 
@@ -103,6 +104,57 @@ async def generate_draft(
     }
     insert_res = supabase_client.table("reply_drafts").insert(draft_data).execute()
     return {"status": "success", "message": "초안 생성 완료", "data": insert_res.data[0]}
+
+@router.post("/{inquiry_id}/analyze")
+async def analyze_inquiry_metadata(
+    inquiry_id: str,
+    user_context: dict = Depends(get_current_user_context),
+    supabase_client: Client = Depends(get_user_supabase_client)
+):
+    """
+    문의 내용의 감정, 태그, 카테고리를 AI로 재분석하여 업데이트합니다.
+    """
+    company_id = user_context["company_id"]
+    
+    # 1. 문의 내용 조회
+    res = supabase_client.table("inquiries").select("content").eq("id", inquiry_id).eq("company_id", company_id).execute()
+    if not res.data:
+        raise HTTPException(status_code=404, detail="문의를 찾을 수 없습니다.")
+    
+    # 2. AI 분석 수행
+    metadata = await ai_client.analyze_metadata(res.data[0]["content"])
+    
+    # 3. DB 업데이트
+    update_data = {
+        "category": metadata.get("category"),
+        "sentiment": metadata.get("sentiment"),
+        "sentiment_score": metadata.get("sentiment_score"),
+        "ai_tags": metadata.get("tags"),
+        "priority": metadata.get("priority_suggestion")
+    }
+    
+    supabase_client.table("inquiries").update(update_data).eq("id", inquiry_id).execute()
+    
+    return {"status": "success", "data": update_data}
+
+@router.get("/{inquiry_id}")
+async def get_inquiry_detail(
+    inquiry_id: str,
+    user_context: dict = Depends(get_current_user_context),
+    supabase_client: Client = Depends(get_user_supabase_client)
+):
+    """
+    문의 상세 정보와 관련 데이터(초안, 메모)를 한꺼번에 가져옵니다.
+    """
+    company_id = user_context["company_id"]
+    
+    # 문의 본체 + 숍 정보 + 초안 + 메모
+    res = supabase_client.table("inquiries").select("*, connected_shops(*), reply_drafts(*), internal_notes(*)").eq("id", inquiry_id).eq("company_id", company_id).execute()
+    
+    if not res.data:
+        raise HTTPException(status_code=404, detail="문의를 찾을 수 없습니다.")
+        
+    return {"status": "success", "data": res.data[0]}
 
 @router.post("/drafts/{draft_id}/approve")
 async def approve_draft(
@@ -375,4 +427,73 @@ async def get_realtime_details(
         }
     except Exception as e:
         logger.exception(f"🔥 [Realtime Details] 처리 중 치명적 오류 발생: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.patch("/{inquiry_id}")
+async def update_inquiry(
+    inquiry_id: str,
+    update_data: InquiryUpdate,
+    user_context: dict = Depends(get_current_user_context),
+    supabase_client: Client = Depends(get_user_supabase_client)
+):
+    """
+    문의 상태, 담당자, 우선순위 등을 업데이트합니다.
+    """
+    company_id = user_context["company_id"]
+    
+    # exclude_unset=True를 사용하여 제공된 필드만 업데이트
+    data = update_data.dict(exclude_unset=True)
+    if not data:
+        raise HTTPException(status_code=400, detail="업데이트할 데이터가 없습니다.")
+        
+    try:
+        res = supabase_client.table("inquiries").update(data).eq("id", inquiry_id).eq("company_id", company_id).execute()
+        if not res.data:
+            raise HTTPException(status_code=404, detail="문의를 찾을 수 없습니다.")
+        return {"status": "success", "data": res.data[0]}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/{inquiry_id}/notes")
+async def get_internal_notes(
+    inquiry_id: str,
+    user_context: dict = Depends(get_current_user_context),
+    supabase_client: Client = Depends(get_user_supabase_client)
+):
+    """
+    해당 문의의 내부 메모 목록을 가져옵니다.
+    """
+    company_id = user_context["company_id"]
+    
+    try:
+        res = supabase_client.table("internal_notes").select("*").eq("inquiry_id", inquiry_id).eq("company_id", company_id).order("created_at", desc=False).execute()
+        return {"status": "success", "data": res.data}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/{inquiry_id}/notes")
+async def create_internal_note(
+    inquiry_id: str,
+    note: InternalNoteCreate,
+    user_context: dict = Depends(get_current_user_context),
+    supabase_client: Client = Depends(get_user_supabase_client)
+):
+    """
+    내부 메모를 작성합니다.
+    """
+    company_id = user_context["company_id"]
+    user_id = user_context["user_id"]
+    
+    insert_data = {
+        "inquiry_id": inquiry_id,
+        "company_id": company_id,
+        "author_id": user_id,
+        "content": note.content,
+        "created_at": datetime.utcnow().isoformat()
+    }
+    
+    try:
+        res = supabase_client.table("internal_notes").insert(insert_data).execute()
+        return {"status": "success", "data": res.data[0]}
+    except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

@@ -1,14 +1,20 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 from supabase import Client
-from typing import Iterator
-import json
-from datetime import datetime
-import io
+from typing import Iterator, List, Optional
+from pydantic import BaseModel
 
 from app.api.dependencies import get_current_user_context, get_user_supabase_client
 
 router = APIRouter()
+
+class ReviewUpdate(BaseModel):
+    corrected_answer: Optional[str] = None
+    corrected_category: Optional[str] = None
+    corrected_sentiment: Optional[str] = None
+    review_note: Optional[str] = None
+    is_training_ready: bool = True
+    quality_score: float = 1.0
 
 @router.get("/export/jsonl")
 def export_training_data_jsonl(
@@ -72,3 +78,84 @@ def export_training_data_jsonl(
             "Access-Control-Expose-Headers": "Content-Disposition"
         }
     )
+
+@router.get("/reviews")
+async def get_training_reviews(
+    status: str = "pending",
+    user_context: dict = Depends(get_current_user_context),
+    supabase_client: Client = Depends(get_user_supabase_client)
+):
+    """
+    검증 대기 중이거나 완료된 학습 리뷰 목록을 가져옵니다.
+    """
+    company_id = user_context["company_id"]
+    
+    query = supabase_client.table("training_reviews").select("*").eq("company_id", company_id)
+    if status == "pending":
+        query = query.eq("is_training_ready", False)
+    elif status == "completed":
+        query = query.eq("is_training_ready", True)
+        
+    res = query.order("created_at", desc=True).execute()
+    return {"status": "success", "data": res.data}
+
+@router.post("/reviews/{review_id}")
+async def submit_review(
+    review_id: str,
+    review_data: ReviewUpdate,
+    user_context: dict = Depends(get_current_user_context),
+    supabase_client: Client = Depends(get_user_supabase_client)
+):
+    """
+    AI 답변을 검증하거나 수정하여 최종 학습 데이터로 승인합니다.
+    """
+    user_id = user_context["user_id"]
+    company_id = user_context["company_id"]
+    
+    update_data = review_data.dict(exclude_unset=True)
+    update_data["reviewed_by"] = user_id
+    update_data["reviewed_at"] = datetime.utcnow().isoformat()
+    
+    try:
+        res = supabase_client.table("training_reviews").update(update_data).eq("id", review_id).eq("company_id", company_id).execute()
+        if not res.data:
+            raise HTTPException(status_code=404, detail="리뷰 대상을 찾을 수 없습니다.")
+        return {"status": "success", "data": res.data[0]}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/logs/{log_id}/review")
+async def create_review_from_log(
+    log_id: str,
+    user_context: dict = Depends(get_current_user_context),
+    supabase_client: Client = Depends(get_user_supabase_client)
+):
+    """
+    특정 AI 처리 로그를 학습 검증 대상으로 등록합니다.
+    """
+    company_id = user_context["company_id"]
+    
+    # 1. 원본 로그 조회
+    log_res = supabase_client.table("ai_training_logs").select("*").eq("id", log_id).eq("company_id", company_id).execute()
+    if not log_res.data:
+        raise HTTPException(status_code=404, detail="로그를 찾을 수 없습니다.")
+    log = log_res.data[0]
+    
+    # 2. 이미 리뷰가 있는지 확인
+    exist_res = supabase_client.table("training_reviews").select("id").eq("training_log_id", log_id).execute()
+    if exist_res.data:
+        return {"status": "success", "message": "이미 리뷰 등록됨", "review_id": exist_res.data[0]["id"]}
+        
+    # 3. 리뷰 생성
+    review_data = {
+        "company_id": company_id,
+        "training_log_id": log_id,
+        "inquiry_id": log["inquiry_id"],
+        "original_question": log["question"],
+        "original_ai_answer": log["final_answer"],
+        "original_category": log.get("category"),
+        "is_training_ready": False
+    }
+    
+    res = supabase_client.table("training_reviews").insert(review_data).execute()
+    return {"status": "success", "data": res.data[0]}

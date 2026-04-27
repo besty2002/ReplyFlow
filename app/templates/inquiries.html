@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+
+{% block title %}ReplyFlow | Inquiry Management{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <aside class="sidebar glass-panel" style="border-radius: 0;">
+        <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 2rem;">
+            <img src="/static/img/logo.png" alt="ReplyFlow Logo" style="width: 32px; height: 32px; border-radius: 6px;">
+            <h2 style="margin: 0; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.5rem; letter-spacing: -0.5px;">ReplyFlow</h2>
+        </div>
+        <nav>
+            <a href="/dashboard" class="nav-link">홈 (대시보드)</a>
+            <a href="/inquiries" class="nav-link active">문의 관리</a>
+            <a href="/training" class="nav-link">AI 학습 검증</a>
+            <a href="/settings" class="nav-link">설정</a>
+            
+            <div class="sidebar-footer" style="margin-top: auto; padding-top: 2rem;">
+                <a href="#" class="nav-link" id="logout-btn" style="color: var(--danger);">로그아웃</a>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: flex-end;">
+            <div>
+                <h1 style="margin: 0; font-weight: 600;">고객 문의 통합 관리</h1>
+                <p style="color: var(--text-muted); margin-top: 0.5rem;">고급 필터와 AI 분석을 통해 효율적으로 대응하세요.</p>
+            </div>
+        </header>
+
+        <!-- 필터 섹션 -->
+        <section class="glass-panel" style="padding: 1.5rem; margin-bottom: 2rem;">
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <div class="form-group" style="margin: 0; min-width: 150px;">
+                    <label class="form-label" style="font-size: 0.75rem;">상태</label>
+                    <select id="filter-status" class="form-input" onchange="applyFilters()">
+                        <option value="">전체 상태</option>
+                        <option value="pending" {% if selected_status == 'pending' %}selected{% endif %}>대기중</option>
+                        <option value="in_progress" {% if selected_status == 'in_progress' %}selected{% endif %}>처리중</option>
+                        <option value="replied" {% if selected_status == 'replied' %}selected{% endif %}>답변완료</option>
+                        <option value="escalated" {% if selected_status == 'escalated' %}selected{% endif %}>에스컬레이션</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin: 0; min-width: 150px;">
+                    <label class="form-label" style="font-size: 0.75rem;">감정</label>
+                    <select id="filter-sentiment" class="form-input" onchange="applyFilters()">
+                        <option value="">전체 감정</option>
+                        <option value="angry">불만/화남</option>
+                        <option value="curious">질문/확인</option>
+                        <option value="grateful">감사</option>
+                        <option value="neutral">보통</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin: 0; min-width: 150px;">
+                    <label class="form-label" style="font-size: 0.75rem;">상점</label>
+                    <select id="filter-shop" class="form-input" onchange="applyFilters()">
+                        <option value="">전체 상점</option>
+                        {% for shop in connected_shops %}
+                        <option value="{{ shop.id }}" {% if selected_shop == shop.id %}selected{% endif %}>{{ shop.shop_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group" style="margin: 0; flex: 1; min-width: 250px;">
+                    <label class="form-label" style="font-size: 0.75rem;">검색</label>
+                    <input type="text" id="search-query" class="form-input" placeholder="고객ID, 주문번호, 내용 검색..." value="{{ search_query or '' }}">
+                </div>
+                <div style="display: flex; align-items: flex-end;">
+                    <button class="btn-primary" onclick="applyFilters()">적용</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 문의 목록 -->
+        <section class="glass-panel" style="padding: 1.5rem; min-height: 400px;">
+            <div style="overflow-x: auto;">
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>상태</th>
+                            <th>중요도</th>
+                            <th>감정</th>
+                            <th>고객 / 주문번호</th>
+                            <th>내용 요약</th>
+                            <th>접수일시</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in inquiries %}
+                        <tr class="inquiry-row" onclick="openInspector('{{ item.id }}')">
+                            <td><span class="badge badge-{{ item.status }}">{{ item.status | upper }}</span></td>
+                            <td><span class="priority-dot priority-{{ item.priority or 'normal' }}"></span> {{ (item.priority or 'normal') | capitalize }}</td>
+                            <td>
+                                {% if item.sentiment %}
+                                <span class="sentiment-icon {{ item.sentiment }}"></span>
+                                {% else %}
+                                -
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div style="display: flex; flex-direction: column;">
+                                    <strong>{{ item.customer_id }}</strong>
+                                    <span style="font-size: 0.75rem; color: var(--primary-color);">{{ item.order_number or '주문번호 없음' }}</span>
+                                </div>
+                            </td>
+                            <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                {{ item.content }}
+                            </td>
+                            <td style="font-size: 0.85rem; color: var(--text-muted);">
+                                {{ item.received_at[:16].replace('T', ' ') }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- 페이지네이션 생략 (필요시 추가) -->
+        </section>
+    </main>
+</div>
+
+<!-- 상세 인스펙터 패널 -->
+<aside id="inspector-panel" class="inspector-panel glass-panel hidden">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2 style="margin: 0; font-size: 1.25rem;">문의 상세</h2>
+        <button onclick="closeInspector()" style="background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;">&times;</button>
+    </div>
+    
+    <div id="inspector-loader" class="hidden" style="text-align: center; padding: 2rem;">로딩 중...</div>
+    
+    <div id="inspector-content">
+        <!-- JS로 동적 렌더링 -->
+    </div>
+</aside>
+
+<style>
+    .priority-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; }
+    .priority-urgent { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+    .priority-high { background: #f59e0b; }
+    .priority-normal { background: #10b981; }
+    .priority-low { background: #6b7280; }
+    
+    .sentiment-icon.angry::before { content: '😠'; }
+    .sentiment-icon.curious::before { content: '🤔'; }
+    .sentiment-icon.grateful::before { content: '🙏'; }
+    .sentiment-icon.neutral::before { content: '😐'; }
+    
+    .inspector-panel {
+        position: fixed; right: 0; top: 0; width: 500px; height: 100vh; z-index: 1000;
+        background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px);
+        border-left: 1px solid rgba(255,255,255,0.1); padding: 2rem;
+        overflow-y: auto; box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+        transition: transform 0.3s ease;
+    }
+    .inspector-panel.hidden { transform: translateX(100%); }
+</style>
+
+<script>
+    let currentInquiryId = null;
+
+    function applyFilters() {
+        const status = document.getElementById('filter-status').value;
+        const sentiment = document.getElementById('filter-sentiment').value;
+        const shop = document.getElementById('filter-shop').value;
+        const query = document.getElementById('search-query').value;
+        
+        let url = '/inquiries?';
+        if (status) url += `status=${status}&`;
+        if (sentiment) url += `sentiment=${sentiment}&`;
+        if (shop) url += `shop_id=${shop}&`;
+        if (query) url += `q=${encodeURIComponent(query)}&`;
+        
+        window.location.href = url;
+    }
+
+    async function openInspector(id) {
+        currentInquiryId = id;
+        const panel = document.getElementById('inspector-panel');
+        const content = document.getElementById('inspector-content');
+        const loader = document.getElementById('inspector-loader');
+        
+        panel.classList.remove('hidden');
+        content.innerHTML = '';
+        loader.classList.remove('hidden');
+        
+        try {
+            const res = await fetch(`/api/v1/inquiries/${id}`);
+            const data = await res.json();
+            const inq = data.data;
+            
+            loader.classList.add('hidden');
+            renderInquiryDetail(inq);
+        } catch (err) {
+            content.innerHTML = '<p style="color:var(--danger)">데이터를 불러오지 못했습니다.</p>';
+        }
+    }
+
+    function renderInquiryDetail(inq) {
+        const content = document.getElementById('inspector-content');
+        content.innerHTML = `
+            <div style="margin-bottom: 1.5rem;">
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                    <span class="badge badge-${inq.status}">${inq.status.upper()}</span>
+                    <span class="badge" style="background:rgba(255,255,255,0.1)">${inq.category || '미분류'}</span>
+                </div>
+                <h3 style="margin-bottom: 0.5rem;">${inq.title || '제목 없음'}</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">${inq.received_at.replace('T', ' ')}</p>
+            </div>
+            
+            <div class="glass-panel" style="padding: 1rem; margin-bottom: 1.5rem; background: rgba(0,0,0,0.2);">
+                <label style="font-size: 0.75rem; color: var(--primary-color); font-weight: bold;">문의 내용</label>
+                <p style="white-space: pre-wrap; font-size: 0.95rem; margin-top: 0.5rem;">${inq.content}</p>
+            </div>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <label style="font-weight: bold; margin-bottom: 0.5rem; display: block;">내부 메모</label>
+                <div id="notes-list" style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem;">
+                    ${(inq.internal_notes || []).map(note => `
+                        <div style="background: rgba(255,255,255,0.05); padding: 0.75rem; border-radius: 8px; font-size: 0.85rem;">
+                            <div style="color: var(--text-muted); font-size: 0.7rem; margin-bottom: 0.2rem;">${note.created_at.split('T')[0]}</div>
+                            ${note.content}
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <input type="text" id="new-note" class="form-input" style="flex: 1;" placeholder="메모 추가...">
+                    <button class="btn-primary" onclick="addNote()" style="padding: 0.5rem 1rem;">추가</button>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;">
+                <label style="font-weight: bold; margin-bottom: 0.5rem; display: block;">답변 작성 (AI 초안)</label>
+                <textarea id="reply-text" class="form-input" style="height: 200px; margin-bottom: 1rem;">${(inq.reply_drafts && inq.reply_drafts[0]) ? inq.reply_drafts[0].ai_suggested_reply : ''}</textarea>
+                <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+                    <button class="btn-primary" style="background: var(--primary-hover)" onclick="generateDraft()">초안 생성</button>
+                    <button class="btn-primary" onclick="sendReply()">답변 발송</button>
+                </div>
+            </div>
+        `;
+    }
+
+    function closeInspector() {
+        document.getElementById('inspector-panel').classList.add('hidden');
+    }
+
+    async function addNote() {
+        const content = document.getElementById('new-note').value;
+        if (!content) return;
+        
+        try {
+            const res = await fetch(`/api/v1/inquiries/${currentInquiryId}/notes`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ content })
+            });
+            if (res.ok) openInspector(currentInquiryId);
+        } catch (err) { alert('메모 추가 실패'); }
+    }
+    
+    // sendReply, generateDraft 등 추가 구현 필요
+</script>
+{% endblock %}

@@ -1,6 +1,6 @@
 fastapi
 uvicorn[standard]
-supabase
+supabase==2.25.0
 pydantic-settings
 python-dotenv
 python-jose[cryptography]

@@ -221,3 +221,84 @@ async def settings_page(request: Request, user_context: dict | None = Depends(ge
             "connected_shops": connected_shops
         }
     )
+
+@router.get("/inquiries", response_class=HTMLResponse)
+async def inquiries_page(
+    request: Request, 
+    user_context: dict | None = Depends(get_web_user_context),
+    status: str | None = None,
+    shop_id: str | None = None,
+    sentiment: str | None = None,
+    q: str | None = None
+):
+    if not user_context or "error" in user_context:
+        return RedirectResponse(url="/login")
+        
+    sb_access_token = request.cookies.get("sb-access-token")
+    inquiries = []
+    connected_shops = []
+    
+    if sb_access_token:
+        headers = {
+            "apikey": settings.SUPABASE_KEY,
+            "Authorization": f"Bearer {sb_access_token}"
+        }
+        
+        # 1. 상점 목록
+        async with httpx.AsyncClient() as client:
+            shop_res = await client.get(f"{settings.SUPABASE_URL}/rest/v1/connected_shops", headers=headers)
+            if shop_res.status_code == 200:
+                connected_shops = shop_res.json()
+            
+            # 2. 문의 목록 필터링 쿼리
+            query = "select=*"
+            if status: query += f"&status=eq.{status}"
+            if shop_id: query += f"&shop_id=eq.{shop_id}"
+            if sentiment: query += f"&sentiment=eq.{sentiment}"
+            if q: query += f"&or=(customer_id.ilike.*{q}*,content.ilike.*{q}*,order_number.ilike.*{q}*)"
+            
+            inq_url = f"{settings.SUPABASE_URL}/rest/v1/inquiries?{query}&order=received_at.desc"
+            inq_res = await client.get(inq_url, headers=headers)
+            if inq_res.status_code == 200:
+                inquiries = inq_res.json()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="inquiries.html",
+        context={
+            "user_context": user_context,
+            "inquiries": inquiries,
+            "connected_shops": connected_shops,
+            "selected_status": status,
+            "selected_shop": shop_id,
+            "selected_sentiment": sentiment,
+            "search_query": q
+        }
+    )
+
+@router.get("/training", response_class=HTMLResponse)
+async def training_page(request: Request, user_context: dict | None = Depends(get_web_user_context)):
+    if not user_context or "error" in user_context:
+        return RedirectResponse(url="/login")
+    
+    # 훈련 리뷰 페이지 템플릿은 아직 없으므로 간단히 렌더링하거나 추후 생성
+    return templates.TemplateResponse(
+        request=request,
+        name="training.html",
+        context={"user_context": user_context}
+    )
+
+@router.get("/profile", response_class=HTMLResponse)
+async def profile_page(request: Request, user_context: dict | None = Depends(get_web_user_context)):
+    if not user_context or "error" in user_context:
+        return RedirectResponse(url="/login")
+        
+    return templates.TemplateResponse(
+        request=request,
+        name="profile.html",
+        context={
+            "conf_supabase_url": settings.SUPABASE_URL,
+            "conf_supabase_key": settings.SUPABASE_KEY,
+            "user_context": user_context,
+        }
+    )

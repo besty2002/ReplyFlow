@@ -9,13 +9,20 @@ class InquiryCreate(BaseModel):
     rakuten_inquiry_id: Optional[str] = "MOCK-123"
     customer_id: Optional[str] = "tester-01"
 
-class InquiryResponse(BaseModel):
-    id: str
-    company_id: str
-    rakuten_inquiry_id: str
-    customer_id: Optional[str]
-    title: str
+class InquiryUpdate(BaseModel):
+    status: Optional[str] = None
+    assigned_to: Optional[str] = None
+    priority: Optional[str] = None
+    category: Optional[str] = None
+    sentiment: Optional[str] = None
+
+class InternalNoteCreate(BaseModel):
     content: str
-    status: str
-    received_at: datetime
+
+class InternalNoteResponse(BaseModel):
+    id: str
+    inquiry_id: str
+    company_id: str
+    author_id: str
+    content: str
     created_at: datetime

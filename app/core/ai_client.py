@@ -41,9 +41,17 @@ class AIClient:
     async def generate_reply(self, inquiry_text: str, context: Dict[str, Any] = None) -> Dict[str, Any]:
         """
         Gemini를 사용하여 답변 초안을 생성합니다. 실시간 정보를 반영합니다.
+        감정 분석, 자동 태깅, 우선순위 제안을 포함합니다.
         """
         if self.provider == "mock":
-            return {"reply": "[MOCK] 문의 감사합니다. 곧 답변 드리겠습니다.", "category": "일반문의"}
+            return {
+                "reply": "[MOCK] 문의 감사합니다. 곧 답변 드리겠습니다.",
+                "category": "일반문의",
+                "sentiment": "neutral",
+                "sentiment_score": 0.5,
+                "tags": ["일반문의"],
+                "priority_suggestion": "normal"
+            }
 
         context = context or {}
         customer_name = context.get("customer_id") or context.get("customer_name") or "お客様"
@@ -63,7 +71,7 @@ class AIClient:
                 f"■ 현재 위치/예정: {delivery_info.get('current_location')}\n"
             )
 
-        # 시스템 프롬프트 (일본어 대응 중심)
+        # 시스템 프롬프트 (일본어 대응 중심 + 감정분석 + 태깅)
         system_instruction = (
             "あなたは日本 楽天市場のショップ担当者です。\n"
             f"顧客名（{customer_name} 様）へ丁寧な日本語で対応してください。\n"
@@ -78,8 +86,21 @@ class AIClient:
             "1. 재고가 있으면 '즉시 발송 가능'함을 강조하세요.\n"
             "2. 이미 발송되었다면 배송 상태(현재 위치 등)를 구체적으로 언급하며 안심시키세요.\n"
             "3. 답변은 매우 정중하고 자연스러운 일본어로 작성하세요.\n"
-            "4. 반드시 JSON 형식으로만 응답하세요: {\"reply\": \"일본어 본문\", \"category\": \"카테고리\"}\n"
-            "5. 카테고리는 [배송문의, 재고문의, 취소/환불, 기타] 중 하나로 분류하세요."
+            "4. 반드시 JSON 형식으로만 응답하세요.\n"
+            "5. 카테고리는 [배송문의, 재고문의, 취소/환불, サイズ交換, 商品不良, 기타] 중 하나로 분류하세요.\n"
+            "6. 감정 분석을 수행하세요: angry(화남/불만), curious(궁금함), grateful(감사함), neutral(보통) 중 하나.\n"
+            "7. sentiment_score는 0.0~1.0 사이의 강도입니다 (1.0이 가장 강함).\n"
+            "8. tags는 문의 내용에서 추출한 핵심 키워드 태그 배열입니다 (예: [\"배송지연\", \"긴급\"]).\n"
+            "9. priority_suggestion은 urgent, high, normal, low 중 하나입니다.\n\n"
+            "JSON 응답 형식:\n"
+            "{\n"
+            '  "reply": "일본어 본문",\n'
+            '  "category": "카테고리",\n'
+            '  "sentiment": "angry|curious|grateful|neutral",\n'
+            '  "sentiment_score": 0.0~1.0,\n'
+            '  "tags": ["태그1", "태그2"],\n'
+            '  "priority_suggestion": "urgent|high|normal|low"\n'
+            "}"
         )
 
         try:
@@ -102,14 +123,93 @@ class AIClient:
             
             # 결과 파싱
             res_text = response.text.strip()
-            return json.loads(res_text)
+            result = json.loads(res_text)
+            
+            # 필수 필드 기본값 보장
+            result.setdefault("sentiment", "neutral")
+            result.setdefault("sentiment_score", 0.5)
+            result.setdefault("tags", [])
+            result.setdefault("priority_suggestion", "normal")
+            result.setdefault("category", "기타")
+            
+            return result
             
         except Exception as e:
             logger.error(f"[Gemini API Error] {e}")
             return {
                 "reply": "申し訳ございません. 現在AI回答作成が一時的に制限されています. 手動で対応をお願いいたします.",
-                "category": "기타"
+                "category": "기타",
+                "sentiment": "neutral",
+                "sentiment_score": 0.5,
+                "tags": [],
+                "priority_suggestion": "normal"
             }
+
+    async def analyze_metadata(self, text: str) -> Dict[str, Any]:
+        """
+        고객 문의 내용을 분석하여 메타데이터(카테고리, 감정, 태그, 우선순위)를 반환합니다.
+        Sync Bot이나 일괄 처리 작업에서 사용됩니다.
+        """
+        if self.provider == "mock":
+            return {
+                "category": "일반문의",
+                "sentiment": "neutral",
+                "sentiment_score": 0.5,
+                "tags": ["테스트"],
+                "priority_suggestion": "normal"
+            }
+        
+        try:
+            model = genai.GenerativeModel(
+                model_name=self.model_name,
+                system_instruction=(
+                    "あなたは日本EC（楽天市場）のカスタマーサポート専門AIです。\n"
+                    "顧客からの問い合わせ内容を分析し, 以下のJSON形式で回答してください。\n"
+                    "1. category: [配送, 在庫, キャンセル, 返品/返金, 交換, 商品不良, 領収書, その他] から選択\n"
+                    "2. sentiment: [angry(不満/怒り), curious(質問/確認), grateful(感謝), neutral(通常)] から選択\n"
+                    "3. sentiment_score: 0.0(負) ~ 1.0(正) の範囲で数値化\n"
+                    "4. tags: 問い合わせの核心キーワード（例: ['配送遅延', 'サイズ間違い', '至急']）\n"
+                    "5. priority_suggestion: [urgent, high, normal, low] から緊急度を判定\n\n"
+                    "JSON 응답 형식:\n"
+                    "{\n"
+                    '  "category": "...",\n'
+                    '  "sentiment": "...",\n'
+                    '  "sentiment_score": 0.0,\n'
+                    '  "tags": ["...", "..."],\n'
+                    '  "priority_suggestion": "..."\n'
+                    "}"
+                )
+            )
+            response = await model.generate_content_async(
+                f"分析対象テキスト: {text}",
+                generation_config=genai.types.GenerationConfig(
+                    temperature=0.2,
+                    response_mime_type="application/json"
+                )
+            )
+            result = json.loads(response.text.strip())
+            
+            # 기본값 보장
+            result.setdefault("category", "その他")
+            result.setdefault("sentiment", "neutral")
+            result.setdefault("sentiment_score", 0.5)
+            result.setdefault("tags", [])
+            result.setdefault("priority_suggestion", "normal")
+            
+            return result
+        except Exception as e:
+            logger.error(f"[Metadata Analysis Error] {e}")
+            return {
+                "category": "その他",
+                "sentiment": "neutral",
+                "sentiment_score": 0.5,
+                "tags": [],
+                "priority_suggestion": "normal"
+            }
+
+    async def analyze_sentiment_only(self, text: str) -> Dict[str, Any]:
+        """하위 호환성을 위해 유지합니다."""
+        return await self.analyze_metadata(text)
 
 # 인스턴스 생성
 ai_client = AIClient(provider="auto")

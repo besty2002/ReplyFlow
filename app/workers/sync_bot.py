@@ -107,8 +107,15 @@ async def fetch_and_process_inquiries():
                     context=new_inquiry_data
                 )
                 
-                # 4. 카테고리 업데이트 및 초안 저장
-                supabase.table("inquiries").update({"category": ai_result.get("category", "未分類")}).eq("id", new_inq_id).execute()
+                # 4. 카테고리, 감정, 태그, 우선순위 업데이트 및 초안 저장
+                supabase.table("inquiries").update({
+                    "category": ai_result.get("category", "その他"),
+                    "sentiment": ai_result.get("sentiment"),
+                    "sentiment_score": ai_result.get("sentiment_score"),
+                    "ai_tags": ai_result.get("tags"),
+                    "priority": ai_result.get("priority_suggestion")
+                }).eq("id", new_inq_id).execute()
+
                 supabase.table("reply_drafts").insert({
                     "company_id": company_id,
                     "inquiry_id": new_inq_id,

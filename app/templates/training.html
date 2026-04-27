@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}ReplyFlow | AI Training Verification{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <aside class="sidebar glass-panel" style="border-radius: 0;">
+        <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 2rem;">
+            <img src="/static/img/logo.png" alt="ReplyFlow Logo" style="width: 32px; height: 32px; border-radius: 6px;">
+            <h2 style="margin: 0; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.5rem; letter-spacing: -0.5px;">ReplyFlow</h2>
+        </div>
+        <nav>
+            <a href="/dashboard" class="nav-link">홈 (대시보드)</a>
+            <a href="/inquiries" class="nav-link">문의 관리</a>
+            <a href="/training" class="nav-link active">AI 학습 검증</a>
+            <a href="/settings" class="nav-link">설정</a>
+            
+            <div class="sidebar-footer" style="margin-top: auto; padding-top: 2rem;">
+                <a href="#" class="nav-link" id="logout-btn" style="color: var(--danger);">로그아웃</a>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header style="margin-bottom: 2rem;">
+            <h1 style="margin: 0; font-weight: 600;">AI 학습 데이터 검증</h1>
+            <p style="color: var(--text-muted); margin-top: 0.5rem;">Human-in-the-Loop: AI의 답변을 검증하여 모델의 정확도를 높이세요.</p>
+        </header>
+
+        <section class="glass-panel" style="padding: 1.5rem;">
+            <div id="reviews-container">
+                <p style="text-align: center; color: var(--text-muted); padding: 3rem;">리뷰 대기 중인 데이터가 없습니다.</p>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+    async function loadReviews() {
+        const res = await fetch('/api/v1/training/reviews?status=pending');
+        const data = await res.json();
+        const reviews = data.data;
+        
+        const container = document.getElementById('reviews-container');
+        if (reviews.length === 0) return;
+        
+        container.innerHTML = reviews.map(rev => `
+            <div class="glass-panel" style="padding: 1.5rem; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.05);">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                    <strong>문의 ID: ${rev.inquiry_id.slice(0,8)}</strong>
+                    <span class="badge">${rev.original_category || '미분류'}</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div>
+                        <label class="form-label">고객 질문</label>
+                        <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; font-size: 0.9rem;">${rev.original_question}</div>
+                    </div>
+                    <div>
+                        <label class="form-label">AI 답변 (검증/수정 필요)</label>
+                        <textarea class="form-input" style="height: 120px;" id="answer-${rev.id}">${rev.original_ai_answer}</textarea>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
+                    <button class="btn-primary" style="width: auto; background: var(--success);" onclick="submitReview('${rev.id}', true)">승인</button>
+                    <button class="btn-primary" style="width: auto; background: var(--primary-color);" onclick="submitReview('${rev.id}', false)">수정 후 승인</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    async function submitReview(id, isOk) {
+        const answer = document.getElementById(`answer-${id}`).value;
+        const res = await fetch(`/api/v1/training/reviews/${id}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                corrected_answer: isOk ? null : answer,
+                is_training_ready: true,
+                quality_score: isOk ? 1.0 : 0.8
+            })
+        });
+        if (res.ok) {
+            alert('검증 완료!');
+            loadReviews();
+        }
+    }
+
+    loadReviews();
+</script>
+{% endblock %}

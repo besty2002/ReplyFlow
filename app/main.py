@@ -4,15 +4,15 @@ from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 
 from app.core.config import settings
-from app.api.endpoints import auth, pages, inquiries, training, shops
+from app.api.endpoints import auth, pages, inquiries, training, shops, user
 from app.workers.sync_bot import start_bot
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # 스타트업 시 백그라운드 봇 실행 (서버 구동을 방해하지 않게 비동기 태스크로 분리)
-    print("\n" + "🚀"*10)
-    print("서버 스타트업: 백그라운드 수집 봇을 깨웁니다!")
-    print("🚀"*10 + "\n")
+    print("\n" + "="*50)
+    print("[START] Server Startup: Waking up background sync bot!")
+    print("="*50 + "\n")
     
     # 스타트업 시 백그라운드 봇 실행
     await start_bot()
@@ -39,6 +39,7 @@ app.add_middleware(
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 # 라우터 등록
+app.include_router(user.router, prefix=f"{settings.API_V1_STR}/user", tags=["user"])
 app.include_router(pages.router, tags=["pages"]) # Web UI용 라우터 (/, /login, /dashboard)
 app.include_router(auth.router, prefix=f"{settings.API_V1_STR}/auth", tags=["auth"])
 app.include_router(inquiries.router, prefix=f"{settings.API_V1_STR}/inquiries", tags=["inquiries"])
