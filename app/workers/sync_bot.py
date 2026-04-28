@@ -10,16 +10,16 @@ from app.core.rakuten_client import RakutenRMSClient
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 
-# スケジューラー 전역 インスタンス
+# スケジューラー グローバル インスタンス
 scheduler = AsyncIOScheduler()
 
 
 async def reconcile_shop_inquiries(shop: dict, supabase: Client) -> dict:
     """
-    단일 ショップ의 RMS 未返信 リスト과 DB를 대조하여 同期化します.
-    - RMS에만 있는 お問い合わせ → INSERT (新規)
-    - DB에만 있는 お問い合わせ → DELETE (RMSで 完了/返信됨)
-    - 양쪽 모두 있는 お問い合わせ → 維持
+    単一ショップのRMS未返信リストとDBを照合して同期化します。
+    - RMSのみに存在 → INSERT (新規)
+    - DBのみに存在 → DELETE (RMSで完了/返信済み)
+    - 両方に存在 → 維持
     """
     platform = shop["platform"]
     shop_name = shop["shop_name"]
@@ -28,7 +28,7 @@ async def reconcile_shop_inquiries(shop: dict, supabase: Client) -> dict:
 
     result = {"shop": shop_name, "inserted": 0, "deleted": 0, "unchanged": 0, "errors": []}
 
-    # 1. RMSで 現在 未返信 リスト 수집
+    # 1. RMSから現在の未返信リストを取得
     rms_inquiries = []
     if platform == "rakuten":
         rakuten = RakutenRMSClient(
@@ -39,9 +39,9 @@ async def reconcile_shop_inquiries(shop: dict, supabase: Client) -> dict:
 
     rms_map = {inq["rakuten_inquiry_id"]: inq for inq in rms_inquiries}
     rms_ids = set(rms_map.keys())
-    print(f"  [RMS] {shop_name}: 未返信 {len(rms_ids)}件 수신", flush=True)
+    print(f"  [RMS] {shop_name}: 未返信 {len(rms_ids)}件 受信", flush=True)
 
-    # 2. DBで 現在 해당 ショップ의 お問い合わせ リスト 照会
+    # 2. DBから現在の該当ショップのお問い合わせリストを照会
     db_res = supabase.table("inquiries") \
         .select("id, rakuten_inquiry_id") \
         .eq("shop_id", shop_id) \
@@ -49,14 +49,14 @@ async def reconcile_shop_inquiries(shop: dict, supabase: Client) -> dict:
     db_data = db_res.data or []
     db_map = {row["rakuten_inquiry_id"]: row["id"] for row in db_data if row.get("rakuten_inquiry_id")}
     db_ids = set(db_map.keys())
-    print(f"  [DB]  {shop_name}: 既存 {len(db_ids)}件 보유", flush=True)
+    print(f"  [DB]  {shop_name}: 既存 {len(db_ids)}件 保有", flush=True)
 
-    # 3. 대조 비교
-    to_insert = rms_ids - db_ids    # RMS에만 있음 → 新規
-    to_delete = db_ids - rms_ids    # DB에만 있음 → RMSで 完了됨
-    unchanged = rms_ids & db_ids    # 양쪽 모두 → 維持
+    # 3. 照合比較
+    to_insert = rms_ids - db_ids    # RMSのみ → 新規
+    to_delete = db_ids - rms_ids    # DBのみ → RMSで完了済み
+    unchanged = rms_ids & db_ids    # 両方 → 維持
 
-    print(f"  [대조] 新規={len(to_insert)}件, 削除={len(to_delete)}件, 維持={len(unchanged)}件", flush=True)
+    print(f"  [照合] 新規={len(to_insert)}件, 削除={len(to_delete)}件, 維持={len(unchanged)}件", flush=True)
 
     # 4. 新規 お問い合わせ INSERT
     for rakuten_id in to_insert:
@@ -83,7 +83,7 @@ async def reconcile_shop_inquiries(shop: dict, supabase: Client) -> dict:
                 new_inq_id = inq_res.data[0]["id"]
                 print(f"    ✅ INSERT #{rakuten_id} ({ext_inq.get('customer_id')})", flush=True)
                 
-                # AI 초안 生成 + カテゴリー/感情 分析
+                # AI下書き生成 + カテゴリー/感情分析
                 try:
                     from app.core.ai_client import ai_client
                     ai_result = await ai_client.generate_reply(
@@ -100,7 +100,7 @@ async def reconcile_shop_inquiries(shop: dict, supabase: Client) -> dict:
                         "priority": ai_result.get("priority_suggestion")
                     }).eq("id", new_inq_id).execute()
                     
-                    # AI 초안 保存
+                    # AI下書き保存
                     supabase.table("reply_drafts").insert({
                         "company_id": company_id,
                         "inquiry_id": new_inq_id,
@@ -108,24 +108,24 @@ async def reconcile_shop_inquiries(shop: dict, supabase: Client) -> dict:
                         "status": "draft"
                     }).execute()
                     
-                    print(f"    📝 AI 초안 生成 完了 #{rakuten_id}", flush=True)
+                    print(f"    [AI] 下書き生成完了 #{rakuten_id}", flush=True)
                 except Exception as ai_err:
-                    print(f"    ⚠️ AI 초안 生成 失敗 #{rakuten_id}: {ai_err}", flush=True)
+                    print(f"    [AI] 下書き生成失敗 #{rakuten_id}: {ai_err}", flush=True)
         except Exception as e:
             result["errors"].append(f"INSERT {rakuten_id}: {str(e)}")
             print(f"    ❌ INSERT 失敗 #{rakuten_id}: {e}", flush=True)
 
-    # 5. RMSで 完了/返信된 お問い合わせ DELETE (関連 データ 含む)
+    # 5. RMSで完了/返信済みのお問い合わせ DELETE (関連データ含む)
     for rakuten_id in to_delete:
         db_id = db_map[rakuten_id]
         try:
-            # 関連 データ 먼저 削除 (외래키 제약)
+            # 関連データを先に削除 (外部キー制約)
             supabase.table("reply_drafts").delete().eq("inquiry_id", db_id).execute()
             supabase.table("internal_notes").delete().eq("inquiry_id", db_id).execute()
             # お問い合わせ 削除
             supabase.table("inquiries").delete().eq("id", db_id).execute()
             result["deleted"] += 1
-            print(f"    🗑️ DELETE #{rakuten_id} (RMSで 完了됨)", flush=True)
+            print(f"    [DEL] DELETE #{rakuten_id} (RMSで完了済み)", flush=True)
         except Exception as e:
             result["errors"].append(f"DELETE {rakuten_id}: {str(e)}")
             print(f"    ❌ DELETE 失敗 #{rakuten_id}: {e}", flush=True)
@@ -136,7 +136,7 @@ async def reconcile_shop_inquiries(shop: dict, supabase: Client) -> dict:
 
 async def reconcile_all_shops():
     """
-    모든 連携 ショップについて reconciliation을 수행します.
+    全ての連携ショップについてreconciliationを実行します。
     """
     print("\n[Sync] === Reconciliation 同期化開始 ===", flush=True)
 
@@ -151,14 +151,14 @@ async def reconcile_all_shops():
         shops = shops_res.data or []
         rakuten_shops = [s for s in shops if s["platform"] == "rakuten"]
 
-        print(f"[Sync] Rakuten ショップ {len(rakuten_shops)}件 발견", flush=True)
+        print(f"[Sync] Rakuten ショップ {len(rakuten_shops)}件 発見", flush=True)
 
         all_results = []
         for shop in rakuten_shops:
             shop_result = await reconcile_shop_inquiries(shop, supabase)
             all_results.append(shop_result)
 
-        # 全体 집계
+        # 全体集計
         total_inserted = sum(r["inserted"] for r in all_results)
         total_deleted = sum(r["deleted"] for r in all_results)
         total_unchanged = sum(r["unchanged"] for r in all_results)
@@ -190,17 +190,17 @@ async def reconcile_all_shops():
 
 async def start_bot():
     """
-    FastAPI サーバー 開始 시 呼び出し되어 スケジューラー를 開始します.
+    FastAPIサーバー開始時に呼び出されスケジューラーを開始します。
     """
     async def delayed_start():
         await asyncio.sleep(5)
-        print("[Sync Bot] サーバー 안정화 完了. 첫 번째 同期化開始...", flush=True)
+        print("[Sync Bot] サーバー安定化完了。初回同期化開始...", flush=True)
         await reconcile_all_shops()
 
     asyncio.create_task(delayed_start())
 
-    # スケジューラー 登録 (10분 간격)
+    # スケジューラー登録 (10分間隔)
     if not scheduler.running:
         scheduler.add_job(reconcile_all_shops, 'interval', minutes=10)
         scheduler.start()
-        print("[Sync Bot] スケジューラー 開始 (10분 주기 reconciliation)", flush=True)
+        print("[Sync Bot] スケジューラー開始 (10分周期 reconciliation)", flush=True)
