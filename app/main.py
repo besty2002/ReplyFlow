@@ -16,7 +16,7 @@ async def lifespan(app: FastAPI):
     print("[START] Server Startup")
     print("=" * 50 + "\n")
 
-    # Reconciliation 기반 sync_bot 시작 (5초 딜레이 후 자동 실행)
+    # Reconciliation 기반 sync_bot 開始 (5초 딜레이 후 自動 実行)
     try:
         asyncio.create_task(start_bot())
         print("[OK] Sync bot (reconciliation) started")
@@ -30,13 +30,13 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
-    description="일본 EC 판매자용 고객문의 자동처리 SaaS API",
+    description="일본 EC 판매자용 お客様のお問い合わせ 自動処理 SaaS API",
     version="1.0.0",
     lifespan=lifespan,
 )
 
-# 개발용 CORS 설정
-# allow_origins=["*"] 사용 시 allow_credentials=False 권장
+# 件발용 CORS 設定
+# allow_origins=["*"] 使用 시 allow_credentials=False 권장
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -71,20 +71,20 @@ app.include_router(training.router, prefix=f"{settings.API_V1_STR}/training", ta
 app.include_router(shops.router, prefix=f"{settings.API_V1_STR}/shops", tags=["shops"])
 
 
-# 관리자용 수동 동기화 엔드포인트
-# 사용법: 브라우저에서 http://127.0.0.1:8000/admin/sync 접속
+# 관리자용 手動 同期化 エンドポイント
+# 使用법: 브라우저で http://127.0.0.1:8000/admin/sync 접속
 @app.get("/admin/sync")
 async def admin_sync():
-    """RMS 未返信 목록과 DB를 대조하여 동기화 (신규 추가 + 완료된 건 삭제)"""
+    """RMS 未返信 リスト과 DB를 대조하여 同期化 (新規 追加 + 完了된 件 削除)"""
     from app.workers.sync_bot import reconcile_all_shops
     result = await reconcile_all_shops()
     return result
 
 
-# 기존 purge-and-resync도 유지 (호환성)
+# 既存 purge-and-resync도 維持 (호환성)
 @app.get("/admin/purge-and-resync")
 async def admin_purge_and_resync():
-    """전체 삭제 후 재수집 (긴급용)"""
+    """全体 削除 후 재수집 (緊急용)"""
     import os
     from dotenv import load_dotenv
     from supabase import create_client
@@ -92,24 +92,24 @@ async def admin_purge_and_resync():
     import datetime
 
     load_dotenv()
-    print("[Admin] purge-and-resync 시작...", flush=True)
+    print("[Admin] purge-and-resync 開始...", flush=True)
 
     admin_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or settings.SUPABASE_KEY
     supabase = create_client(settings.SUPABASE_URL, admin_key)
 
     result = {"steps": [], "errors": []}
 
-    # 1. 기존 데이터 전체 삭제
+    # 1. 既存 データ 全体 削除
     for table in ["reply_drafts", "send_logs", "ai_training_logs", "internal_notes", "inquiries"]:
         try:
             res = supabase.table(table).delete().neq("id", "00000000-0000-0000-0000-000000000000").execute()
             count = len(res.data) if res.data else 0
-            result["steps"].append(f"{table}: {count}건 삭제")
-            print(f"  [삭제] {table}: {count}건", flush=True)
+            result["steps"].append(f"{table}: {count}件 削除")
+            print(f"  [削除] {table}: {count}件", flush=True)
         except Exception as e:
             result["errors"].append(f"{table}: {str(e)}")
 
-    # 2. 未返信 문의 재수집
+    # 2. 未返信 お問い合わせ 재수집
     shops_res = supabase.table("connected_shops").select("*").execute()
     rakuten_shops = [s for s in (shops_res.data or []) if s["platform"] == "rakuten"]
 
@@ -118,8 +118,8 @@ async def admin_purge_and_resync():
         print(f"  [API] {shop['shop_name']} 수집 중...", flush=True)
         rakuten = RakutenRMSClient(service_secret=shop["api_key"], license_key=shop.get("api_secret", ""))
         fetched = await rakuten.get_inquiry_list()
-        result["steps"].append(f"Rakuten API: {len(fetched)}건 수신 (未返信만)")
-        print(f"  [API] {len(fetched)}건 수신 완료", flush=True)
+        result["steps"].append(f"Rakuten API: {len(fetched)}件 수신 (未返信만)")
+        print(f"  [API] {len(fetched)}件 수신 完了", flush=True)
 
         for ext_inq in fetched:
             try:
@@ -141,11 +141,11 @@ async def admin_purge_and_resync():
                 inq_res = supabase.table("inquiries").insert(new_data).execute()
                 if inq_res.data:
                     new_count += 1
-                    print(f"    ✅ #{ext_inq['rakuten_inquiry_id']} 저장", flush=True)
+                    print(f"    ✅ #{ext_inq['rakuten_inquiry_id']} 保存", flush=True)
             except Exception as e:
-                result["errors"].append(f"문의 {ext_inq['rakuten_inquiry_id']}: {str(e)}")
+                result["errors"].append(f"お問い合わせ {ext_inq['rakuten_inquiry_id']}: {str(e)}")
 
-    result["summary"] = f"완료! 未返信 {new_count}건 수집 완료"
+    result["summary"] = f"完了! 未返信 {new_count}件 수집 完了"
     result["total_collected"] = new_count
-    print(f"  [완료] 未返信 {new_count}건 수집 완료", flush=True)
+    print(f"  [完了] 未返信 {new_count}件 수집 完了", flush=True)
     return result

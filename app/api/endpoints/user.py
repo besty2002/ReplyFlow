@@ -19,17 +19,17 @@ def get_profile(
     supabase_client: Client = Depends(get_user_supabase_client)
 ):
     """
-    현재 사용자 및 소속 회사 정보를 반환합니다.
+    現在 ユーザー 및 소속 会社 情報를 返却します.
     """
     company_id = user_context["company_id"]
     user_id = user_context["user_id"]
     
     try:
-        # 회사 정보 조회
+        # 会社 情報 照会
         comp_res = supabase_client.table("companies").select("*").eq("id", company_id).execute()
         company_data = comp_res.data[0] if comp_res.data else {}
         
-        # 유저 정보 (Auth API 사용)
+        # 유저 情報 (Auth API 使用)
         user_res = supabase_client.auth.get_user()
         
         return {
@@ -51,7 +51,7 @@ def update_company(
     supabase_client: Client = Depends(get_user_supabase_client)
 ):
     """
-    대표 회사 이름을 변경합니다. (관리자 전용)
+    대표 会社 名前을 変更します. (관리자 전용)
     """
     if user_context["role"] not in ["admin", "owner"]:
         raise HTTPException(status_code=403, detail="管理者権限が必要です。")
@@ -69,7 +69,7 @@ def update_password(
     supabase_client: Client = Depends(get_user_supabase_client)
 ):
     """
-    사용자의 비밀번호를 변경합니다.
+    ユーザー의 비밀番号를 変更します.
     """
     try:
         supabase_client.auth.update_user({"password": data.password})

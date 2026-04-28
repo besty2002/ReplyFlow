@@ -4,13 +4,13 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "ReplyFlow"
     API_V1_STR: str = "/api/v1"
     
-    # Supabase 설정 (env에서 가져옴)
+    # Supabase 設定 (envで 取得)
     SUPABASE_URL: str
     SUPABASE_KEY: str
     JWT_SECRET: str
     GEMINI_API_KEY: str | None = None
     
-    # Yamato API 설정
+    # Yamato API 設定
     YAMATO_SITE_ID: str | None = None
     YAMATO_SITE_PASSWORD: str | None = None
     YAMATO_API_VERSION: str = "1.0"

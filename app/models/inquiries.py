@@ -3,9 +3,9 @@ from typing import Optional
 from datetime import datetime
 
 class InquiryCreate(BaseModel):
-    title: str = Field(..., description="문의 제목", min_length=1)
-    content: str = Field(..., description="문의 내용상세", min_length=5)
-    # 초기 테스트 목적이므로 아래 값들은 지정하지 않으면 Mock 데이터 사용
+    title: str = Field(..., description="お問い合わせ タイトル", min_length=1)
+    content: str = Field(..., description="お問い合わせ内容詳細", min_length=5)
+    # 초기 テスト 목적이므로 아래 値들은 지정하지 않으면 Mock データ 使用
     rakuten_inquiry_id: Optional[str] = "MOCK-123"
     customer_id: Optional[str] = "tester-01"
 

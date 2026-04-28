@@ -4,12 +4,12 @@ from app.core.config import settings
 
 def verify_supabase_jwt(token: str) -> dict:
     """
-    클라이언트에서 전달받은 Supabase JWT 토큰을 서버단에서 검증하고 Payload(내용)를 반환합니다.
+    クライアントで 伝達받은 Supabase JWT トークン을 サーバー단で 検証하고 Payload(内容)를 返却します.
     """
     try:
-        # Supabase 최신 프로젝트는 토큰 서명에 HS256 대신 ES256 등의 비대칭 키를 사용합니다.
-        # 따라서 백엔드 시크릿으로 직접 복호화하지 않고, 내용(Payload)만 우선 추출한 뒤
-        # 실제 토큰 유효성은 이후 PostgREST API를 호출할 때 DB가 대신 검증하도록 위임합니다.
+        # Supabase 最新 프로젝트는 トークン 署名에 HS256 대신 ES256 등의 비대칭 키를 使用します.
+        # 従って バックエンド シークレットで 直接 復号化하지 않고, 内容(Payload)만 우선 抽出한 뒤
+        # 실제 トークン 有効성은 以降 PostgREST API를 呼び出し할 때 DB가 대신 検証하도록 위임します.
         payload = jwt.get_unverified_claims(token)
         return payload
     except Exception as e:

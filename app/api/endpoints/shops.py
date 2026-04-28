@@ -19,7 +19,7 @@ def get_connected_shops(
     supabase_client: Client = Depends(get_user_supabase_client)
 ):
     """
-    현재 로그인된 계정(소속 회사)에 등록된 모든 다중 숍/플랫폼 API 키 리스트를 불러옵니다.
+    現在 ログ인된 계정(소속 会社)에 登録된 모든 다중 ショップ/プラットフォーム API 키 리스트를 불러옵니다.
     """
     company_id = user_context["company_id"]
     try:
@@ -35,7 +35,7 @@ def add_connected_shop(
     supabase_client: Client = Depends(get_user_supabase_client)
 ):
     """
-    라쿠텐, 야후 등 새로운 쇼핑몰 채널을 회사의 연동 리스트에 추가합니다.
+    라쿠텐, 야후 등 新しい ショップ몰 채널을 会社의 連携 리스트에 追加します.
     """
     company_id = user_context["company_id"]
     
@@ -50,9 +50,9 @@ def add_connected_shop(
     
     try:
         res = supabase_client.table("connected_shops").insert(insert_data).execute()
-        return {"status": "success", "message": "새로운 숍이 연동되었습니다.", "data": res.data[0] if res.data else None}
+        return {"status": "success", "message": "新しい ショップ이 連携되었します.", "data": res.data[0] if res.data else None}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"숍 연동 실패: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"ショップ 連携 失敗: {str(e)}")
 
 @router.delete("/{shop_id}")
 def delete_connected_shop(
@@ -61,13 +61,13 @@ def delete_connected_shop(
     supabase_client: Client = Depends(get_user_supabase_client)
 ):
     """
-    기존 연동된 숍을 삭제합니다.
+    既存 連携된 ショップ을 削除します.
     """
     company_id = user_context["company_id"]
     
     try:
-        # 삭제 처리 (RLS 덕분에 본인 회사가 아니면 쿼리 자체가 무시되지만, 명시적 안전성을 위해 eq("company_id") 반영)
+        # 削除 処理 (RLS 덕분에 본인 会社가 아니면 クエリ 자체가 무시되지만, 명시적 안전성을 ために eq("company_id") 반영)
         supabase_client.table("connected_shops").delete().eq("id", shop_id).eq("company_id", company_id).execute()
-        return {"status": "success", "message": "숍 연동이 해제되었습니다."}
+        return {"status": "success", "message": "ショップ 連携이 해제되었します."}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"숍 삭제 실패: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"ショップの削除に失敗しました: {str(e)}")

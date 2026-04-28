@@ -1,0 +1,1960 @@
+﻿.\check_db.py:7: ['甯護攵', '・菩・, '・罹糖']
+  # .env 甯護攵 ・菩・・罹糖
+
+.\check_db.py:10: ['嵓・｡懍晨敢', '・ｽ・・, '・緋ｰ']
+  # 嵓・｡懍晨敢 ・ｽ・・・緋ｰ
+
+.\check_db.py:18: ['・・小孖ｸ', '・尖洳']
+  print(f"笶・・・小孖ｸ ・尖洳: {e}")
+
+.\check_db.py:23: ['・懍侃奛・, '・懍｢・, '・ｹ・ｬ', '・ｨ・', '・ｰ・・・, '・､・・, '﨑ｴ・ｰ', '・・, '・菩・, '・ｼ・・]
+  print("・懍侃奛・・懍｢・・ｹ・ｬ: ・ｨ・ ・ｰ・・・・､・・﨑ｴ・ｰ ・・・菩・・ｼ・・)
+
+.\check_db.py:26: ['墲､', '嶹簿ｳｴ']
+  # 1. 墲､ 嶹簿ｳｴ
+
+.\check_db.py:29: ['墲､', '嶹簿ｳｴ', '・､甯ｨ']
+  print("笶・墲､ 嶹簿ｳｴ ・､甯ｨ")
+
+.\check_db.py:34: ['・ｼ・奛・, '・簿ｳｴ']
+  # 2. ・ｼ・奛・・簿ｳｴ
+
+.\check_db.py:39: ['・ｴ・ｸ', '・語ｳ', '・壱株', '巐護ぎ', '・ｬ・ｩ', '・懋ｷｸ', '・ｰ・・]
+  # A. ・ｴ・ｸ ・語ｳ ・壱株 巐護ぎ ID ・ｬ・ｩ (・懋ｷｸ ・ｰ・・
+
+.\check_db.py:41: ['夋・・, '巐護ぎ']
+  print(f"識 夋・・巐護ぎ ID: {cid}")
+
+.\check_db.py:43: ['・・, '・ｴ・ｬ', '・ｬ・', '嶹菩攤', '弡・, '・俯徐', '・俯ｦｬ', '・尖洳', '巐醐半']
+  # B. ・・・ｴ・ｬ ・ｬ・ 嶹菩攤 弡・・俯徐 ・俯ｦｬ (upsert ・尖洳 巐醐半)
+
+.\check_db.py:44: ['・・, '・・・', '嶹菩攤', '・・]
+  print("剥 ・・・・・ 嶹菩攤 ・・..")
+
+.\check_db.py:49: ['・・, '・簿ｳｴ・', '・・牟', '・壱｡・, '・晧┳﨑ｩ・壱共']
+  print("屏・・・・・簿ｳｴ・ ・・牟 ・壱｡・・晧┳﨑ｩ・壱共...")
+
+.\check_db.py:53: ['・ｼ・奛・, '・､・・, '・ｰ・呷・']
+  "shop_name": "・ｼ・奛・・､・・・ｰ・呷・",
+
+.\check_db.py:61: ['・ｰ・ｴ', '・・, '嶹菩攤', '・・｣・]
+  print(f"笨・・ｰ・ｴ ・・嶹菩攤 ・・｣・(ID: {shop_id})")
+
+.\check_db.py:63: ['・餓亨', '・們ｧ・, '・・, '・・･', '・ｴ・ｰ・ｴ', '・・･']
+  # C. ・餓亨 ・們ｧ・・・・・･ (・ｴ・ｰ・ｴ ・・･)
+
+.\check_db.py:64: ['・ｼ・奛・, '・罹ｲ・, '・ｵ・ｩ', '・・]
+  print("藤 ・ｼ・奛・・罹ｲ・・ｵ・ｩ ・・..")
+
+.\check_db.py:69: ['・､・・, '・ｰ・ｴ奓ｰ', '・ｴ', '・懋ｲｬ', '・・罹ｳｴ・罹｡・, '・ｴ・ｰ・ｴ', '・ｩ・壱共']
+  print(f"嶋 ・､・・・ｰ・ｴ奓ｰ {len(inqs)}・ｴ ・懋ｲｬ! ・・罹ｳｴ・罹｡・・ｴ・ｰ・ｴ ・ｩ・壱共!")
+
+.\check_db.py:78: ['・､・・, '・ｰ・・, '・ｱ・ｵ', '・ｸ・・]
+  "title": i.get("title", "[・､・Ь ・ｰ・・・ｱ・ｵ ・ｸ・・),
+
+.\check_db.py:79: ['・ｰ・ｴ奓ｰ・', '・菩メ・・愍・・, '・們ｧ瀧据・溢慣・壱共']
+  "content": i.get("content", "・ｰ・ｴ奓ｰ・ ・菩メ・・愍・・・們ｧ瀧据・溢慣・壱共."),
+
+.\check_db.py:83: ['・ｨ・ｸ', '・ｸ・・, '・・･', '・ｱ・ｵ']
+  print(f"笨・[・ｨ・ｸ] ・ｸ・・ID {raw_id} ・・･ ・ｱ・ｵ!")
+
+.\check_db.py:85: ['・ｴ・ｸ', '・､・ｴ・溢搆']
+  print(f"竢ｩ ・ｴ・ｸ ・､・ｴ・溢搆: {raw_id}")
+
+.\check_db.py:87: ['・・ｸ・ｬ', '・・, '・ｸ・俾ｰ', '・・慣・壱共']
+  print("邃ｹ・・・・ｸ・ｬ ・・・ｸ・俾ｰ ・・慣・壱共.")
+
+.\check_db.py:90: ['・溢ｧ・・, '・､・・, '・懍・']
+  print(f"笶・・溢ｧ・・・､・・・懍・: {e}")
+
+.\check_db.py:93: ['・ｴ・・, '・・罹ｳｴ・罹･ｼ', '・壱｡懋ｳ・ｨ﨑們┷・・, '・簿ｧ・, '・ｰ・呱据・溢慣・壱共']
+  print("笨ｨ ・ｴ・・・・罹ｳｴ・罹･ｼ ・壱｡懋ｳ・ｨ﨑們┷・・ ・簿ｧ・・ｰ・呱据・溢慣・壱共.")
+
+.\debug_bot.py:5: ['嵓・｡懍晨敢', '・ｨ孖ｸ・ｼ', '・ｽ・懍乱', '・緋ｰ']
+  # 嵓・｡懍晨敢 ・ｨ孖ｸ・ｼ ・ｽ・懍乱 ・緋ｰ
+
+.\debug_bot.py:14: ['・､・・, '・・卿', '・ｨ・・, '・懍梠']
+  print("噫 [Debug Bot] ・､・・・・卿 ・ｨ・・・懍梠!")
+
+.\debug_bot.py:17: ['・ｰ・ｰ', '・ｴ增ｬ']
+  # 1. Supabase ・ｰ・ｰ ・ｴ增ｬ
+
+.\debug_bot.py:21: ['・ｰ・ｰ', '・ｱ・ｵ']
+  print("笨・Supabase ・ｰ・ｰ ・ｱ・ｵ!")
+
+.\debug_bot.py:23: ['・ｱ・晤頗', '・・, '・簿ｳｴ', '・ｰ巐・]
+  # 2. ・ｱ・晤頗 ・・・簿ｳｴ ・ｰ巐・
+
+.\debug_bot.py:24: ['・ｰ・呱頗', '・・, '・ｩ・・, '・ｰ巐・, '・・]
+  print("剥 ・ｰ・呱頗 ・・・ｩ・・・ｰ巐・・・..")
+
+.\debug_bot.py:29: ['・ｰ・呱頗', '・作擽', '﨑・, '・ｴ・・, '・・慣・壱共', '・・ｦ壱笈・､', '・､・菩乱・・, '・作揆', '・ｼ・', '・ｱ・晨紛・ｼ・ｸ・・]
+  print("笶・・ｰ・呱頗 ・作擽 﨑・・ｴ・・・・慣・壱共! ・・ｦ壱笈・､ ・､・菩乱・・・作揆 ・ｼ・ ・ｱ・晨紛・ｼ・ｸ・・")
+
+.\debug_bot.py:32: ['・・, '・懍攪', '・作揆', '・懋ｲｬ嵂溢慣・壱共']
+  print(f"笨・・・{len(shops)}・懍攪 ・作揆 ・懋ｲｬ嵂溢慣・壱共.")
+
+.\debug_bot.py:35: ['・・, '・・卿']
+  print(f"\n--- [{s['platform'].upper()}] {s['shop_name']} ・・・・卿 ---")
+
+.\debug_bot.py:41: ['・ｼ・奛・, '嶸ｸ・・, '・罹巡']
+  print(f"藤 ・ｼ・奛・API 嶸ｸ・・・罹巡... (Key: {api_key[:5]}*** / Secret: {api_secret[:5]}***)")
+
+.\debug_bot.py:46: ['・們ｧ・, '・ｰ・ｼ', '・ｴ・・, '・ｸ・俯･ｼ', '・懋ｲｬ嵂溢慣・壱共']
+  print(f"投 ・們ｧ・・ｰ・ｼ: {len(inquiries)}・ｴ・・・ｸ・俯･ｼ ・懋ｲｬ嵂溢慣・壱共.")
+
+.\debug_bot.py:50: ['嵓誤椨尞ｼ・', '嶸・椪', '・・卿', '・・・擽', '・・漁・壱共']
+  print(f"邃ｹ・・{s['platform']} 嵓誤椨尞ｼ・ 嶸・椪 ・・卿 ・・・擽 ・・漁・壱共.")
+
+.\debug_bot.py:53: ['・・卿', '・・, '・俯ｪ・・, '・尖洳', '・懍・']
+  print(f"笶・・・卿 ・・・俯ｪ・・・尖洳 ・懍・: {str(e)}")
+
+.\debug_bot.py:56: ['・・卿', '・・｣・]
+  print("笨ｨ [Debug Bot] ・・卿 ・・｣・)
+
+.\fix_and_sync.py:6: ['嵓・｡懍晨敢', '・ｽ・・, '・緋ｰ']
+  # 嵓・｡懍晨敢 ・ｽ・・・緋ｰ
+
+.\fix_and_sync.py:14: ['・・小孖ｸ', '・尖洳']
+  print(f"笶・・・小孖ｸ ・尖洳: {e}")
+
+.\fix_and_sync.py:19: ['・懍侃奛・, '・・ｲｽ', '・ｰ巐・, '・・, '・菩・, '・ｼ・・, '・懍ｧ・]
+  print("・懍侃奛・・・ｲｽ ・ｰ巐・・・DB ・菩・・ｼ・・・懍ｧ・(Final)")
+
+.\fix_and_sync.py:22: ['・俯徐', '墲､', '・ｼ・・]
+  # [・俯徐 墲､ ・ｼ・・
+
+.\fix_and_sync.py:26: ['・ｰ・ｰ']
+  # 1. Supabase ・ｰ・ｰ
+
+.\fix_and_sync.py:30: ['・ｴ・・, '・菩ｱ・, '・・, '・ｰ巐醐葺・ｰ', '・・紛', '・ｰ・', '・ｰ・ｴ奓ｰ・ｼ', '・ｰ巐醐葺・', '・伎ｳ']
+  # ・ｴ・・・菩ｱ・RLS)・・・ｰ巐醐葺・ｰ ・・紛 ・ｰ・ ・ｰ・ｴ奓ｰ・ｼ ・ｰ巐醐葺・ ・伎ｳ
+
+.\fix_and_sync.py:31: ['・ｬ・ｩ・専ｰ', '・ｴ・ｸ', '・ｱ・晨紛・川来・・, '・・愍・・, '・溢メ・俯株', '奛護擽・肥乱', '・・・, '・滝ｷｼ﨑ｩ・壱共']
+  # ・ｬ・ｩ・専ｰ ・ｴ・ｸ ・ｱ・晨紛・川来・・・・愍・・・溢メ・俯株 奛護擽・肥乱 ・・・・滝ｷｼ﨑ｩ・壱共.
+
+.\fix_and_sync.py:33: ['・・, '・ｬ・､孖ｸ・ｼ', '・・ｸ・､・・, '・・', '・ｼ・ｨ', '巐護ぎ', '・ｩ・晧揆', '・ｼ・', '・ｾ・ｵ・壱共']
+  # ・・・ｬ・､孖ｸ・ｼ ・・ｸ・､・・・・, ・ｼ・ｨ 巐護ぎ ・ｩ・晧揆 ・ｼ・ ・ｾ・ｵ・壱共.
+
+.\fix_and_sync.py:34: ['・ｸ・晧擽', '・・愍・・・, '・・牟・溢揆', '・・, '・溢ｧ・・, '・尖洳・ｼ', '・ｩ・﨑俾ｸｰ', '・・紛', '・・, '・ｰ・ｴ', '・・', '・､・・, '・ｰ巐誤･ｼ', '・罹巡']
+  # (・ｸ・晧擽 ・・愍・・・・・牟・溢揆 ・・・溢ｧ・・ ・尖洳・ｼ ・ｩ・﨑俾ｸｰ ・・紛 ・・・ｰ・ｴ ・・ ・､・・・ｰ巐誤･ｼ ・罹巡)
+
+.\fix_and_sync.py:35: ['・ｰ・ｴ奓ｰ・・ｴ・､', '・ｽ・・, '嶹簿ｳｴ', '・・]
+  print("剥 ・ｰ・ｴ奓ｰ・・ｴ・､ ・ｽ・・嶹簿ｳｴ ・・..")
+
+.\fix_and_sync.py:37: ['﨑ｵ・ｬ', '・護平', '巐護ぎ', '・簿ｳｴ', '・ｰ巐語ｰ', '・､甯ｨ﨑俯ｩｴ', '・ｸ・俯･ｼ', '・｣・・, '・・, '・ｼ', '・・被腹', '・・, '・・愍・・・]
+  # [﨑ｵ・ｬ] ・護平 巐護ぎ ・簿ｳｴ ・ｰ巐語ｰ ・､甯ｨ﨑俯ｩｴ, ・ｸ・俯･ｼ ・｣・・・・company_id・ｼ ・・被腹 ・・・・愍・・・
+
+.\fix_and_sync.py:38: ['・ｸ・・, '・ｰ巐誤･ｼ', '・・紛', '・・牟・壱株', '・ｰ・ｴ奓ｰ・ｼ', '・俯徐・ｼ・・, '・晧┳', '・罹巡']
+  # ・ｸ・・・ｰ巐誤･ｼ ・・紛 ・・牟・壱株 ・ｰ・ｴ奓ｰ・ｼ ・俯徐・ｼ・・・晧┳ ・罹巡
+
+.\fix_and_sync.py:40: ['・ｼ・奛・, '・､・・, '奝ｵ・', '・ｴ・ｴ', '・', '・・ｴ・・愍・・・, '・ｱ・ｵ﨑', '・・桷']
+  # ・ｼ・奛・・､・・奝ｵ・ (・ｴ・ｴ DB・ ・・ｴ・・愍・・・・ｱ・ｵ﨑 ・・桷)
+
+.\fix_and_sync.py:41: ['・ｼ・奛・, '・罹ｲ・, '・卓・']
+  print(f"藤 ・ｼ・奛・・罹ｲ・・卓・... ({MANUAL_SERVICE_SECRET[:10]}...)")
+
+.\fix_and_sync.py:45: ['・們ｧ・, '・ｰ・ｼ', '・ｴ', '・懋ｲｬ']
+  print(f"投 ・們ｧ・・ｰ・ｼ: {len(inqs)}・ｴ ・懋ｲｬ")
+
+.\fix_and_sync.py:48: ['・ｼ・奛・, '・罹ｲ・乱', '・・, '・ｸ・俾ｰ', '・・慣・壱共']
+  print("邃ｹ・・・ｼ・奛・・罹ｲ・乱 ・・・ｸ・俾ｰ ・・慣・壱共.")
+
+.\fix_and_sync.py:51: ['・・, '・・･﨑俾ｸｰ', '・・復', '・ｰ・ｴ奓ｰ', '・晧┳']
+  # DB・・・・･﨑俾ｸｰ ・・復 ・ｰ・ｴ奓ｰ ・晧┳
+
+.\fix_and_sync.py:52: ['・ｼ・・, '・ｬ・ｰ・・, '・', '・', '﨑・・・ｸ・ｰ', '・誤ｬｸ・・, '・ｰ巐語ｰ', '・壱据・・, '・・勦・・]
+  # [・ｼ・肋 ・ｬ・ｰ・・company_id・ shop_id・ 﨑・・・ｸ・ｰ, RLS ・誤ｬｸ・・・ｰ巐語ｰ ・壱据・・・・勦・・
+
+.\fix_and_sync.py:53: ['・ｰ・ｼ・・, '・・亨・・, '・・･', '・ｫ', '・溢ｧｸ', '巐護ぎ・ｼ', '・・ｸ・､・ｰ', '・・紛', '・懋ｷｸ・ｸ', '・・擽', '・滝ｷｼ', '・・･﨑懍ｧ', '奛護侃孖ｸ']
+  # ・ｰ・ｼ・・ ・・亨・・・・･ ・ｫ ・溢ｧｸ 巐護ぎ・ｼ ・・ｸ・､・ｰ ・・紛 '・懋ｷｸ・ｸ ・・擽' ・滝ｷｼ ・・･﨑懍ｧ 奛護侃孖ｸ
+
+.\fix_and_sync.py:55: ['・・攪', '・溢ｧ・・, '・俯卿', '・菩ｱ・, '・ｰ巐護圸', '嶸ｸ・懍擽・・, '﨑・┣', '・・株', '・ｰ巐・, '・罹巡']
+  # ・・攪 ・溢ｧ・・・俯卿: ・菩ｱ・・ｰ巐護圸 RPC 嶸ｸ・懍擽・・﨑・┣ ・・株 ・ｰ巐・・罹巡
+
+.\fix_and_sync.py:58: ['・ｴ・・, '・･・ｽ・ｴ', '・壱ｬｴ', '・廷慣・壱共', '嶹懍┳嶹・]
+  print("笶・DB ・ｴ・・・･・ｽ・ｴ ・壱ｬｴ ・廷慣・壱共. (RLS 嶹懍┳嶹・")
+
+.\fix_and_sync.py:59: ['﨑ｴ・ｰ・・, '・・・, '・誤攵・ｰ・・川・', '・・ｦ壱笈・､', '・､・・, '寬們擽・・ｼ', '・ｴ・ｴ・・, '・・・・川・', '・ｴ', '・・ｹ・・, '・､嵂駕紛・ｼ・ｸ・・]
+  print("庁 﨑ｴ・ｰ・・ ・・・・誤攵・ｰ・・川・ '・・ｦ壱笈・､ ・､・・ 寬們擽・・ｼ ・ｴ・ｴ・・・・・・川・ ・ｴ ・・ｹ・・・､嵂駕紛・ｼ・ｸ・・")
+
+.\fix_and_sync.py:60: ['・・亨・・, '・罹墾', '・ｼ', '・・ｬ﨑ｴ・罹攵・・, '・・･・・, '・罹巡﨑ｴ・ｴ・・ｵ・壱共', '・ｰ・・, '奛護侃孖ｸ・ｩ']
+  # ・・亨・・・罹墾 ID・ｼ ・・ｬ﨑ｴ・罹攵・・・・･・・・罹巡﨑ｴ・ｴ・・ｵ・壱共 (・ｰ・・奛護侃孖ｸ・ｩ)
+
+.\fix_and_sync.py:64: ['・・, '・・, '﨑俯ｘ', '・・ｸ・ｴ']
+  # ・・ID・・﨑俯ｘ ・・ｸ・ｴ
+
+.\fix_and_sync.py:84: ['・菩・, '・・･', '・・｣・]
+  print(f"笨・DB ・菩・・・･ ・・｣・ {raw_id}")
+
+.\fix_and_sync.py:86: ['・・･', '・ｴ・壱恊', '・ｴ・ｸ', '・ｴ・ｬ﨑俾ｱｰ・・, '・ｴ・・, '・ｴ・・]
+  print(f"竢ｩ ・・･ ・ｴ・壱恊 (・ｴ・ｸ ・ｴ・ｬ﨑俾ｱｰ・・・ｴ・・・ｴ・・: {raw_id}")
+
+.\fix_and_sync.py:89: ['・懍｢・, '・､・・, '・懍・']
+  print(f"笶・・懍｢・・､・・・懍・: {e}")
+
+.\fix_and_sync.py:92: ['・卓羅', '・・｣・, '・ｴ・・, '・・罹ｳｴ・罹･ｼ', '・壱｡懋ｳ・ｨ﨑們┷・・]
+  print("笨ｨ ・卓羅 ・・｣・ ・ｴ・・・・罹ｳｴ・罹･ｼ ・壱｡懋ｳ・ｨ﨑們┷・・")
+
+.\force_sync.py:6: ['嵓・｡懍晨敢', '・ｽ・・, '・緋ｰ']
+  # 嵓・｡懍晨敢 ・ｽ・・・緋ｰ
+
+.\force_sync.py:15: ['・・小孖ｸ', '・尖洳']
+  print(f"笶・・・小孖ｸ ・尖洳: {e}")
+
+.\force_sync.py:20: ['・ｼ・奛・, '・､・懋ｰ・, '・ｸ・・, '・菩・, '・們ｧ・, '・・, '・・･', '・懍梠']
+  print("・ｼ・奛・・､・懋ｰ・・ｸ・・・菩・・們ｧ・・・DB ・・･ ・懍梠!")
+
+.\force_sync.py:23: ['・川・', '嶹懍┳嶹罷頗', '・ｼ・奛・, '・・, '・・ｸ・､・ｰ']
+  # 1. DB・川・ 嶹懍┳嶹罷頗 ・ｼ・奛・・・・・ｸ・､・ｰ
+
+.\force_sync.py:28: ['・・, '・ｱ・晤頗', '・ｼ・奛・, '・作擽', '・・慣・壱共', '・・ｦ壱笈・､', '・､・菩乱・・, '・ｼ・', '・ｱ・晨紛・ｼ・ｸ・・]
+  print("笶・DB・・・ｱ・晤頗 ・ｼ・奛・・作擽 ・・慣・壱共. ・・ｦ壱笈・､ ・､・菩乱・・・ｼ・ ・ｱ・晨紛・ｼ・ｸ・・")
+
+.\force_sync.py:32: ['・・・, '・・, '・懋ｲｬ']
+  print(f"笨・・・・・・・懋ｲｬ: {shop['shop_name']}")
+
+.\force_sync.py:34: ['・ｼ・奛・, '嶸ｸ・・]
+  # 2. ・ｼ・奛・API 嶸ｸ・・
+
+.\force_sync.py:38: ['・ｼ・奛・, '・罹ｲ・｡罹ｶ奓ｰ', '・ｴ・・, '・ｸ・俯･ｼ', '・們ｧ啄毎・ｵ・壱共']
+  print(f"藤 ・ｼ・奛・・罹ｲ・｡罹ｶ奓ｰ {len(inquiries)}・ｴ・・・ｸ・俯･ｼ ・們ｧ啄毎・ｵ・壱共.")
+
+.\force_sync.py:43: ['・瀧ｳｵ', '・ｴ增ｬ']
+  # ・瀧ｳｵ ・ｴ增ｬ
+
+.\force_sync.py:46: ['・ｴ・ｸ', '・們ｧ瀧頗', '・ｸ・們桿・壱共', '・ｴ・壱怐・壱共']
+  print(f"竢ｩ ・ｴ・ｸ ・們ｧ瀧頗 ・ｸ・們桿・壱共 (ID: {raw_id}). ・ｴ・壱怐・壱共.")
+
+.\force_sync.py:49: ['・・･']
+  # DB ・・･
+
+.\force_sync.py:64: ['・・･', '・・｣・]
+  print(f"笨・DB ・・･ ・・｣・ {raw_id} (Internal ID: {inq_id})")
+
+.\force_sync.py:66: ['・溢譜', '・晧┳']
+  # AI ・溢譜 ・晧┳
+
+.\force_sync.py:67: ['・ｵ・', '・晧┳', '・・]
+  print("､・AI ・ｵ・ ・晧┳ ・・..")
+
+.\force_sync.py:70: ['・溢譜', '・・･']
+  # ・溢譜 ・・･
+
+.\force_sync.py:77: ['・溢譜', '・晧┳', '・・, '・・･', '・・｣・]
+  print("統 AI ・溢譜 ・晧┳ ・・・・･ ・・｣・")
+
+.\force_sync.py:80: ['・・･', '・・, '・､・・, '・懍・']
+  print(f"笶・・・･ ・・・､・・・懍・: {e}")
+
+.\force_sync.py:83: ['・ｨ・', '・卓羅・ｴ', '・・｣誤据・溢慣・壱共', '・・罹ｳｴ・罹･ｼ', '・壱｡懋ｳ・ｨ﨑們┷・・]
+  print("笨ｨ ・ｨ・ ・卓羅・ｴ ・・｣誤据・溢慣・壱共! ・・罹ｳｴ・罹･ｼ ・壱｡懋ｳ・ｨ﨑們┷・・")
+
+.\korean_results.txt:1: ['・ｰ・ｴ奓ｰ', '奝ｵ・・ｘ', '・､・ｴ・罹糖', '・ｱ', '・ｼ・・, '・・ｦ壱笈・､', '・｡・・, '・・溜']
+  dashboard.html:43:                 <!-- ・ｰ・ｴ奓ｰ 奝ｵ・・ｘ ・､・ｴ・罹糖 ・ｱ ・ｼ・・・・ｦ壱笈・､ ・｡・・・・溜 -->
+
+.\korean_results.txt:2: ['・・亨', '・・溜', '・､・・, '・ｰ・ｴ奓ｰ', '岺懍ｶ・, '・・溜']
+  dashboard.html:79:         <!-- ・・亨 UI ・・溜 -> ・､・・・ｰ・ｴ奓ｰ 岺懍ｶ・・・溜 -->
+
+.\korean_results.txt:3: ['﨑・┣', '・・溜']
+  dashboard.html:84:                 <!-- 﨑・┣ ・・溜 -->
+
+.\korean_results.txt:4: ['・・┷', '・ｸ・､寬呰┣', '甯ｨ・・, '・ｨ・', '・・・・・, '・懍梠']
+  dashboard.html:150:                 <!-- ・・┷ ・ｸ・､寬呰┣ 甯ｨ・・(・ｨ・ ・・・・・・懍梠) -->
+
+.\korean_results.txt:5: ['・簿ｳｴ', '・ｴ・罹豆']
+  dashboard.html:158:                         <!-- ・簿ｳｴ ・ｴ・罹豆 -->
+
+.\korean_results.txt:6: ['・川・', '・呷・, '・晧┳']
+  dashboard.html:172:                                 <!-- JS・川・ ・呷・・晧┳ -->
+
+.\korean_results.txt:7: ['・ｰ・ｸ', '・ｨ・', '・俯ｦｬ']
+  dashboard.html:264:                     /* ・ｰ・ｸ ・ｨ・ ・俯ｦｬ */
+
+.\korean_results.txt:8: ['妤ｴ甯・, '・ｨ奛護擽・・]
+  dashboard.html:267:                     /* 妤ｴ甯・・ｨ奛護擽・・*/
+
+.\korean_results.txt:9: ['妤ｴ甯・, '・ｴ・ｩ', '・､夋・ｼ']
+  dashboard.html:272:                     /* 妤ｴ甯・・ｴ・ｩ ・､夋・ｼ */
+
+.\korean_results.txt:10: ['・溢垈・､', '・・┓', '・ｩ・']
+  dashboard.html:290:                         pointer-events: none; /* ・溢垈・､ ・・┓ ・ｩ・ */
+
+.\korean_results.txt:11: ['嶹肥ざ岺・]
+  dashboard.html:292:                     /* 嶹肥ざ岺・*/
+
+.\korean_results.txt:12: ['嶸ｸ・・, '・・, '・ｸ・・]
+  dashboard.html:303:                     /* 嶸ｸ・・・・・ｸ・・*/
+
+.\korean_results.txt:13: ['・､・懋ｰ・, '・簿ｳｴ', '寬們ｹｭ', '・ｼ・奛・, '・・・, '嶸ｸ・・, '・ｰ・ｼ']
+  dashboard.html:407:         // ・､・懋ｰ・・簿ｳｴ 寬們ｹｭ (・ｼ・奛・API ・・・嶸ｸ・・・ｰ・ｼ)
+
+.\korean_results.txt:14: ['・ｼ・ｸ・逸从', '・・搆']
+  dashboard.html:408:         if (data.order_number && data.order_number !== '・ｼ・ｸ・逸从 ・・搆') {
+
+.\korean_results.txt:15: ['・・┷', '・ｸ・､寬呰┣', '・ｫ・ｰ']
+  dashboard.html:527:     // 2. ・・┷ ・ｸ・､寬呰┣ ・ｫ・ｰ
+
+.\korean_results.txt:16: ['・ｵ・', '・・・']
+  dashboard.html:534:     // 3. ・ｵ・ ・・・
+
+.\korean_results.txt:17: ['・懋ｷｸ・・寃']
+  dashboard.html:567:     // 4. ・懋ｷｸ・・寃
+
+.\korean_results.txt:18: ['・寀ｸ・ｬ寀ｰ', '・墲､', '・ｽ・ｰ']
+  dashboard.html:574:     // ・寀ｸ・ｬ寀ｰ: ・墲､ ・ｽ・ｰ
+
+.\korean_results.txt:19: ['・溢譜', '・晧┳', '嶸ｸ・・]
+  dashboard.html:581: // AI ・溢譜 ・晧┳ 嶸ｸ・・
+
+.\korean_results.txt:20: ['嶸・椪', '・ｸ・､寬呰┣・・, '岺懍亨・・, '・､・懋ｰ・, '・簿ｳｴ', '・們ｧ・]
+  dashboard.html:586:     // 嶸・椪 ・ｸ・､寬呰┣・・岺懍亨・・・､・懋ｰ・・簿ｳｴ ・們ｧ・
+
+.\korean_results.txt:21: ['甯護攵', '・肥ｶ・, '・・｣・, '・壱ざ', '岺懍ｶ・]
+  dashboard.html:703:         // 甯護攵 ・肥ｶ・・・｣・・壱ざ 岺懍ｶ・
+
+.\korean_results.txt:22: ['嶹・, '・・罹ｳｴ・・]
+  inquiries.html:13:             <a href="/dashboard" class="nav-link">嶹・(・・罹ｳｴ・・</a>
+
+.\korean_results.txt:23: ['・ｸ・・, '・・ｬ']
+  inquiries.html:14:             <a href="/inquiries" class="nav-link active">・ｸ・・・・ｬ</a>
+
+.\korean_results.txt:24: ['﨑呷慣', '・・・]
+  inquiries.html:15:             <a href="/training" class="nav-link">AI 﨑呷慣 ・・・/a>
+
+.\korean_results.txt:25: ['・､・・]
+  inquiries.html:16:             <a href="/settings" class="nav-link">・､・・/a>
+
+.\korean_results.txt:26: ['・懋ｷｸ・・寃']
+  inquiries.html:19:                 <a href="#" class="nav-link" id="logout-btn" style="color: var(--danger);">・懋ｷｸ・・寃</a>
+
+.\korean_results.txt:27: ['・・・, '・ｸ・・, '奝ｵ﨑ｩ', '・・ｬ']
+  inquiries.html:27:                 <h1 style="margin: 0; font-weight: 600;">・・・・ｸ・・奝ｵ﨑ｩ ・・ｬ</h1>
+
+.\korean_results.txt:28: ['・・・, '﨑・┣・', '・・・・・, '奝ｵ﨑ｴ', '巐ｨ・ｨ・・愍・・, '・・啄葺・ｸ・・]
+  inquiries.html:28:                 <p style="color: var(--text-muted); margin-top: 0.5rem;">・・・﨑・┣・ AI ・・・・・奝ｵ﨑ｴ 巐ｨ・ｨ・・愍・・・・啄葺・ｸ・・
+
+.\korean_results.txt:29: ['﨑・┣', '・ｹ・・]
+  inquiries.html:32:         <!-- 﨑・┣ ・ｹ・・-->
+
+.\korean_results.txt:30: ['・・・']
+  inquiries.html:36:                     <label class="form-label" style="font-size: 0.75rem;">・・・</label>
+
+.\korean_results.txt:31: ['・・ｲｴ', '・・・']
+  inquiries.html:38:                         <option value="">・・ｲｴ ・・・</option>
+
+.\korean_results.txt:32: ['・・ｰ・・]
+  inquiries.html:39:                         <option value="pending" {% if selected_status == 'pending' %}selected{% endif
+
+.\korean_results.txt:33: ['・俯ｦｬ・・]
+  inquiries.html:40:                         <option value="in_progress" {% if selected_status == 'in_progress' %}selected
+
+.\korean_results.txt:34: ['・ｵ・・・｣・]
+  inquiries.html:41:                         <option value="replied" {% if selected_status == 'replied' %}selected{% endif
+
+.\korean_results.txt:35: ['・川侃・ｬ・溢擽・・]
+  inquiries.html:42:                         <option value="escalated" {% if selected_status == 'escalated' %}selected{% e
+
+.\korean_results.txt:36: ['・川・]
+  inquiries.html:46:                     <label class="form-label" style="font-size: 0.75rem;">・川・/label>
+
+.\korean_results.txt:37: ['・・ｲｴ', '・川・]
+  inquiries.html:48:                         <option value="">・・ｲｴ ・川・/option>
+
+.\korean_results.txt:38: ['・壱ｧ・, '嶹罷お']
+  inquiries.html:49:                         <option value="angry">・壱ｧ・嶹罷お</option>
+
+.\korean_results.txt:39: ['・壱ｬｸ', '嶹菩攤']
+  inquiries.html:50:                         <option value="curious">・壱ｬｸ/嶹菩攤</option>
+
+.\korean_results.txt:40: ['・川ぎ']
+  inquiries.html:51:                         <option value="grateful">・川ぎ</option>
+
+.\korean_results.txt:41: ['・ｴ奝ｵ']
+  inquiries.html:52:                         <option value="neutral">・ｴ奝ｵ</option>
+
+.\korean_results.txt:42: ['・・・]
+  inquiries.html:56:                     <label class="form-label" style="font-size: 0.75rem;">・・・/label>
+
+.\korean_results.txt:43: ['・・ｲｴ', '・・・]
+  inquiries.html:58:                         <option value="">・・ｲｴ ・・・/option>
+
+.\korean_results.txt:44: ['・・・]
+  inquiries.html:65:                     <label class="form-label" style="font-size: 0.75rem;">・・・/label>
+
+.\korean_results.txt:45: ['・・・, '・ｼ・ｸ・逸从', '・ｴ・ｩ', '・・・]
+  inquiries.html:66:                     <input type="text" id="search-query" class="form-input" placeholder="・・扞D, ・ｼ・ｸ・逸从, 
+
+.\korean_results.txt:46: ['・・圸']
+  inquiries.html:69:                     <button class="btn-primary" onclick="applyFilters()">・・圸</button>
+
+.\korean_results.txt:47: ['・ｸ・・, '・ｩ・・]
+  inquiries.html:74:         <!-- ・ｸ・・・ｩ・・-->
+
+.\korean_results.txt:48: ['・・・']
+  inquiries.html:80:                             <th>・・・</th>
+
+.\korean_results.txt:49: ['・卓囈・・]
+  inquiries.html:81:                             <th>・卓囈・・/th>
+
+.\korean_results.txt:50: ['・川・]
+  inquiries.html:82:                             <th>・川・/th>
+
+.\korean_results.txt:51: ['・・・, '・ｼ・ｸ・逸从']
+  inquiries.html:83:                             <th>・・・/ ・ｼ・ｸ・逸从</th>
+
+.\korean_results.txt:52: ['・ｴ・ｩ', '・肥平']
+  inquiries.html:84:                             <th>・ｴ・ｩ ・肥平</th>
+
+.\korean_results.txt:53: ['・卓・・ｼ・・]
+  inquiries.html:85:                             <th>・卓・・ｼ・・/th>
+
+.\korean_results.txt:54: ['・ｼ・ｸ・逸从', '・・搆']
+  inquiries.html:103:                                     <span style="font-size: 0.75rem; color: var(--primary-color);">{
+
+.\korean_results.txt:55: ['寬們擽・・､・ｴ・・, '・晤楫', '﨑・囈・・, '・緋ｰ']
+  inquiries.html:118:             <!-- 寬們擽・・､・ｴ・・・晤楫 (﨑・囈・・・緋ｰ) -->
+
+.\korean_results.txt:56: ['・・┷', '・ｸ・､寬呰┣', '甯ｨ・・]
+  inquiries.html:123: <!-- ・・┷ ・ｸ・､寬呰┣ 甯ｨ・・-->
+
+.\korean_results.txt:57: ['・ｸ・・, '・・┷']
+  inquiries.html:126:         <h2 style="margin: 0; font-size: 1.25rem;">・ｸ・・・・┷</h2>
+
+.\korean_results.txt:58: ['・罹畠', '・・]
+  inquiries.html:130:     <div id="inspector-loader" class="hidden" style="text-align: center; padding: 2rem;">・罹畠 ・・..</di
+
+.\korean_results.txt:59: ['・・, '・呷・, '・誤鵠・・]
+  inquiries.html:133:         <!-- JS・・・呷・・誤鵠・・-->
+
+.\korean_results.txt:60: ['・ｰ・ｴ奓ｰ・ｼ', '・壱洳・､・', '・ｻ嵂溢慣・壱共']
+  inquiries.html:195:             content.innerHTML = '<p style="color:var(--danger)">・ｰ・ｴ奓ｰ・ｼ ・壱洳・､・ ・ｻ嵂溢慣・壱共.</p>';
+
+.\korean_results.txt:61: ['・ｸ・・･・]
+  inquiries.html:205:                     <span class="badge" style="background:rgba(255,255,255,0.1)">${inq.category || '
+
+.\korean_results.txt:62: ['・罹ｪｩ', '・・搆']
+  inquiries.html:207:                 <h3 style="margin-bottom: 0.5rem;">${inq.title || '・罹ｪｩ ・・搆'}</h3>
+
+.\korean_results.txt:63: ['・ｸ・・, '・ｴ・ｩ']
+  inquiries.html:212:                 <label style="font-size: 0.75rem; color: var(--primary-color); font-weight: bold;">・ｸ
+
+.\korean_results.txt:64: ['・ｴ・', '・罷ｪｨ']
+  inquiries.html:217:                 <label style="font-weight: bold; margin-bottom: 0.5rem; display: block;">・ｴ・ ・罷ｪｨ</labe
+
+.\korean_results.txt:65: ['・罷ｪｨ', '・緋ｰ']
+  inquiries.html:227:                     <input type="text" id="new-note" class="form-input" style="flex: 1;" placeholder
+
+.\korean_results.txt:66: ['・緋ｰ']
+  inquiries.html:228:                     <button class="btn-primary" onclick="addNote()" style="padding: 0.5rem 1rem;">・緋ｰ
+
+.\korean_results.txt:67: ['・ｵ・', '・卓┳', '・溢譜']
+  inquiries.html:233:                 <label style="font-weight: bold; margin-bottom: 0.5rem; display: block;">・ｵ・ ・卓┳ (AI ・・
+
+.\korean_results.txt:68: ['・溢譜', '・晧┳']
+  inquiries.html:236:                     <button class="btn-primary" style="background: var(--primary-hover)" onclick="ge
+
+.\korean_results.txt:69: ['・ｵ・', '・懍・']
+  inquiries.html:237:                     <button class="btn-primary" onclick="sendReply()">・ｵ・ ・懍・</button>
+
+.\korean_results.txt:70: ['・罷ｪｨ', '・緋ｰ', '・､甯ｨ']
+  inquiries.html:258:         } catch (err) { alert('・罷ｪｨ ・緋ｰ ・､甯ｨ'); }
+
+.\korean_results.txt:71: ['・ｱ', '・緋ｰ', '・ｬ嶸・, '﨑・囈']
+  inquiries.html:261:     // sendReply, generateDraft ・ｱ ・緋ｰ ・ｬ嶸・﨑・囈
+
+.\korean_results.txt:72: ['・緋ｰ', '・懍譜', '・ｰ・･', '・ｹ・・]
+  profile.html:119:         <!-- ・緋ｰ ・懍譜 ・ｰ・･ ・ｹ・・(Placeholder) -->
+
+.\korean_results.txt:73: ['・一ｸｰ', '・ｰ・ｴ奓ｰ', '・罹糖']
+  profile.html:150: // ・一ｸｰ ・ｰ・ｴ奓ｰ ・罹糖
+
+.\korean_results.txt:74: ['・・ｴ・罹攵・ｸ', '・ｸ・川・', '・ｴ・ｴ奓ｰ']
+  profile.html:174: // ・・ｴ・罹攵・ｸ ・ｸ・川・ ・ｴ・ｴ奓ｰ
+
+.\korean_results.txt:75: ['甯護攵・川・', '・ｽ・ｴ・､・ｰ']
+  profile.html:179: // 甯護攵・川・ ・ｽ・ｴ・､・ｰ
+
+.\korean_results.txt:76: ['・・ｴ・罹攵・ｸ', '・・･']
+  profile.html:197: // ・・ｴ・罹攵・ｸ ・・･
+
+.\korean_results.txt:77: ['巐護ぎ・・, '・・･']
+  profile.html:234: // 巐護ぎ・・・・･
+
+.\korean_results.txt:78: ['・・ｰ・逸从', '・・･']
+  profile.html:269: // ・・ｰ・逸从 ・・･
+
+.\korean_results.txt:79: ['・卓囈', '巐護寳・・・揆', '嶸ｸ・懦葺・ｰ', '・・, '巐護ぎ', '・ｴ・・揆', '・ｼ・・, '・｣・ｵ・壱共']
+  signup.html:55:         // [・卓囈] 巐護寳・・・揆 嶸ｸ・懦葺・ｰ raw_user_meta_data・・巐護ぎ ・ｴ・・揆 ・ｼ・・・｣・ｵ・壱共.
+
+.\korean_results.txt:80: ['・ｴ・・揆', '・ｴ・・・, '孖ｸ・ｬ・ｰ', '・', '・ｸ・晨葺・ｬ', '・ｰ・ｴ奓ｰ・・ｴ・､・ｼ', '・・ｴ・鷺笈・､']
+  signup.html:56:         // ・ｴ・・揆 Supabase ・ｴ・・・孖ｸ・ｬ・ｰ(Trigger)・ ・ｸ・晨葺・ｬ ・ｰ・ｴ奓ｰ・・ｴ・､・ｼ ・・ｴ・鷺笈・､.
+
+.\korean_results.txt:81: ['・・罹ｳｴ・・, '・ｵ・們乱', '・樌ｶｰ', '・・・, '嶹菩攤', '・肥攵・ｴ', '嶹懍┳嶹罷頗', '・ｽ・ｰ・', '・ｸ・・ｧ', '・喜捩', '・ｽ・ｰ', '・・・]
+  signup.html:69:         // Supabase ・・罹ｳｴ・・・ｵ・們乱 ・樌ｶｰ ・・・嶹菩攤 ・肥攵・ｴ 嶹懍┳嶹罷頗 ・ｽ・ｰ・ ・ｸ・・ｧ ・喜捩 ・ｽ・ｰ ・・・
+
+.\korean_results.txt:82: ['・ｴ・肥攵', '・ｸ・晧擽', '﨑・囈﨑俾ｱｰ・・, '・ｰ夋', '・ｬ・', '・・, '・ｬ・､・ｴ・餓・']
+  signup.html:74:             // ・ｴ・肥攵 ・ｸ・晧擽 﨑・囈﨑俾ｱｰ・・・ｰ夋 ・ｬ・ ・・・ｬ・､・ｴ・餓・
+
+.\korean_results.txt:83: ['嶹・, '・・罹ｳｴ・・]
+  training.html:13:             <a href="/dashboard" class="nav-link">嶹・(・・罹ｳｴ・・</a>
+
+.\korean_results.txt:84: ['・ｸ・・, '・・ｬ']
+  training.html:14:             <a href="/inquiries" class="nav-link">・ｸ・・・・ｬ</a>
+
+.\korean_results.txt:85: ['﨑呷慣', '・・・]
+  training.html:15:             <a href="/training" class="nav-link active">AI 﨑呷慣 ・・・/a>
+
+.\korean_results.txt:86: ['・､・・]
+  training.html:16:             <a href="/settings" class="nav-link">・､・・/a>
+
+.\korean_results.txt:87: ['・懋ｷｸ・・寃']
+  training.html:19:                 <a href="#" class="nav-link" id="logout-btn" style="color: var(--danger);">・懋ｷｸ・・寃</a>
+
+.\korean_results.txt:88: ['﨑呷慣', '・ｰ・ｴ奓ｰ', '・・・]
+  training.html:26:             <h1 style="margin: 0; font-weight: 600;">AI 﨑呷慣 ・ｰ・ｴ奓ｰ ・・・/h1>
+
+.\korean_results.txt:89: ['・・, '・ｵ・・・, '・・晨葺・ｬ', '・ｨ・ｸ・・, '・倣剳・・･ｼ', '・廷擽・ｸ・・]
+  training.html:27:             <p style="color: var(--text-muted); margin-top: 0.5rem;">Human-in-the-Loop: AI・・・ｵ・・・・・晨葺・ｬ ・ｨ
+
+.\korean_results.txt:90: ['・ｬ・ｰ', '・・ｰ', '・卓攤', '・ｰ・ｴ奓ｰ・', '・・慣・壱共']
+  training.html:32:                 <p style="text-align: center; color: var(--text-muted); padding: 3rem;">・ｬ・ｰ ・・ｰ ・卓攤 ・ｰ・ｴ奓ｰ・ 
+
+.\korean_results.txt:91: ['・ｸ・・]
+  training.html:50:                     <strong>・ｸ・・ID: ${rev.inquiry_id.slice(0,8)}</strong>
+
+.\korean_results.txt:92: ['・ｸ・・･・]
+  training.html:51:                     <span class="badge">${rev.original_category || '・ｸ・・･・}</span>
+
+.\korean_results.txt:93: ['・・・, '・壱ｬｸ']
+  training.html:55:                         <label class="form-label">・・・・壱ｬｸ</label>
+
+.\korean_results.txt:94: ['・ｵ・', '・・・, '・們・, '﨑・囈']
+  training.html:59:                         <label class="form-label">AI ・ｵ・ (・・・・們・﨑・囈)</label>
+
+.\korean_results.txt:95: ['・ｹ・ｸ']
+  training.html:64:                     <button class="btn-primary" style="width: auto; background: var(--success);" oncli
+
+.\korean_results.txt:96: ['・們・, '弡・, '・ｹ・ｸ']
+  training.html:65:                     <button class="btn-primary" style="width: auto; background: var(--primary-color);"
+
+.\korean_results.txt:97: ['・・・, '・・｣・]
+  training.html:83:             alert('・・・・・｣・');
+
+.\last_check.py:6: ['嵓・｡懍晨敢', '・ｽ・・, '・､・・]
+  # 嵓・｡懍晨敢 ・ｽ・・・､・・
+
+.\last_check.py:14: ['嵓・｡懍晨敢', '・ｽ・・, '・､・・, '・､・・, '尞ｴ・・, '・溢乱・・, '・､嵂駕紛・ｼ・ｸ・・]
+  print("笶・嵓・｡懍晨敢 ・ｽ・・・､・・・､・・ 'cs-auto-saas' 尞ｴ・・・溢乱・・・､嵂駕紛・ｼ・ｸ・・")
+
+.\last_check.py:18: ['・ｬ・ｩ・尖鋸・ｴ', '・・･﨑們侠', '墲､']
+  # --- [・ｬ・ｩ・尖鋸・ｴ ・・･﨑們侠 API 墲､] ---
+
+.\last_check.py:24: ['・ｰ・ｴ奓ｰ・・ｴ・､', '・菩・, '・醐血', '・・, '・・・, '・ｼ・・, '・ｨ・・]
+  print("藤 [Last Check] ・ｰ・ｴ奓ｰ・・ｴ・､ ・菩・・醐血 ・・・・・・ｼ・・・ｨ・・)
+
+.\last_check.py:28: ['・ｼ・奛・, '・罹ｲ・乱・・, '・ｸ・・, '・・ｸ・､・ｰ']
+  # 1. ・ｼ・奛・・罹ｲ・乱・・・ｸ・・・・ｸ・､・ｰ
+
+.\last_check.py:32: ['奝ｵ・', '・ｱ・ｵ', '・ｼ・奛・, '・罹ｲ・乱・・, '・ｴ', '・們ｧ瀧勢']
+  print(f"\n投 [奝ｵ・ ・ｱ・ｵ] ・ｼ・奛・・罹ｲ・乱・・{len(inquiries)}・ｴ ・們ｧ瀧勢")
+
+.\last_check.py:35: ['・ｰ・ｰ']
+  # 2. Supabase DB ・ｰ・ｰ
+
+.\last_check.py:38: ['﨑ｵ・ｬ', '・ｼ', '・・・梭', '・ｴ・懦葺・', '・・･・・, '・罹巡﨑俾ｸｰ', '・・紛']
+  # [﨑ｵ・ｬ] RLS・ｼ ・・・梭 ・ｴ・懦葺・ ・・･・・・罹巡﨑俾ｸｰ ・・紛,
+
+.\last_check.py:39: ['嶸・椪', '・ｱ・晤頗', '・・, '・簿ｳｴ', '・', '・壱共・ｴ', '・ｸ', '・簿ｳｴ・ｼ', '・ｰ・們愍・・, '・・・, '・・･﨑ｩ・壱共']
+  # 嶸・椪 ・ｱ・晤頗 ・・・簿ｳｴ(connected_shops)・ ・壱共・ｴ ・ｸ ・簿ｳｴ・ｼ ・ｰ・們愍・・・・・・・･﨑ｩ・壱共.
+
+.\last_check.py:40: ['・・･', '・ｴ・・, '・菩ｱ・, '・ｰ巐・, '・ｵ・ｩ', '・懍梠']
+  print("\n沈 [DB ・・･] ・ｴ・・・菩ｱ・・ｰ巐・・ｵ・ｩ ・懍梠...")
+
+.\last_check.py:42: ['奛護擽・肥乱', '・ｰ・ｴ奓ｰ・', '・壱株・', '嶹菩攤', '・ｴ奝ｵ', '・ｱ・晨葺・ｨ・､・ｴ', '・ｴ・', '・溢揆', '・・桷']
+  # connected_shops 奛護擽・肥乱 ・ｰ・ｴ奓ｰ・ ・壱株・ 嶹菩攤 (・ｴ奝ｵ ・ｱ・晨葺・ｨ・､・ｴ 1・ｴ・ ・溢揆 ・・桷)
+
+.\last_check.py:43: ['・護平', '・ｰ巐語ｰ', '・壱据・ｴ', '・懍川乱', '・ｼ', '・｣・', '・ｻ﨑俯ｯ・・, '・尖洳・', '・ｩ・壱共']
+  # ・護平 ・ｰ巐語ｰ ・壱据・ｴ, insert ・懍川乱 company_id・ｼ ・｣・ ・ｻ﨑俯ｯ・・・尖洳・ ・ｩ・壱共.
+
+.\last_check.py:44: ['・ｴ・ｼ', '・ｩ・﨑俾ｸｰ', '・・紛', '・・, '・簿ｳｴ・ｼ', '・ｴ・・, '・ｼ・・, '・ｾ・ｰ・・, '・ｨ・', '嵂餓揆', '・ｰ巐醐鮒・壱共']
+  # ・ｴ・ｼ ・ｩ・﨑俾ｸｰ ・・紛 ・・・簿ｳｴ・ｼ '・ｴ・・・ｼ・・・ｾ・ｰ・・・ｨ・ 嵂餓揆 ・ｰ巐醐鮒・壱共.
+
+.\last_check.py:48: ['・醐復', '・･・ｽ', '・・, '・簿ｳｴ・ｼ', '・ｽ・ｴ・ｬ', '・・, '・・慣・壱共']
+  print("笶・DB ・醐復 ・･・ｽ: ・・・簿ｳｴ・ｼ ・ｽ・ｴ・ｬ ・・・・慣・壱共.")
+
+.\last_check.py:49: ['﨑ｴ・ｰ・・, '・・・, '・・ｦ壱笈・､', '・､・・, '寬們擽・', '﨑俯卿', '・ｬ・､孖ｸ・・, '・ｼ・奛川擽', '・・壱株・', '・､・・, '嶹菩攤﨑ｴ・ｼ・ｸ・・]
+  print("庁 﨑ｴ・ｰ・・ ・・・'・・ｦ壱笈・､ ・､・・ 寬們擽・ 﨑俯卿 ・ｬ・､孖ｸ・・・ｼ・奛川擽 ・・壱株・ ・､・・嶹菩攤﨑ｴ・ｼ・ｸ・・")
+
+.\last_check.py:52: ['・ｫ', '・溢ｧｸ', '・懋ｲｬ・・, '・・, '・簿ｳｴ・ｼ', '・ｬ・ｩ﨑們流', '・ｸ・俯･ｼ', '・・･﨑ｩ・壱共']
+  # ・ｫ ・溢ｧｸ ・懋ｲｬ・・・・・簿ｳｴ・ｼ ・ｬ・ｩ﨑們流 ・ｸ・俯･ｼ ・・･﨑ｩ・壱共.
+
+.\last_check.py:57: ['・ｰ・・, '・・・, '嶹菩攤']
+  print(f"笨・・ｰ・・・・・嶹菩攤: {target['shop_name']} (Company: {comp_id[:8]}...)")
+
+.\last_check.py:73: ['・菩・, '・・･', '・罹巡']
+  # ・菩・・・･ ・罹巡
+
+.\last_check.py:75: ['・・･', '・ｱ・ｵ', '・ｸ・・]
+  print(f"   笨・[・・･ ・ｱ・ｵ] ・ｸ・・ID: {raw_id}")
+
+.\last_check.py:78: ['・ｴ・ｸ', '・・･・・, '・ｸ・・]
+  print(f"   竢ｩ ・ｴ・ｸ ・・･・・・ｸ・・ {raw_id}")
+
+.\last_check.py:80: ['・・･', '・､甯ｨ']
+  print(f"   笶・・・･ ・､甯ｨ: {inner_e}")
+
+.\last_check.py:82: ['・ｨ・', '・卓羅・ｴ', '・・｣誤据・溢慣・壱共', '・・罹ｳｴ・罹･ｼ', '・壱｡懋ｳ・ｨ﨑們┷・・]
+  print("\n笨ｨ ・ｨ・ ・卓羅・ｴ ・・｣誤据・溢慣・壱共! ・・罹ｳｴ・罹･ｼ ・壱｡懋ｳ・ｨ﨑們┷・・")
+
+.\last_check.py:84: ['・ｼ・奛・, '・罹ｲ・, '奝ｵ・・', '・ｱ・ｵ嵂溢愍・・, '・・ｸ・ｬ', '・・, '・ｸ・俾ｰ', '・・慣・壱共']
+  print("邃ｹ・・・ｼ・奛・・罹ｲ・奝ｵ・・ ・ｱ・ｵ嵂溢愍・・ ・・ｸ・ｬ ・・・ｸ・俾ｰ ・・慣・壱共.")
+
+.\last_check.py:87: ['・懍｢・, '・､・・]
+  print(f"\n笶・[・懍｢・・､・肋 {str(e)}")
+
+.\render.yaml:2: ['・ｱ・ｸ・ｼ・ｴ・・, '・・, '尞ｬ﨑ｨ']
+  # FastAPI Web Service (・ｱ・ｸ・ｼ・ｴ・・・・尞ｬ﨑ｨ)
+
+.\tmp_db_cleaner.py:5: ['・ｰ・ｴ奓ｰ', '・菩・, '・懍梠']
+  print("噫 [DB Cleaner] ・ｰ・ｴ奓ｰ ・菩・・懍梠...")
+
+.\tmp_db_cleaner.py:9: ['・罹ｹ・侃', '・､', '・醐復', '﨑・囈・・, '・ｬ・ｩ']
+  "Authorization": f"Bearer {settings.SUPABASE_KEY}", # ・罹ｹ・侃 ・､ ・醐復 﨑・囈・・KEY ・ｬ・ｩ
+
+.\tmp_db_cleaner.py:13: ['・・, '・ｴ・・, '・菩・, '・・, '・ｼ・奛・, '・・]
+  # 1. ・・・ｴ・・・菩・(・・ '・ｼ・奛・・・ -> '讌ｽ螟ｩ繧ｷ繝ｧ繝・・')
+
+.\tmp_db_cleaner.py:16: ['・ｨ・', '・・, '・・ｸ・､・ｰ']
+  # ・ｨ・ ・・・・ｸ・､・ｰ
+
+.\tmp_db_cleaner.py:22: ['・ｼ・奛・, '・・・, '・ｸ・・]
+  if "・ｼ・奛・ in old_name or "・・・・ｸ・・ in old_name:
+
+.\tmp_db_cleaner.py:23: ['・ｼ・奛・, '・・・, '・ｸ・・]
+  new_name = old_name.replace("・ｼ・奛・, "讌ｽ螟ｩ").replace("・・・・ｸ・・, "蝠上＞蜷医ｏ縺・)
+
+.\tmp_db_cleaner.py:26: ['・・, '・ｴ・・, '・・ｽ']
+  print(f"笨・・・・ｴ・・・・ｽ: {old_name} -> {new_name}")
+
+.\tmp_db_cleaner.py:28: ['・ｸ・・, '・ｴ・ｭ', '・菩・, '・罹ｪｩ', '・ｴ・ｩ・・, '・ｼ・奛・, '・・・, '・ｸ・・, '・', '・壱株', '・ｽ・ｰ']
+  # 2. ・ｸ・・・ｴ・ｭ ・菩・(・罹ｪｩ/・ｴ・ｩ・・'・ｼ・奛・・・・・ｸ・・・ ・壱株 ・ｽ・ｰ)
+
+.\tmp_db_cleaner.py:31: ['・ｨ・', '・ｸ・・, '・・ｸ・､・ｰ']
+  # ・ｨ・ ・ｸ・・・・ｸ・､・ｰ
+
+.\tmp_db_cleaner.py:42: ['・ｼ・奛・, '・・・, '・ｸ・・]
+  if "・ｼ・奛・ in old_title or "・・・・ｸ・・ in old_title:
+
+.\tmp_db_cleaner.py:43: ['・ｼ・奛・, '・・・, '・ｸ・・]
+  update_payload["title"] = old_title.replace("・ｼ・奛・, "讌ｽ螟ｩ").replace("・・・・ｸ・・, "蝠上＞蜷医ｏ縺・)
+
+.\tmp_db_cleaner.py:46: ['・ｼ・奛・, '・・・, '・ｸ・・]
+  if "・ｼ・奛・ in old_content or "・・・・ｸ・・ in old_content:
+
+.\tmp_db_cleaner.py:47: ['・ｼ・奛・, '・・・, '・ｸ・・]
+  update_payload["content"] = old_content.replace("・ｼ・奛・, "讌ｽ螟ｩ").replace("・・・・ｸ・・, "蝠上＞蜷医ｏ縺・)
+
+.\tmp_db_cleaner.py:53: ['・ｸ・・, '・ｰ・ｴ奓ｰ', '・菩・, '・・｣・]
+  print(f"笨・・ｸ・・・ｰ・ｴ奓ｰ ・菩・・・｣・(ID: {inq['id']})")
+
+.\tmp_db_cleaner.py:55: ['・ｨ・', '・菩・, '・卓羅・ｴ', '・・｣誤据・溢慣・壱共']
+  print("潤 [DB Cleaner] ・ｨ・ ・菩・・卓羅・ｴ ・・｣誤据・溢慣・壱共!")
+
+.\app\main.py:19: ['・ｰ・・, '・懍梠', '・・, '・罹溢擽', '弡・, '・尖徐', '・､嵂・]
+  # Reconciliation ・ｰ・・sync_bot ・懍梠 (5・・・罹溢擽 弡・・尖徐 ・､嵂・
+
+.\app\main.py:33: ['・ｼ・ｸ', '甯尖ｧ､・川圸', '・・晤ｬｸ・・, '・尖徐・俯ｦｬ']
+  description="・ｼ・ｸ EC 甯尖ｧ､・川圸 ・・晤ｬｸ・・・尖徐・俯ｦｬ SaaS API",
+
+.\app\main.py:38: ['・罹ｰ懍圸', '・､・・]
+  # ・罹ｰ懍圸 CORS ・､・・
+
+.\app\main.py:39: ['・ｬ・ｩ', '・・, '・護棗']
+  # allow_origins=["*"] ・ｬ・ｩ ・・allow_credentials=False ・護棗
+
+.\app\main.py:74: ['・・ｬ・川圸', '・俯徐', '・呟ｸｰ嶹・, '・罷糖尞ｬ・ｸ孖ｸ']
+  # ・・ｬ・川圸 ・俯徐 ・呟ｸｰ嶹・・罷糖尞ｬ・ｸ孖ｸ
+
+.\app\main.py:75: ['・ｬ・ｩ・・, '・誤攵・ｰ・・川・', '・卓・']
+  # ・ｬ・ｩ・・ ・誤攵・ｰ・・川・ http://127.0.0.1:8000/admin/sync ・卓・
+
+.\app\main.py:78: ['・ｩ・晝ｳｼ', '・ｼ', '・・ｰ﨑們流', '・呟ｸｰ嶹・, '・・・, '・緋ｰ', '・・｣誤頗', '・ｴ', '・ｭ・・]
+  """RMS 譛ｪ霑比ｿ｡ ・ｩ・晝ｳｼ DB・ｼ ・・ｰ﨑們流 ・呟ｸｰ嶹・(・・・・緋ｰ + ・・｣誤頗 ・ｴ ・ｭ・・"""
+
+.\app\main.py:84: ['・ｰ・ｴ', '・・, '・・', '嶸ｸ嶹們┳']
+  # ・ｰ・ｴ purge-and-resync・・・・ (嶸ｸ嶹們┳)
+
+.\app\main.py:87: ['・・ｲｴ', '・ｭ・・, '弡・, '・ｬ・們ｧ・, '・ｴ・餓圸']
+  """・・ｲｴ ・ｭ・・弡・・ｬ・們ｧ・(・ｴ・餓圸)"""
+
+.\app\main.py:95: ['・懍梠']
+  print("[Admin] purge-and-resync ・懍梠...", flush=True)
+
+.\app\main.py:102: ['・ｰ・ｴ', '・ｰ・ｴ奓ｰ', '・・ｲｴ', '・ｭ・・]
+  # 1. ・ｰ・ｴ ・ｰ・ｴ奓ｰ ・・ｲｴ ・ｭ・・
+
+.\app\main.py:107: ['・ｴ', '・ｭ・・]
+  result["steps"].append(f"{table}: {count}・ｴ ・ｭ・・)
+
+.\app\main.py:108: ['・ｭ・・, '・ｴ']
+  print(f"  [・ｭ・彎 {table}: {count}・ｴ", flush=True)
+
+.\app\main.py:112: ['・ｸ・・, '・ｬ・們ｧ・]
+  # 2. 譛ｪ霑比ｿ｡ ・ｸ・・・ｬ・們ｧ・
+
+.\app\main.py:118: ['・們ｧ・, '・・]
+  print(f"  [API] {shop['shop_name']} ・們ｧ・・・..", flush=True)
+
+.\app\main.py:121: ['・ｴ', '・們侠', '・・]
+  result["steps"].append(f"Rakuten API: {len(fetched)}・ｴ ・們侠 (譛ｪ霑比ｿ｡・・")
+
+.\app\main.py:122: ['・ｴ', '・們侠', '・・｣・]
+  print(f"  [API] {len(fetched)}・ｴ ・們侠 ・・｣・, flush=True)
+
+.\app\main.py:144: ['・・･']
+  print(f"    笨・#{ext_inq['rakuten_inquiry_id']} ・・･", flush=True)
+
+.\app\main.py:146: ['・ｸ・・]
+  result["errors"].append(f"・ｸ・・{ext_inq['rakuten_inquiry_id']}: {str(e)}")
+
+.\app\main.py:148: ['・・｣・, '・ｴ', '・們ｧ・, '・・｣・]
+  result["summary"] = f"・・｣・ 譛ｪ霑比ｿ｡ {new_count}・ｴ ・們ｧ・・・｣・
+
+.\app\main.py:150: ['・・｣・, '・ｴ', '・們ｧ・, '・・｣・]
+  print(f"  [・・｣珪 譛ｪ霑比ｿ｡ {new_count}・ｴ ・們ｧ・・・｣・, flush=True)
+
+.\app\api\dependencies.py:8: ['奝增ｰ', '・肥ｶ懍圸']
+  # 奝增ｰ ・肥ｶ懍圸 Security Scheme
+
+.\app\api\dependencies.py:12: ['・川・', '奝增ｰ・・, '・卓符・ｴ', '・・・, '弡・, '・倆劍']
+  """Authorization: Bearer <token> ・川・ 奝增ｰ・・・卓符・ｴ ・・・弡・payload ・倆劍"""
+
+.\app\api\dependencies.py:18: ['・ｬ・ｩ・川攪', '・ｼ', '・・, '・ｼ・・葺・ｬ']
+  ・ｬ・ｩ・川攪 JWT・ｼ Auth Header・・・ｼ・・葺・ｬ,
+
+.\app\api\dependencies.py:19: ['﨑ｴ・ｹ', '・ｬ・ｩ・川攪', '・醐復', '・', '・・圸・・, '增ｴ・ｼ・ｴ・ｸ孖ｸ・ｼ', '・晧┳', '・・, '・倆劍﨑ｩ・壱共']
+  﨑ｴ・ｹ ・ｬ・ｩ・川攪 RLS(・醐復)・ ・・圸・・Supabase 增ｴ・ｼ・ｴ・ｸ孖ｸ・ｼ ・晧┳ ・・・倆劍﨑ｩ・壱共.
+
+.\app\api\dependencies.py:30: ['・ｼ', '・ｰ巐醐葺・ｬ', '・ｬ・ｩ・専ｰ', '・削復', '・・, '・醐復', '・簿ｳｴ・ｼ', '・・, '・誤豆・ｴ', '・倆劍']
+  DB・ｼ ・ｰ巐醐葺・ｬ ・ｬ・ｩ・専ｰ ・削復 company_id ・・role(・醐復) ・簿ｳｴ・ｼ Context・・・誤豆・ｴ ・倆劍.
+
+.\app\api\dependencies.py:31: ['・ｴ', '・ｼ', '・ｼ・ｰ奓ｰ・・, '・ｸ・ｴ', '・懋ｷｸ・ｸ﨑・, '・・・・, '奝ｵ・ｼ・ｨ・', '・ｼ・', '・ｼ', '奝ｵ・ｼ﨑・, '・護・', '・簿ｳｴ・護ｧ', '巐鷺統', '・・･']
+  ・ｴ Dependency・ｼ ・ｼ・ｰ奓ｰ・・・ｸ・ｴ, ・懋ｷｸ・ｸ﨑・・・・・奝ｵ・ｼ・ｨ・ ・ｼ・ RLS・ｼ 奝ｵ・ｼ﨑・・護・ ・簿ｳｴ・護ｧ 巐鷺統 ・・･.
+
+.\app\api\dependencies.py:37: ['・ｼ・・頗', '增ｴ・ｼ・ｴ・ｸ孖ｸ・ｼ', '奝ｵ﨑ｴ', '奝ｵ・ｼ', '弡・, '・ｸ・ｸ・・, '・簿ｳｴ', '・溢攪']
+  # ・ｼ・・頗 增ｴ・ｼ・ｴ・ｸ孖ｸ・ｼ 奝ｵ﨑ｴ RLS 奝ｵ・ｼ 弡・・ｸ・ｸ・・company_users ・簿ｳｴ ・溢攪
+
+.\app\api\dependencies.py:43: ['﨑・]
+  detail="縺薙・繝ｦ繝ｼ繧ｶ繝ｼ縺ｯ縺ｩ縺ｮ莨∵･ｭ繝ｻ邨・ｹ斐↓繧ょｱ槭＠縺ｦ縺・↑縺・°縲∵ｨｩ﨑懊′縺ゅｊ縺ｾ縺帙ｓ縲・
+
+.\app\api\endpoints\auth.py:11: ['嶸・椪', '・懋ｷｸ・ｸ・・, '嵭､・・, '・護悛・・, '・ｬ・ｩ・川攪', '・護・', '巐護ぎ', '・簿ｳｴ・', '・ｱ・・, '・倆劍﨑ｩ・壱共']
+  嶸・椪 ・懋ｷｸ・ｸ・・JWT 嵭､・・・護悛・・ ・ｬ・ｩ・川攪 ・護・ 巐護ぎ ・簿ｳｴ・ Role ・ｱ・・・倆劍﨑ｩ・壱共.
+
+.\app\api\endpoints\auth.py:12: ['・ｰ・･', '嶹菩攤', '・ｩ・・, '・・, '嵂･弡・, '增ｴ・ｼ・ｴ・ｸ孖ｸ', '・懋ｷｸ・ｸ', '・・・ｩ', '・晧ｲｴ・・, '嶹懍圸', '・・･']
+  ・ｰ・･ 嶹菩攤 ・ｩ・・・・嵂･弡・增ｴ・ｼ・ｴ・ｸ孖ｸ UI ・懋ｷｸ・ｸ ・・・ｩ ・晧ｲｴ・・嶹懍圸 ・・･.
+
+.\app\api\endpoints\inquiries.py:25: ['・・ｬ・・, '・・罹ｳｴ・・, '奛護侃孖ｸ', '・ｼ', '奝ｵ﨑ｴ', '・俯徐・ｼ・・, '・・・, '・ｸ・俯･ｼ', '・們ｧ・, '﨑ｩ・壱共']
+  ・・ｬ・・・・罹ｳｴ・・奛護侃孖ｸ UI)・ｼ 奝ｵ﨑ｴ ・俯徐・ｼ・・・・・・ｸ・俯･ｼ ・們ｧ・Mock)﨑ｩ・壱共.
+
+.\app\api\endpoints\inquiries.py:26: ['・ｬ・ｩ・川攪', '奝增ｰ', '・・・・・, '奝ｵ﨑ｴ', '・ｴ・ｰ・ｴ', '﨑ｴ・ｹ', '巐護ぎ・・, '・', '・肥攤・ｩ・ｩ・壱共']
+  ・ｬ・ｩ・川攪 JWT 奝增ｰ ・・・・・奝ｵ﨑ｴ ・ｴ・ｰ・ｴ 﨑ｴ・ｹ 巐護ぎ・・company_id・ ・肥攤・ｩ・ｩ・壱共.
+
+.\app\api\endpoints\inquiries.py:30: ['嶸菩享', '・晧┳']
+  # Supabase Insert 嶸菩享 ・晧┳
+
+.\app\api\endpoints\inquiries.py:63: ['・､・ｴ・ｨ', '・ｸ・們乱', '・﨑ｴ', '・溢譜・・, '・晧┳﨑們流', '奛護擽・肥乱', '・・･﨑ｩ・壱共']
+  ・､・ｴ・ｨ ・ｸ・們乱 ・﨑ｴ AI ・溢譜・・・晧┳﨑們流 reply_drafts 奛護擽・肥乱 ・・･﨑ｩ・壱共.
+
+.\app\api\endpoints\inquiries.py:64: ['・､・懋ｰ・, '・ｬ・', '・・, '・ｼ・ｸ', '・・・', '・ｨ奛作侃孖ｸ', '・們・']
+  (・､・懋ｰ・・ｬ・ ・・・ｼ・ｸ ・・・ ・ｨ奛作侃孖ｸ ・們・)
+
+.\app\api\endpoints\inquiries.py:68: ['・ｸ・・, '・尖ｳｸ', '・ｴ・ｩ', '・ｰ巐・]
+  # 1. ・ｸ・・・尖ｳｸ ・ｴ・ｩ ・ｰ巐・
+
+.\app\api\endpoints\inquiries.py:71: ['・ｸ・俯･ｼ', '・ｾ・・, '・・, '・・慣・壱共']
+  raise HTTPException(status_code=404, detail="・ｸ・俯･ｼ ・ｾ・・・・・・慣・壱共.")
+
+.\app\api\endpoints\inquiries.py:74: ['・ｴ・ｸ', '・ｴ・ｬ﨑俯株', '・溢譜・ｴ', '・壱株・', '・ｴ增ｬ', '・壱共・ｴ', '・ｭ・懦葺・', '・壱｡・, '・晧┳', '・ｬ・晧┳', '嵭溢圸']
+  # 2. ・ｴ・ｸ ・ｴ・ｬ﨑俯株 ・溢譜・ｴ ・壱株・ ・ｴ增ｬ -> ・壱共・ｴ ・ｭ・懦葺・ ・壱｡・・晧┳ (・ｬ・晧┳ 嵭溢圸)
+
+.\app\api\endpoints\inquiries.py:77: ['・､・懋ｰ・, '・ｨ奛作侃孖ｸ', '・ｰ﨑ｩ']
+  # 3. ・､・懋ｰ・・ｨ奛作侃孖ｸ ・ｰ﨑ｩ
+
+.\app\api\endpoints\inquiries.py:82: ['巐護ぎ', '・・ｴ・罹攵・ｸ', '・罹糖']
+  # 3.5. 巐護ぎ CS ・・ｴ・罹攵・ｸ ・罹糖
+
+.\app\api\endpoints\inquiries.py:88: ['・・ｴ・罹攵・ｸ', '・罹糖', '・､甯ｨ', '・・, '・ｴ・・]
+  pass  # ・・ｴ・罹攵・ｸ ・罹糖 ・､甯ｨ ・・・ｴ・・
+
+.\app\api\endpoints\inquiries.py:90: ['・溢譜', '・晧┳', '・・, '・ｴ奛語ｳ・ｬ', '・・･・]
+  # 4. AI ・溢譜 ・晧┳ ・・・ｴ奛語ｳ・ｬ ・・･・
+
+.\app\api\endpoints\inquiries.py:95: ['・尖洳・', '・懍・嵂溢慣・壱共']
+  generated_text = ai_result.get("reply", "・尖洳・ ・懍・嵂溢慣・壱共.")
+
+.\app\api\endpoints\inquiries.py:96: ['・ｸ・・･・]
+  category = ai_result.get("category", "・ｸ・・･・)
+
+.\app\api\endpoints\inquiries.py:98: ['・・･俯頗', '・ｴ奛語ｳ・ｬ・ｼ', '・尖ｳｸ', '・・・, '・ｸ・・, '・ｰ・ｴ奓ｰ・・, '・・魂・ｴ孖ｸ']
+  # ・・･俯頗 ・ｴ奛語ｳ・ｬ・ｼ ・尖ｳｸ ・・・・ｸ・・・ｰ・ｴ奓ｰ・・・・魂・ｴ孖ｸ
+
+.\app\api\endpoints\inquiries.py:104: ['・ｴ奛語ｳ・ｬ', '・・魂・ｴ孖ｸ', '・ｴ・・, '・､墲､・・, '・ｸ・・圸', '・・･・ｱ']
+  print(f"・ｴ奛語ｳ・ｬ ・・魂・ｴ孖ｸ ・ｴ・・(DB ・､墲､・・・ｸ・・圸 ・・･・ｱ): {e}")
+
+.\app\api\endpoints\inquiries.py:106: ['奛護擽・肥乱', '・・･']
+  # 4. reply_drafts 奛護擽・肥乱 ・・･
+
+.\app\api\endpoints\inquiries.py:114: ['・溢譜', '・晧┳', '・・｣・]
+  return {"status": "success", "message": "・溢譜 ・晧┳ ・・｣・, "data": insert_res.data[0]}
+
+.\app\api\endpoints\inquiries.py:123: ['・ｸ・・, '・ｴ・ｩ・・, '・川・, '夋懋ｷｸ', '・ｴ奛語ｳ・ｬ・ｼ', '・・, '・ｬ・・・﨑們流', '・・魂・ｴ孖ｸ﨑ｩ・壱共']
+  ・ｸ・・・ｴ・ｩ・・・川・ 夋懋ｷｸ, ・ｴ奛語ｳ・ｬ・ｼ AI・・・ｬ・・・﨑們流 ・・魂・ｴ孖ｸ﨑ｩ・壱共.
+
+.\app\api\endpoints\inquiries.py:127: ['・ｸ・・, '・ｴ・ｩ', '・ｰ巐・]
+  # 1. ・ｸ・・・ｴ・ｩ ・ｰ巐・
+
+.\app\api\endpoints\inquiries.py:130: ['・ｸ・俯･ｼ', '・ｾ・・, '・・, '・・慣・壱共']
+  raise HTTPException(status_code=404, detail="・ｸ・俯･ｼ ・ｾ・・・・・・慣・壱共.")
+
+.\app\api\endpoints\inquiries.py:132: ['・・・', '・倆哩']
+  # 2. AI ・・・ ・倆哩
+
+.\app\api\endpoints\inquiries.py:135: ['・・魂・ｴ孖ｸ']
+  # 3. DB ・・魂・ｴ孖ｸ
+
+.\app\api\endpoints\inquiries.py:155: ['・ｸ・・, '・・┷', '・簿ｳｴ・', '・・ｨ', '・ｰ・ｴ奓ｰ', '・溢譜', '・罷ｪｨ', '・ｼ', '﨑懋ｺｼ・溢乱', '・・ｸ・ｵ・壱共']
+  ・ｸ・・・・┷ ・簿ｳｴ・ ・・ｨ ・ｰ・ｴ奓ｰ(・溢譜, ・罷ｪｨ)・ｼ 﨑懋ｺｼ・溢乱 ・・ｸ・ｵ・壱共.
+
+.\app\api\endpoints\inquiries.py:159: ['・ｸ・・, '・ｸ・ｴ', '・・, '・簿ｳｴ', '・溢譜', '・罷ｪｨ']
+  # ・ｸ・・・ｸ・ｴ + ・・・簿ｳｴ + ・溢譜 + ・罷ｪｨ
+
+.\app\api\endpoints\inquiries.py:163: ['・ｸ・俯･ｼ', '・ｾ・・, '・・, '・・慣・壱共']
+  raise HTTPException(status_code=404, detail="・ｸ・俯･ｼ ・ｾ・・・・・・慣・壱共.")
+
+.\app\api\endpoints\inquiries.py:174: ['・溢譜', '・ｴ・ｩ・・, '・ｹ・ｸ﨑俾ｳ', '・懍｢・, '・懍・', '・俯ｦｬ', '・ｰ・・, '・・・', '・・ｽ', '・ｼ', '・倆哩﨑ｩ・壱共']
+  AI ・溢譜 ・ｴ・ｩ・・・ｹ・ｸ﨑俾ｳ ・懍｢・・懍・ ・俯ｦｬ(send_logs ・ｰ・・ inquiries ・・・ ・・ｽ)・ｼ ・倆哩﨑ｩ・壱共.
+
+.\app\api\endpoints\inquiries.py:179: ['・溢譜', '・簿ｳｴ', '・・ｸ・､・ｰ']
+  # 1. ・溢譜 ・簿ｳｴ ・・ｸ・､・ｰ
+
+.\app\api\endpoints\inquiries.py:182: ['・溢譜・・, '・ｾ・・, '・・, '・・慣・壱共']
+  raise HTTPException(status_code=404, detail="・溢譜・・・ｾ・・・・・・慣・壱共.")
+
+.\app\api\endpoints\inquiries.py:186: ['・ｴ・ｸ', '・ｹ・ｸ・・, '・溢譜・・笈・､']
+  raise HTTPException(status_code=400, detail="・ｴ・ｸ ・ｹ・ｸ・・・溢譜・・笈・､.")
+
+.\app\api\endpoints\inquiries.py:190: ['・尖ｳｸ', '・壱ｬｸ', '・ｰ巐誤･ｼ', '・・紛', '・ｸ・・, '・ｴ・ｩ', '・・ｸ・､・ｰ', '﨑呷慣', '・ｰ・ｴ奓ｰ', '・ｰ・晧圸']
+  # ・尖ｳｸ ・壱ｬｸ ・ｰ巐誤･ｼ ・・紛 ・ｸ・・・ｴ・ｩ ・・ｸ・､・ｰ (﨑呷慣 ・ｰ・ｴ奓ｰ ・ｰ・晧圸)
+
+.\app\api\endpoints\inquiries.py:192: ['・ｴ・ｩ', '・・搆']
+  inquiry_text = inq_res.data[0]["content"] if inq_res.data else "・ｴ・ｩ ・・搆"
+
+.\app\api\endpoints\inquiries.py:194: ['・溢譜', '・ｹ・ｸ', '・俯ｦｬ', '・・・', '・・ｽ']
+  # 2. ・溢譜 ・ｹ・ｸ ・俯ｦｬ (・・・ ・・ｽ)
+
+.\app\api\endpoints\inquiries.py:201: ['・ｸ・・, '・ｸ・ｴ・・, '・・・・・, '・・｣誤｡・, '・・ｽ']
+  # 3. ・ｸ・・Inquiry) ・ｸ・ｴ・・・・・・・・・｣誤｡・・・ｽ
+
+.\app\api\endpoints\inquiries.py:206: ['・護・', '・作攪', '・簿ｳｴ', '・・ｸ・､・ｰ', '・・, '・､・・, '・懍・', '・罹巡']
+  # 4. ・護・ ・作攪 API ・簿ｳｴ ・・ｸ・､・ｰ ・・・､・・・懍・ ・罹巡
+
+.\app\api\endpoints\inquiries.py:214: ['嵓誤椨尞ｼ・・, '・ｴ・啄┣', '嶸ｸ・・, '・､・・, '・ｸ・', '・懍・']
+  # 嵓誤椨尞ｼ・・API ・ｴ・啄┣ 嶸ｸ・・(・､・・・ｸ・ ・懍・)
+
+.\app\api\endpoints\inquiries.py:221: ['・ｼ・奛川攪', '・ｽ・ｰ', '・ｵ', '・', '﨑・囈﨑ｨ', '・ｬ・ｰ・', '・・, '・・･・們牟・溢揆', '・・･・ｱ', '嶹菩攤﨑・囈']
+  shop_id=shop.get("shop_name") # ・ｼ・奛川攪 ・ｽ・ｰ ・ｵID・ 﨑・囈﨑ｨ (・ｬ・ｰ・ shop_name・・・・･・們牟・溢揆 ・・･・ｱ 嶹菩攤﨑・囈)
+
+.\app\api\endpoints\inquiries.py:225: ['・・, '﨑ｴ・ｹ﨑俯株', '・作揆', '・ｾ・・, '・・, '・・慣・壱共', '・懋ｷｸ・・, '・ｨ・・笈・､']
+  print(f"笞・・[Approve] shop_id({shop_id})・・﨑ｴ・ｹ﨑俯株 ・作揆 ・ｾ・・・・・・慣・壱共. ・懋ｷｸ・・・ｨ・・笈・､.")
+
+.\app\api\endpoints\inquiries.py:227: ['・', '・・株', '・俯徐', '奛護侃孖ｸ', '・ｰ・ｴ奓ｰ・・笈・､', '・ｸ・', '・懍・', '・・擽', '・ｱ・ｵ', '・俯ｦｬ﨑ｩ・壱共']
+  print("邃ｹ・・[Approve] shop_id・ ・・株 ・俯徐 奛護侃孖ｸ ・ｰ・ｴ奓ｰ・・笈・､. ・ｸ・ API ・懍・ ・・擽 ・ｱ・ｵ ・俯ｦｬ﨑ｩ・壱共.")
+
+.\app\api\endpoints\inquiries.py:229: ['・懍・', '・懋ｷｸ', '・晧┳']
+  # 5. ・懍・ ・懋ｷｸ ・晧┳
+
+.\app\api\endpoints\inquiries.py:238: ['﨑呷慣・ｩ', '・ｰ・ｴ奓ｰ', '・懋ｷｸ', '・晧┳']
+  # 5. AI 﨑呷慣・ｩ ・ｰ・ｴ奓ｰ ・懋ｷｸ(ai_training_logs) ・晧┳
+
+.\app\api\endpoints\inquiries.py:260: ['寬ｸ・滝ｸｰ・川・', '・們倣復', '・ｵ・', '・ｴ・ｩ・・, '・､・罹｡・, '・懍・﨑ｩ・壱共']
+  寬ｸ・滝ｸｰ・川・ ・們倣復 ・ｵ・ ・ｴ・ｩ・・・､・罹｡・・懍・﨑ｩ・壱共.
+
+.\app\api\endpoints\inquiries.py:267: ['・ｵ・', '・ｴ・ｩ・・, '・・･﨑ｴ・ｼ・ｸ・・]
+  raise HTTPException(status_code=400, detail="・ｵ・ ・ｴ・ｩ・・・・･﨑ｴ・ｼ・ｸ・・")
+
+.\app\api\endpoints\inquiries.py:269: ['・ｸ・・, '・簿ｳｴ', '・・, '・ｰ・呱頗', '・ｵ', '・簿ｳｴ', '・・ｸ・､・ｰ']
+  # 1. ・ｸ・・・簿ｳｴ ・・・ｰ・呱頗 ・ｵ ・簿ｳｴ ・・ｸ・､・ｰ
+
+.\app\api\endpoints\inquiries.py:272: ['・ｸ・俯･ｼ', '・ｾ・・, '・・, '・・慣・壱共']
+  raise HTTPException(status_code=404, detail="・ｸ・俯･ｼ ・ｾ・・・・・・慣・壱共.")
+
+.\app\api\endpoints\inquiries.py:278: ['・ｰ・ｰ・・, '・・, '・簿ｳｴ・ｼ', '・ｾ・・, '・・, '・・慣・壱共']
+  raise HTTPException(status_code=400, detail="・ｰ・ｰ・・・・・簿ｳｴ・ｼ ・ｾ・・・・・・慣・壱共.")
+
+.\app\api\endpoints\inquiries.py:280: ['・､・・, '・ｸ・', '・懍・', '・ｼ・奛・, '・ｱ']
+  # 2. ・､・・・ｸ・ API ・懍・ (・ｼ・奛・・ｱ)
+
+.\app\api\endpoints\inquiries.py:287: ['・､・・, '・ｼ・奛・, '・ｵ', '﨑・糖', '嶹菩攤', '﨑・囈']
+  shop_id=shop.get("shop_name") # TODO: ・､・・・ｼ・奛・・ｵ ID 﨑・糖 嶹菩攤 﨑・囈
+
+.\app\api\endpoints\inquiries.py:291: ['・ｱ・ｵ', '・・, '・・・', '・・魂・ｴ孖ｸ']
+  # 3. ・ｱ・ｵ ・・・・・ ・・魂・ｴ孖ｸ
+
+.\app\api\endpoints\inquiries.py:294: ['・懍・', '・懋ｷｸ', '・・, '﨑呷慣', '・懋ｷｸ', '・ｰ・・]
+  # 4. ・懍・ ・懋ｷｸ ・・AI 﨑呷慣 ・懋ｷｸ ・ｰ・・
+
+.\app\api\endpoints\inquiries.py:303: ['・ｵ・・ｴ', '・ｱ・ｵ・・愍・・, '・・・・們来・ｵ・壱共']
+  return {"status": "success", "message": "・ｵ・・ｴ ・ｱ・ｵ・・愍・・・・・・們来・ｵ・壱共."}
+
+.\app\api\endpoints\inquiries.py:311: ['・ｼ・奛・, '・ｼ', '・・・, '嶸ｸ・懦葺・ｬ', '・､・懋ｰ・, '・ｼ・ｸ', '・・┷', '・・, '・ｬ・', '嶸・勦・・, '・・ｸ・ｵ・壱共']
+  ・ｼ・奛・API・ｼ ・・・嶸ｸ・懦葺・ｬ ・､・懋ｰ・・ｼ・ｸ ・・┷ ・・・ｬ・ 嶸・勦・・・・ｸ・ｵ・壱共.
+
+.\app\api\endpoints\inquiries.py:314: ['・川・', '・ｼ・ｸ・逸从', '・・, '・・, '・簿ｳｴ', '・・ｸ・､・ｰ']
+  # 1. DB・川・ ・ｼ・ｸ・逸从 ・・・・API ・簿ｳｴ ・・ｸ・､・ｰ
+
+.\app\api\endpoints\inquiries.py:315: ['・ｰ巐・, '・肥ｲｭ']
+  logger.info(f"剥 [Realtime Details] ・ｰ巐・・肥ｲｭ: {inquiry_id}")
+
+.\app\api\endpoints\inquiries.py:319: ['・ｸ・俯･ｼ', '・ｾ・・, '・・, '・・搆']
+  logger.error(f"笶・[Realtime Details] ・ｸ・俯･ｼ ・ｾ・・・・・・搆: {inquiry_id}")
+
+.\app\api\endpoints\inquiries.py:320: ['・ｸ・俯･ｼ', '・ｾ・・, '・・, '・・慣・壱共']
+  raise HTTPException(status_code=404, detail="・ｸ・俯･ｼ ・ｾ・・・・・・慣・壱共.")
+
+.\app\api\endpoints\inquiries.py:327: ['・ｼ・ｸ・逸从', '・・搆']
+  logger.warning(f"笞・・[Realtime Details] ・ｼ・ｸ・逸从 ・・搆: {inquiry_id}")
+
+.\app\api\endpoints\inquiries.py:328: ['・ｼ・ｸ・逸从・', '・・株', '・ｸ・們桿・壱共']
+  return {"status": "no_order", "message": "・ｼ・ｸ・逸从・ ・・株 ・ｸ・們桿・壱共."}
+
+.\app\api\endpoints\inquiries.py:331: ['・ｰ・ｰ・・, '・・, '・簿ｳｴ', '・・搆']
+  logger.error(f"笶・[Realtime Details] ・ｰ・ｰ・・・・・簿ｳｴ ・・搆: {inquiry_id}")
+
+.\app\api\endpoints\inquiries.py:332: ['・ｰ・ｰ・・, '・・, '・簿ｳｴ・', '・・慣・壱共']
+  raise HTTPException(status_code=400, detail="・ｰ・ｰ・・・・・簿ｳｴ・ ・・慣・壱共.")
+
+.\app\api\endpoints\inquiries.py:334: ['・ｼ・奛・, '增ｴ・ｼ・ｴ・ｸ孖ｸ', '・一ｸｰ嶹・, '・・, '・ｰ巐・]
+  # 2. ・ｼ・奛・增ｴ・ｼ・ｴ・ｸ孖ｸ ・一ｸｰ嶹・・・・ｰ巐・
+
+.\app\api\endpoints\inquiries.py:337: ['奓ｰ・ｸ・川乱・・, '嶹菩共德・, '・ｴ・ｴ・・｡・, '・壱ｲｨ', '・ｬ・ｩ']
+  # 奓ｰ・ｸ・川乱・・嶹菩共德・・ｴ・ｴ・・｡・warning ・壱ｲｨ ・ｬ・ｩ
+
+.\app\api\endpoints\inquiries.py:338: ['・・・, '・ｬ・ｩ', '・卓攤', '墲､']
+  logger.warning(f"泊 [DEBUG AUTH] ・・・ {shop.get('shop_name')} | ・ｬ・ｩ ・卓攤 墲､: {key_preview}")
+
+.\app\api\endpoints\inquiries.py:341: ['・､・懋ｰ・, '・ｼ・ｸ', '・簿ｳｴ', '・ｰ巐・]
+  # ・､・懋ｰ・・ｼ・ｸ ・簿ｳｴ ・ｰ巐・
+
+.\app\api\endpoints\inquiries.py:344: ['・罹ｸ護侃奛護擽奓ｰ・､', '・罷ｲ・ｷｸ', '・懋ｷｸ']
+  # ・罹ｸ護侃奛護擽奓ｰ・､ ・罷ｲ・ｷｸ ・懋ｷｸ
+
+.\app\api\endpoints\inquiries.py:348: ['・ｼ・奛・, '・ｼ・ｸ', '・ｰ巐・, '・ｰ・ｼ', '・・搆']
+  logger.warning(f"笞・・[Realtime Details] ・ｼ・奛・・ｼ・ｸ ・ｰ巐・・ｰ・ｼ ・・搆: {order_number}")
+
+.\app\api\endpoints\inquiries.py:349: ['・ｼ・奛川乱・・, '・ｼ・ｸ', '・簿ｳｴ・ｼ', '・ｾ・・, '・・, '・・慣・壱共']
+  return {"status": "failed", "message": "・ｼ・奛川乱・・・ｼ・ｸ ・簿ｳｴ・ｼ ・ｾ・・・・・・慣・壱共."}
+
+.\app\api\endpoints\inquiries.py:351: ['・ｰ・ｴ奓ｰ', '・・ｵ', '・・, '・倆劍']
+  # 3. ・ｰ・ｴ奓ｰ ・・ｵ ・・・倆劍
+
+.\app\api\endpoints\inquiries.py:356: ['・簿ｳｴ', '・肥ｶ・, '・ｰ・', '嶹菩攤']
+  # SKU ・簿ｳｴ ・肥ｶ・(SkuModelList ・ｰ・ 嶹菩攤)
+
+.\app\api\endpoints\inquiries.py:359: ['・､・・, '嶸ｸ・懍乱', '・ｬ・ｩ・', '・・', '・・]
+  api_variant_id = "" # ・､・・API 嶸ｸ・懍乱 ・ｬ・ｩ・ ・・ ID (・・ 18282)
+
+.\app\api\endpoints\inquiries.py:368: ['・ｰ・ｴ', '弡・ｳｴ', '﨑・糖・､', '嶹菩攤']
+  # Fallback: ・ｰ・ｴ 弡・ｳｴ 﨑・糖・､ 嶹菩攤
+
+.\app\api\endpoints\inquiries.py:372: ['・ｼ・奛・, '・懋ｲｩ・・, '・樓ｲ・, '・', '・ｩ', '・罹ｸ護ｽ罷糖', '・・ｦｬ']
+  # ・ｼ・奛・v2.1 ・懋ｲｩ・・・樓ｲ・manageNumber・ display・ｩ ・罹ｸ護ｽ罷糖 ・・ｦｬ
+
+.\app\api\endpoints\inquiries.py:381: ['・ｴ・・, '・護平', '・', '・', '・呟ｳ', '・ｰ・ｬ・川擽・・, '・ｸ孖ｹ・・, '・夋・, '・ｵ・們擽', '・壱共・ｴ', '・・宙', '・簿ｳｴ・川・', '・､﨑・, '・罹巡']
+  # [・ｴ・Ь ・護平 api_variant_id・ manage_number・ ・呟ｳ(・ｰ・ｬ・川擽・・・ｸ孖ｹ・・, ・夋・・ｵ・們擽 ・壱共・ｴ ・・宙 ・簿ｳｴ・川・ ・､﨑・・罹巡
+
+.\app\api\endpoints\inquiries.py:384: ['・ｰ・ｬ・川擽・・, '・､﨑・, '・罹巡']
+  logger.info(f"剥 [SKU Mapping] ・ｰ・ｬ・川擽・・・､﨑・・罹巡: {manage_number} / {choices}")
+
+.\app\api\endpoints\inquiries.py:390: ['・､・ｭ', '・ｱ・ｵ']
+  logger.info(f"笨・[SKU Mapping] ・､・ｭ ・ｱ・ｵ: {v.get('variantId')}")
+
+.\app\api\endpoints\inquiries.py:392: ['嶹罷ｩｴ', '岺懍亨・ｩ', '・罹ｸ護ｽ罷糖・・, '・・･﨑俯共・ｴ', '・・魂・ｴ孖ｸ']
+  # 嶹罷ｩｴ 岺懍亨・ｩ ・罹ｸ護ｽ罷糖・・・・･﨑俯共・ｴ ・・魂・ｴ孖ｸ
+
+.\app\api\endpoints\inquiries.py:398: ['・､・懋ｰ・, '・ｬ・', '・ｰ巐・, '・ｬ・ｩ']
+  # ・､・懋ｰ・・ｬ・ ・ｰ巐・(api_variant_id ・ｬ・ｩ)
+
+.\app\api\endpoints\inquiries.py:399: ['・・宙・罷糖']
+  logger.warning(f"藤 [Inventory Request] ・・宙・罷糖: {manage_number} | SKU ID: {api_variant_id}")
+
+.\app\api\endpoints\inquiries.py:403: ['・護平', '・・, '・夋晧ぎ﨑ｭ', '・簿ｳｴ・', '・・ｳ', '・・, '・壱共・ｴ', '﨑ｩ・ｨ']
+  # ・護平 raw_sku・・・夋晧ぎ﨑ｭ ・簿ｳｴ・ ・・ｳ choices・・・壱共・ｴ 﨑ｩ・ｨ
+
+.\app\api\endpoints\inquiries.py:439: ['・ｰ・｡', '・簿ｳｴ', '・肥ｶ・, '・ｼ・奛・, '・ｼ・ｸ', '・ｰ・ｴ奓ｰ・川・', '・・・]
+  # 5. ・ｰ・｡ ・簿ｳｴ ・肥ｶ・(・ｼ・奛・・ｼ・ｸ ・ｰ・ｴ奓ｰ・川・ ・・・
+
+.\app\api\endpoints\inquiries.py:457: ['・川・', '・・像・逸从', '・肥ｶ・]
+  # PackageModelList 竊・ShippingModelList・川・ ・・像・逸从 ・肥ｶ・
+
+.\app\api\endpoints\inquiries.py:509: ['・俯ｦｬ', '・・, '・俯ｪ・・, '・､・・, '・懍・']
+  logger.exception(f"櫨 [Realtime Details] ・俯ｦｬ ・・・俯ｪ・・・､・・・懍・: {e}")
+
+.\app\api\endpoints\inquiries.py:520: ['・ｸ・・, '・・・', '・ｴ・ｹ・・, '・ｰ・・懍怱', '・ｱ・・, '・・魂・ｴ孖ｸ﨑ｩ・壱共']
+  ・ｸ・・・・・, ・ｴ・ｹ・・ ・ｰ・・懍怱 ・ｱ・・・・魂・ｴ孖ｸ﨑ｩ・壱共.
+
+.\app\api\endpoints\inquiries.py:524: ['・ｼ', '・ｬ・ｩ﨑們流', '・懋ｳｵ・・, '﨑・糖・・, '・・魂・ｴ孖ｸ']
+  # exclude_unset=True・ｼ ・ｬ・ｩ﨑們流 ・懋ｳｵ・・﨑・糖・・・・魂・ｴ孖ｸ
+
+.\app\api\endpoints\inquiries.py:527: ['・・魂・ｴ孖ｸ﨑', '・ｰ・ｴ奓ｰ・', '・・慣・壱共']
+  raise HTTPException(status_code=400, detail="・・魂・ｴ孖ｸ﨑 ・ｰ・ｴ奓ｰ・ ・・慣・壱共.")
+
+.\app\api\endpoints\inquiries.py:532: ['・ｸ・俯･ｼ', '・ｾ・・, '・・, '・・慣・壱共']
+  raise HTTPException(status_code=404, detail="・ｸ・俯･ｼ ・ｾ・・・・・・慣・壱共.")
+
+.\app\api\endpoints\inquiries.py:544: ['﨑ｴ・ｹ', '・ｸ・們攪', '・ｴ・', '・罷ｪｨ', '・ｩ・晧揆', '・・ｸ・ｵ・壱共']
+  﨑ｴ・ｹ ・ｸ・們攪 ・ｴ・ ・罷ｪｨ ・ｩ・晧揆 ・・ｸ・ｵ・壱共.
+
+.\app\api\endpoints\inquiries.py:562: ['・ｴ・', '・罷ｪｨ・ｼ', '・卓┳﨑ｩ・壱共']
+  ・ｴ・ ・罷ｪｨ・ｼ ・卓┳﨑ｩ・壱共.
+
+.\app\api\endpoints\pages.py:18: ['奛懦伯・ｿ', '・誤鵠・・, '・懍川乱', '・墲､・川・', '・ｼ', '・ｽ・ｴ', '・・', '・簿ｳｴ・ｼ', '・肥ｽ罷畠﨑俾ｳ', '・護・', '巐護ぎ・ｼ', '嶹菩攤﨑ｩ・壱共']
+  奛懦伯・ｿ ・誤鵠・・・懍川乱 ・墲､・川・ JWT・ｼ ・ｽ・ｴ ・・ ・簿ｳｴ・ｼ ・肥ｽ罷畠﨑俾ｳ ・護・ 巐護ぎ・ｼ 嶹菩攤﨑ｩ・壱共.
+
+.\app\api\endpoints\pages.py:19: ['・誤｣誤据・一ｱｰ・・, '・簿ｳｴ・', '・・愍・ｴ', '・溢匣', '・・', '・・, '・倆劍﨑們流', '寬們擽・・川・', '・ｬ・､・ｴ・駕敢', '・俯ｦｬ﨑ｩ・壱共']
+  ・誤｣誤据・一ｱｰ・・・簿ｳｴ・ ・・愍・ｴ ・溢匣 ・・ None・・・倆劍﨑們流 寬們擽・・川・ ・ｬ・､・ｴ・駕敢 ・俯ｦｬ﨑ｩ・壱共.
+
+.\app\api\endpoints\pages.py:24: ['奝增ｰ', '・川ｲｴ', '・巐ｨ・ｱ', '・・・]
+  # 1. 奝增ｰ ・川ｲｴ ・巐ｨ・ｱ ・・・
+
+.\app\api\endpoints\pages.py:28: ['甯護擽・ｬ', '增ｴ・ｼ・ｴ・ｸ孖ｸ・・, '嵭､・・, '・､・・攵・ｴ・・, '・ｸ・罹･ｼ', '嵓ｼ﨑俾ｸｰ', '・・紛', '・・, '・ｼ', '・・・, '嶸ｸ・・, '奝ｵ・ｼ', '・ｩ・・]
+  # 2. 甯護擽・ｬ 增ｴ・ｼ・ｴ・ｸ孖ｸ・・嵭､・・・､・・攵・ｴ・・・ｸ・罹･ｼ 嵓ｼ﨑俾ｸｰ ・・紛 httpx・・REST・ｼ ・・・嶸ｸ・・(RLS 奝ｵ・ｼ ・ｩ・・
+
+.\app\api\endpoints\pages.py:41: ['・・・・罷糖', '・ｴ', '・・笈・ｰ・・, '・ｰ・ｴ奓ｰ・', '・・牟・溢慣・壱共', '・瀧況']
+  return {"error": f"API ・・・・罷糖 200・ｴ ・・笈・ｰ・・・ｰ・ｴ奓ｰ・ ・・牟・溢慣・壱共. ・瀧況: {resp.text}"}
+
+.\app\api\endpoints\pages.py:43: ['・誤｣誤据・一ｱｰ・・, '・ｰ・瀧頗', '・墲､']
+  # ・誤｣誤据・一ｱｰ・・・ｰ・瀧頗 ・墲､
+
+.\app\api\endpoints\pages.py:44: ['・専ｲｩ', '・晤ｪ・, '・・・, '・・, '・､・・, '・懍・']
+  return {"error": f"・専ｲｩ ・晤ｪ・・・・・・・､・・・懍・: {str(e)}"}
+
+.\app\api\endpoints\pages.py:48: ['・懍メ・・, '・滝ｷｼ', '・・, '・尖徐・ｼ・・, '・・罹ｳｴ・罹｡・, '・・・]
+  """ ・懍メ・・・滝ｷｼ ・・・尖徐・ｼ・・・・罹ｳｴ・罹｡・・・・"""
+
+.\app\api\endpoints\pages.py:53: ['・菩メ・・愍・・, '・懋ｷｸ・ｸ・・, '・・・・ｼ・ｴ', '・ｼ・ｰ甯・, '・ｴ・・]
+  # ・菩メ・・愍・・・懋ｷｸ・ｸ・・・・・・ｼ・ｴ ・ｼ・ｰ甯・・ｴ・・
+
+.\app\api\endpoints\pages.py:87: ['寬們擽・・, '・・, '﨑・┣', '・､・・]
+  # 寬們擽・・・・﨑・┣ ・､・・
+
+.\app\api\endpoints\pages.py:98: ['﨑・┣・ｩ', '・・, '・ｩ・・, '・・ｸ・､・ｰ']
+  # 1. 﨑・┣・ｩ ・・・ｩ・・・・ｸ・､・ｰ
+
+.\app\api\endpoints\pages.py:101: ['・､・ｰ・ｴ奓ｰ', '・ｰ・・, '・・逸〓', '・ｴ奛語ｳ・ｬ', '・ｩ・・, '・・ｸ・､・ｰ', '﨑・┣・ｩ']
+  # 2. ・､・ｰ・ｴ奓ｰ ・ｰ・・・・逸〓 ・ｴ奛語ｳ・ｬ ・ｩ・・・・ｸ・､・ｰ (﨑・┣・ｩ)
+
+.\app\api\endpoints\pages.py:102: ['・ｬ・ｼ・ｴ', '・ｴ', '・・旧', '・・豆', '・・, '・・逸〓﨑・, '・庭ｧ・, '・肥ｶ・]
+  # category ・ｬ・ｼ・ｴ null・ｴ ・・旧 ・・豆 ・・・・逸〓﨑・・庭ｧ・・肥ｶ・
+
+.\app\api\endpoints\pages.py:110: ['・ｸ・・, '・ｼ・ｬ', '・ｬ・ｱ', '・ｸ・俯ｦｬ', '・ｰ・ｴ奓ｰ・・, '・ｰ・ｸ', '・ｸ・・]
+  # 3. ・ｸ・・・ｼ・ｬ ・ｬ・ｱ (・ｸ・俯ｦｬ ・ｰ・ｴ奓ｰ・・・ｰ・ｸ ・ｸ・・
+
+.\app\api\endpoints\pages.py:125: ['奝ｵ・・, '・ｰ・ｴ奓ｰ', '・・ｸ・､・ｰ']
+  # 4. 奝ｵ・・・ｰ・ｴ奓ｰ ・・ｸ・､・ｰ (Dashboard Widgets)
+
+.\app\api\endpoints\pages.py:131: ['・・, '・ｩ・・, '・們ｧ・]
+  # ・・・ｩ・・・們ｧ・
+
+.\app\api\endpoints\pages.py:136: ['・ｴ奛語ｳ・ｬ', '・ｩ・・, '・們ｧ・, '・・, '・・逸〓', '・俯ｦｬ']
+  # ・ｴ奛語ｳ・ｬ ・ｩ・・・們ｧ・・・・・逸〓 ・俯ｦｬ
+
+.\app\api\endpoints\pages.py:142: ['・ｸ・・, '・ｩ・・, '・們ｧ・]
+  # ・ｸ・・・ｩ・・・們ｧ・
+
+.\app\api\endpoints\pages.py:152: ['奝ｵ・・圸', '・緋ｰ', '・ｼ・ｬ']
+  # --- [奝ｵ・・圸 ・緋ｰ ・ｼ・ｬ] ---
+
+.\app\api\endpoints\pages.py:153: ['・・ｰ', '・卓攤', '・ｸ・・, '・ｴ・ｴ孖ｸ']
+  # 1. ・・ｰ ・卓攤 ・ｸ・・・ｴ・ｴ孖ｸ
+
+.\app\api\endpoints\pages.py:159: ['・ｹ・ｸ', '・・ｰ', '・卓攤', '・ｵ・', '・ｴ・ｴ孖ｸ']
+  # 2. ・ｹ・ｸ ・・ｰ ・卓攤 ・ｵ・(Drafts) ・ｴ・ｴ孖ｸ
+
+.\app\api\endpoints\pages.py:165: ['・､・・, '・・・', '・・｣誤頗', '・ｴ・ｴ孖ｸ', '・・・・ｴ・', '・ｴ', '・､・們攤', '・・]
+  # 3. ・､・・・・・ ・・｣誤頗 ・ｴ・ｴ孖ｸ (replied ・・・・ｴ・ updated_at ・ｴ ・､・們攤 ・・
+
+.\app\api\endpoints\pages.py:171: ['・ｰ巐・, '・・, '・尖洳']
+  print("笶・DB ・ｰ巐・・・・尖洳:", e)
+
+.\app\api\endpoints\pages.py:212: ['・ｰ巐・, '・・, '・尖洳']
+  print("DB ・ｰ巐・・・・尖洳:", e)
+
+.\app\api\endpoints\pages.py:247: ['・・・, '・ｩ・・]
+  # 1. ・・・・ｩ・・
+
+.\app\api\endpoints\pages.py:253: ['・ｸ・・, '・ｩ・・, '﨑・┣・・, '・ｼ・ｬ']
+  # 2. ・ｸ・・・ｩ・・﨑・┣・・・ｼ・ｬ
+
+.\app\api\endpoints\pages.py:284: ['弡壱ｨ', '・ｬ・ｰ', '寬們擽・', '奛懦伯・ｿ・', '・・ｧ・, '・・愍・・・, '・・卿德・, '・誤鵠・・葺・ｰ・・, '・被寇', '・晧┳']
+  # 弡壱ｨ ・ｬ・ｰ 寬們擽・ 奛懦伯・ｿ・ ・・ｧ・・・愍・・・・・卿德・・誤鵠・・葺・ｰ・・・被寇 ・晧┳
+
+.\app\api\endpoints\shops.py:22: ['嶸・椪', '・懋ｷｸ・ｸ・・, '・・・, '・護・', '巐護ぎ', '・・, '・ｱ・晤頗', '・ｨ・', '・､・・, '・・, '嵓誤椨尞ｼ', '墲､', '・ｬ・､孖ｸ・ｼ', '・壱洳・ｵ・壱共']
+  嶸・椪 ・懋ｷｸ・ｸ・・・・・・護・ 巐護ぎ)・・・ｱ・晤頗 ・ｨ・ ・､・・・・嵓誤椨尞ｼ API 墲､ ・ｬ・､孖ｸ・ｼ ・壱洳・ｵ・壱共.
+
+.\app\api\endpoints\shops.py:38: ['・ｼ・奛・, '・ｼ弡・, '・ｱ', '・壱｡懍垓', '・ｼ﨑瀧ｪｰ', '・・ю・・, '巐護ぎ・・, '・ｰ・・, '・ｬ・､孖ｸ・・, '・緋ｰ﨑ｩ・壱共']
+  ・ｼ・奛・ ・ｼ弡・・ｱ ・壱｡懍垓 ・ｼ﨑瀧ｪｰ ・・ю・・巐護ぎ・・・ｰ・・・ｬ・､孖ｸ・・・緋ｰ﨑ｩ・壱共.
+
+.\app\api\endpoints\shops.py:53: ['・壱｡懍垓', '・作擽', '・ｰ・呱据・溢慣・壱共']
+  return {"status": "success", "message": "・壱｡懍垓 ・作擽 ・ｰ・呱据・溢慣・壱共.", "data": res.data[0] if res.data else None}
+
+.\app\api\endpoints\shops.py:55: ['・・, '・ｰ・・, '・､甯ｨ']
+  raise HTTPException(status_code=500, detail=f"・・・ｰ・・・､甯ｨ: {str(e)}")
+
+.\app\api\endpoints\shops.py:64: ['・ｰ・ｴ', '・ｰ・呱頗', '・作揆', '・ｭ・懦鮒・壱共']
+  ・ｰ・ｴ ・ｰ・呱頗 ・作揆 ・ｭ・懦鮒・壱共.
+
+.\app\api\endpoints\shops.py:69: ['・ｭ・・, '・俯ｦｬ', '・簿ｶ・乱', '・ｸ・ｸ', '巐護ぎ・', '・・笈・ｴ', '・ｼ・ｬ', '・川ｲｴ・', '・ｴ・罹据・・・, '・・亨・・, '・溢・┳・・, '・・紛', '・們・']
+  # ・ｭ・・・俯ｦｬ (RLS ・簿ｶ・乱 ・ｸ・ｸ 巐護ぎ・ ・・笈・ｴ ・ｼ・ｬ ・川ｲｴ・ ・ｴ・罹据・・・ ・・亨・・・溢・┳・・・・紛 eq("company_id") ・們・)
+
+.\app\api\endpoints\shops.py:71: ['・・, '・ｰ・呷擽', '﨑ｴ・罹据・溢慣・壱共']
+  return {"status": "success", "message": "・・・ｰ・呷擽 﨑ｴ・罹据・溢慣・壱共."}
+
+.\app\api\endpoints\shops.py:73: ['・・, '・ｭ・・, '・､甯ｨ']
+  raise HTTPException(status_code=500, detail=f"・・・ｭ・・・､甯ｨ: {str(e)}")
+
+.\app\api\endpoints\training.py:28: ['・・ｧ・, '・肥ｶ罹据・', '・喜捩', '﨑呷慣', '・懋ｷｸ・ｼ', '尞ｬ・ｷ', '嵓・｡ｬ嵓・敢', '・瀧況', '・・, '・ｼ・・, '・倆劍﨑ｩ・壱共']
+  ・・ｧ・・肥ｶ罹据・ ・喜捩 AI 﨑呷慣 ・懋ｷｸ・ｼ JSONL 尞ｬ・ｷ(嵓・｡ｬ嵓・敢-・瀧況 ・・・ｼ・・・倆劍﨑ｩ・壱共.
+
+.\app\api\endpoints\training.py:29: ['嶸ｸ・・, '弡・, '﨑ｴ・ｹ', '・溢ｽ罷糖・､・', '・肥ｶ・, '・・｣・, '・俯ｦｬ・俯ｩｰ', '・ｴ・･', '・ｴ', '・晧┳・ｩ・壱共']
+  嶸ｸ・・弡・﨑ｴ・ｹ ・溢ｽ罷糖・､・ ・肥ｶ・・・｣・・俯ｦｬ・俯ｩｰ, ・ｴ・･(training_exports)・ｴ ・晧┳・ｩ・壱共.
+
+.\app\api\endpoints\training.py:34: ['・ｸ・肥ｶ・, '﨑呷慣', '・ｰ・ｴ奓ｰ', '・ｰ巐・]
+  # 1. ・ｸ・肥ｶ・﨑呷慣 ・ｰ・ｴ奓ｰ ・ｰ巐・
+
+.\app\api\endpoints\training.py:39: ['・壱｡ｭ・・, '・肥ｶ懦腹', '﨑呷慣', '・ｰ・ｴ奓ｰ・', '・・慣・壱共', '・壱｡懍垓', '・ｸ・・, '・ｹ・ｸ・・, '・ｼ・', '・・哩﨑ｴ・ｼ・ｸ・・]
+  raise HTTPException(status_code=404, detail="・壱｡ｭ・・・肥ｶ懦腹 﨑呷慣 ・ｰ・ｴ奓ｰ・ ・・慣・壱共. ・壱｡懍垓 ・ｸ・・・ｹ・ｸ・・・ｼ・ ・・哩﨑ｴ・ｼ・ｸ・・")
+
+.\app\api\endpoints\training.py:41: ['尞ｬ・ｷ', '・晧┳', '・､孖ｸ・ｼ']
+  # 2. JSONL 尞ｬ・ｷ ・晧┳ ・､孖ｸ・ｼ
+
+.\app\api\endpoints\training.py:44: ['・ｰ・ｸ', '・懋ｲｩ', '・肥亨・', '嶸倣・', '・・圸', '・・･﨑們ｧ・・, '・ｰ・ｸ', '・ｬ・ｩ']
+  # ・ｰ・ｸ jsonl ・懋ｲｩ (・肥亨・ 嶸倣・ ・・圸 ・・･﨑們ｧ・・・ｰ・ｸ prompt-completion ・ｬ・ｩ)
+
+.\app\api\endpoints\training.py:49: ['・・, '・川牟', '﨑懋ｸ', '・ｼ・ｸ・ｴ', '・ｨ・・, '・ｩ・']
+  # ensure_ascii=False・・・川牟 﨑懋ｸ/・ｼ・ｸ・ｴ ・ｨ・・・ｩ・
+
+.\app\api\endpoints\training.py:52: ['・ｰ・ｴ奓ｰ', '・・・', '・・魂・ｴ孖ｸ', '・・, '・ｴ・･', '・懋ｹ・]
+  # 3. ・ｰ・ｴ奓ｰ ・・・ ・・魂・ｴ孖ｸ ・・・ｴ・･ ・懋ｹ・
+
+.\app\api\endpoints\training.py:56: ['・ｼ', '奝ｵ﨑ｴ', '・ｼ', '・・, '・・ｽ']
+  # Supabase・ｼ 奝ｵ﨑ｴ is_exported・ｼ True・・・・ｽ
+
+.\app\api\endpoints\training.py:61: ['奛護擽・幗乱', '・ｴ・･', '・緋ｰ']
+  # training_exports 奛護擽・幗乱 ・ｴ・･ ・緋ｰ
+
+.\app\api\endpoints\training.py:70: ['・､甯ｨ﨑俯鵠・ｼ・・, '・ｼ・ｨ', '・懋ｹ・ｧ・, '﨑俾ｳ', '・､・ｴ・罹糖・・, '嵭溢圸﨑俯巡・・, '﨑', '・・, '・溢ｧ・・, '・ｴ・們・愍・・, '・尖洳', '・懍・']
+  # ・､甯ｨ﨑俯鵠・ｼ・・・ｼ・ｨ ・懋ｹ・ｧ・﨑俾ｳ ・､・ｴ・罹糖・・嵭溢圸﨑俯巡・・﨑 ・・・溢ｧ・・・ｴ・們・愍・・・尖洳 ・懍・
+
+.\app\api\endpoints\training.py:71: ['・ｰ・ｴ奓ｰ', '・・・', '・・魂・ｴ孖ｸ', '・・, '・､・・, '・懍・']
+  raise HTTPException(status_code=500, detail=f"・ｰ・ｴ奓ｰ ・・・ ・・魂・ｴ孖ｸ ・・・､・・・懍・: {str(e)}")
+
+.\app\api\endpoints\training.py:73: ['甯護攵', '・､・ｴ・罹糖', '・､孖ｸ・ｬ・・, '・瀧況', '﨑懋ｸ', '・ｼ・ｸ・ｴ', '・・・]
+  # 4. 甯護攵 ・､・ｴ・罹糖 ・､孖ｸ・ｬ・・・瀧況 (﨑懋ｸ/・ｼ・ｸ・ｴ ・・・
+
+.\app\api\endpoints\training.py:80: ['・・, '・誤攵・ｰ・', '・､・ｴ・罹糖', '德醐敢・ｼ', '・・紛', '・緋ｰ', '・・・]
+  # CORS・・・誤攵・ｰ・ ・､・ｴ・罹糖 德醐敢・ｼ ・・紛 ・緋ｰ ・・・
+
+.\app\api\endpoints\training.py:92: ['・・・, '・・ｰ', '・卓擽・ｰ・・, '・・｣誤頗', '﨑呷慣', '・ｬ・ｰ', '・ｩ・晧揆', '・・ｸ・ｵ・壱共']
+  ・・・・・ｰ ・卓擽・ｰ・・・・｣誤頗 﨑呷慣 ・ｬ・ｰ ・ｩ・晧揆 ・・ｸ・ｵ・壱共.
+
+.\app\api\endpoints\training.py:113: ['・ｵ・・・, '・・晨葺・ｰ・・, '・們倣葺・ｬ', '・懍｢・, '﨑呷慣', '・ｰ・ｴ奓ｰ・・, '・ｹ・ｸ﨑ｩ・壱共']
+  AI ・ｵ・・・・・晨葺・ｰ・・・們倣葺・ｬ ・懍｢・﨑呷慣 ・ｰ・ｴ奓ｰ・・・ｹ・ｸ﨑ｩ・壱共.
+
+.\app\api\endpoints\training.py:125: ['・ｬ・ｰ', '・・・揆', '・ｾ・・, '・・, '・・慣・壱共']
+  raise HTTPException(status_code=404, detail="・ｬ・ｰ ・・・揆 ・ｾ・・・・・・慣・壱共.")
+
+.\app\api\endpoints\training.py:137: ['孖ｹ・・, '・俯ｦｬ', '・懋ｷｸ・ｼ', '﨑呷慣', '・・・, '・・・愍・・, '・ｱ・晨鮒・壱共']
+  孖ｹ・・AI ・俯ｦｬ ・懋ｷｸ・ｼ 﨑呷慣 ・・・・・・愍・・・ｱ・晨鮒・壱共.
+
+.\app\api\endpoints\training.py:141: ['・尖ｳｸ', '・懋ｷｸ', '・ｰ巐・]
+  # 1. ・尖ｳｸ ・懋ｷｸ ・ｰ巐・
+
+.\app\api\endpoints\training.py:144: ['・懋ｷｸ・ｼ', '・ｾ・・, '・・, '・・慣・壱共']
+  raise HTTPException(status_code=404, detail="・懋ｷｸ・ｼ ・ｾ・・・・・・慣・壱共.")
+
+.\app\api\endpoints\training.py:147: ['・ｴ・ｸ', '・ｬ・ｰ・', '・壱株・', '嶹菩攤']
+  # 2. ・ｴ・ｸ ・ｬ・ｰ・ ・壱株・ 嶹菩攤
+
+.\app\api\endpoints\training.py:150: ['・ｴ・ｸ', '・ｬ・ｰ', '・ｱ・晤勢']
+  return {"status": "success", "message": "・ｴ・ｸ ・ｬ・ｰ ・ｱ・晤勢", "review_id": exist_res.data[0]["id"]}
+
+.\app\api\endpoints\training.py:152: ['・ｬ・ｰ', '・晧┳']
+  # 3. ・ｬ・ｰ ・晧┳
+
+.\app\api\endpoints\user.py:22: ['嶸・椪', '・ｬ・ｩ・・, '・・, '・護・', '巐護ぎ', '・簿ｳｴ・ｼ', '・倆劍﨑ｩ・壱共']
+  嶸・椪 ・ｬ・ｩ・・・・・護・ 巐護ぎ ・簿ｳｴ・ｼ ・倆劍﨑ｩ・壱共.
+
+.\app\api\endpoints\user.py:28: ['巐護ぎ', '・簿ｳｴ', '・ｰ巐・]
+  # 巐護ぎ ・簿ｳｴ ・ｰ巐・
+
+.\app\api\endpoints\user.py:32: ['・・', '・簿ｳｴ', '・ｬ・ｩ']
+  # ・・ ・簿ｳｴ (Auth API ・ｬ・ｩ)
+
+.\app\api\endpoints\user.py:54: ['・岺・, '巐護ぎ', '・ｴ・・揆', '・・ｽ﨑ｩ・壱共', '・・ｬ・・, '・・圸']
+  ・岺・巐護ぎ ・ｴ・・揆 ・・ｽ﨑ｩ・壱共. (・・ｬ・・・・圸)
+
+.\app\api\endpoints\user.py:72: ['・ｬ・ｩ・川攪', '・・ｰ・逸从・ｼ', '・・ｽ﨑ｩ・壱共']
+  ・ｬ・ｩ・川攪 ・・ｰ・逸从・ｼ ・・ｽ﨑ｩ・壱共.
+
+.\app\core\ai_client.py:13: ['・・・, '・ｸ・・, '・俯ｦｬ・ｼ', '・・復', '・罹ｹ・侃', '增ｴ・ｼ・ｴ・ｸ孖ｸ・・笈・､']
+  ・・・・ｸ・・・俯ｦｬ・ｼ ・・復 AI ・罹ｹ・侃 增ｴ・ｼ・ｴ・ｸ孖ｸ・・笈・､.
+
+.\app\core\ai_client.py:14: ['・ｬ・ｩ', '・・･﨑・, '・懍侠', '・ｨ・ｸ', '・・, '・ｰ・・・愍・・, '・ｬ・ｩ﨑ｩ・壱共']
+  ・ｬ・ｩ ・・･﨑・・懍侠 Gemini ・ｨ・ｸ(v2.5+)・・・ｰ・・・愍・・・ｬ・ｩ﨑ｩ・壱共.
+
+.\app\core\ai_client.py:21: ['・', '・溢愍・ｴ', '・ｰ・ｸ・ｼ・・, '・ｼ', '・ｬ・ｩ']
+  # GEMINI_API_KEY・ ・溢愍・ｴ ・ｰ・ｸ・ｼ・・gemini・ｼ ・ｬ・ｩ
+
+.\app\core\ai_client.py:27: ['・・ｩ', '・ｨ・ｸ', '・尖徐', '・ｴ增ｬ', '・・, '・懍・剩']
+  # ・・ｩ ・ｨ・ｸ ・尖徐 ・ｴ增ｬ ・・・懍・剩
+
+.\app\core\ai_client.py:31: ['・､・簿頗', '・ｨ・ｸ・ｴ', '・・愍・ｴ', '・・･', '・駆捩', '・ｨ・ｸ', '・ｴ奝ｵ', '・ｬ・､孖ｸ', '・樌ｪｽ', '・夋・]
+  # ・､・簿頗 ・ｨ・ｸ・ｴ ・・愍・ｴ ・・･ ・駆捩 ・ｨ・ｸ(・ｴ奝ｵ ・ｬ・､孖ｸ ・樌ｪｽ) ・夋・
+
+.\app\core\ai_client.py:43: ['・ｼ', '・ｬ・ｩ﨑們流', '・ｵ・', '・溢譜・・, '・晧┳﨑ｩ・壱共', '・､・懋ｰ・, '・簿ｳｴ・ｼ', '・們・﨑ｩ・壱共']
+  Gemini・ｼ ・ｬ・ｩ﨑們流 ・ｵ・ ・溢譜・・・晧┳﨑ｩ・壱共. ・､・懋ｰ・・簿ｳｴ・ｼ ・們・﨑ｩ・壱共.
+
+.\app\core\ai_client.py:44: ['・川・, '・・・', '・尖徐', '夋懋ｹ・, '・ｰ・・懍怱', '・懍譜・・, '尞ｬ﨑ｨ﨑ｩ・壱共']
+  ・川・・・・, ・尖徐 夋懋ｹ・ ・ｰ・・懍怱 ・懍譜・・尞ｬ﨑ｨ﨑ｩ・壱共.
+
+.\app\core\ai_client.py:48: ['・ｸ・・, '・川ぎ﨑ｩ・壱共', '・ｧ', '・ｵ・', '・罹ｦｬ・・ｵ・壱共']
+  "reply": "[MOCK] ・ｸ・・・川ぎ﨑ｩ・壱共. ・ｧ ・ｵ・ ・罹ｦｬ・・ｵ・壱共.",
+
+.\app\core\ai_client.py:49: ['・ｼ・俯ｬｸ・・]
+  "category": "・ｼ・俯ｬｸ・・,
+
+.\app\core\ai_client.py:52: ['・ｼ・俯ｬｸ・・]
+  "tags": ["・ｼ・俯ｬｸ・・],
+
+.\app\core\ai_client.py:67: ['・懍・', '甯川・, '・ｨ奛作侃孖ｸ']
+  # ・懍・ 甯川・・ｨ奛作侃孖ｸ
+
+.\app\core\ai_client.py:72: ['・ｼ・逸・', '・ｰ・｡', '・簿ｳｴ', '・肥ｶ・]
+  # ・ｼ・逸・ ・ｰ・｡ ・簿ｳｴ ・肥ｶ・
+
+.\app\core\ai_client.py:77: ['・・像', '・逸从']
+  f"笆 ・・像 ・逸从: {delivery_info.get('tracking_number')}\n"
+
+.\app\core\ai_client.py:78: ['・ｰ・｡', '・・・']
+  f"笆 ・ｰ・｡ ・・・: {delivery_info.get('current_status')}\n"
+
+.\app\core\ai_client.py:79: ['嶸・椪', '・・ｹ・, '・溢・]
+  f"笆 嶸・椪 ・・ｹ・・溢・ {delivery_info.get('current_location')}\n"
+
+.\app\core\ai_client.py:82: ['・懍侃奛・, '嵓・｡ｬ嵓・敢', '・ｼ・ｸ・ｴ', '・・・, '・卓峡', '・川簿ｶ・・', '夋懋ｹ・]
+  # ・懍侃奛・嵓・｡ｬ嵓・敢 (・ｼ・ｸ・ｴ ・・・・卓峡 + ・川簿ｶ・・ + 夋懋ｹ・
+
+.\app\core\ai_client.py:86: ['・簿ｳｴ', '・ｼ', '・被ヵ・ｼ・・, '・ｵ・・・, '・卓┳﨑們┷・・]
+  "莉･荳九・縲舌Μ繧｢繝ｫ繧ｿ繧､繝 ・簿ｳｴ縲瀧･ｼ ・被ヵ・ｼ・・・ｵ・・・・卓┳﨑們┷・・\n"
+
+.\app\core\ai_client.py:88: ['・・・, '・・宙']
+  f"笆 ・・・・・宙: {item_name}\n"
+
+.\app\core\ai_client.py:89: ['・ｼ・ｸ', '・・・']
+  f"笆 ・ｼ・ｸ ・・・: {order_status}\n"
+
+.\app\core\ai_client.py:90: ['嶸・椪', '・ｬ・']
+  f"笆 嶸・椪 ・ｬ・: {stock_info}\n"
+
+.\app\core\ai_client.py:94: ['・瀧劇', '・・ｴ・罹攵・ｸ']
+  "縲川搗・ ・・ｴ・罹攵・ｸ縲曾n"
+
+.\app\core\ai_client.py:97: ['・ｴ・ｸ', '・懍・・們来・､・ｴ', '・ｰ・｡', '・・・', '嶸・椪', '・・ｹ・, '・ｱ', '・ｼ', '・ｬ・ｴ・・愍・・, '・ｸ・駕葺・ｰ', '・溢峡・懦う・ｸ・・]
+  "3. ・ｴ・ｸ ・懍・・們来・､・ｴ ・ｰ・｡ ・・・(嶸・椪 ・・ｹ・・ｱ)・ｼ ・ｬ・ｴ・・愍・・・ｸ・駕葺・ｰ ・溢峡・懦う・ｸ・・\n"
+
+.\app\core\ai_client.py:98: ['・ｵ・・', '・､・ｰ', '・菩､啄葺・', '・川硫・､・ｬ・ｴ', '・ｼ・ｸ・ｴ・・, '・卓┳﨑們┷・・]
+  "4. ・ｵ・・ ・､・ｰ ・菩､啄葺・ ・川硫・､・ｬ・ｴ ・ｼ・ｸ・ｴ・・・卓┳﨑們┷・・\n"
+
+.\app\core\ai_client.py:99: ['・俯糖・・, '嶸菩享・ｼ・罹ｧ・, '・瀧況﨑們┷・・]
+  "5. ・俯糖・・JSON 嶸菩享・ｼ・罹ｧ・・瀧況﨑們┷・・\n"
+
+.\app\core\ai_client.py:100: ['・ｴ奛語ｳ・ｬ・・, '・ｰ・｡・ｸ・・, '・ｬ・・ｸ・・, '・ｨ・・, '嶹俯ｶ・, '・ｰ夋', '・・, '﨑俯ｘ・・, '・・･倆葺・ｸ・・]
+  "6. ・ｴ奛語ｳ・ｬ・・[・ｰ・｡・ｸ・・ ・ｬ・・ｸ・・ ・ｨ・・嶹俯ｶ・ 繧ｵ繧､繧ｺ莠､謠・ 蝠・刀荳崎憶, ・ｰ夋] ・・﨑俯ｘ・・・・･倆葺・ｸ・・\n"
+
+.\app\core\ai_client.py:101: ['・川・, '・・・・・, '・倆哩﨑們┷・・, '嶹罷お', '・壱ｧ・, '・・ｸ逸物', '・川ぎ﨑ｨ', '・ｴ奝ｵ', '・・, '﨑俯ｘ']
+  "7. ・川・・・・・・・倆哩﨑們┷・・ angry(嶹罷お/・壱ｧ・, curious(・・ｸ逸物), grateful(・川ぎ﨑ｨ), neutral(・ｴ奝ｵ) ・・﨑俯ｘ.\n"
+
+.\app\core\ai_client.py:102: ['・・, '・ｬ・ｴ・・, '・簿巡・・笈・､', '・ｴ', '・・･', '・倣物']
+  "8. sentiment_score・・0.0~1.0 ・ｬ・ｴ・・・簿巡・・笈・､ (1.0・ｴ ・・･ ・倣物).\n"
+
+.\app\core\ai_client.py:103: ['・・, '・ｸ・・, '・ｴ・ｩ・川・', '・肥ｶ懦復', '﨑ｵ・ｬ', '墲､・誤糖', '夋懋ｷｸ', '・ｰ・ｴ・・笈・､', '・・, '・ｰ・｡・・ｰ', '・ｴ・・]
+  "9. tags・・・ｸ・・・ｴ・ｩ・川・ ・肥ｶ懦復 﨑ｵ・ｬ 墲､・誤糖 夋懋ｷｸ ・ｰ・ｴ・・笈・､ (・・ [\"・ｰ・｡・・ｰ\", \"・ｴ・噂"]).\n"
+
+.\app\core\ai_client.py:104: ['・', '・・, '﨑俯ｘ・・笈・､']
+  "10. priority_suggestion・ urgent, high, normal, low ・・﨑俯ｘ・・笈・､.\n\n"
+
+.\app\core\ai_client.py:107: ['巐護ぎ', '・・ｴ・罹攵・ｸ', '・ｼ・・]
+  # 巐護ぎ CS ・・ｴ・罹攵・ｸ ・ｼ・・
+
+.\app\core\ai_client.py:116: ['・瀧況', '嶸菩享']
+  "JSON ・瀧況 嶸菩享:\n"
+
+.\app\core\ai_client.py:118: ['・ｼ・ｸ・ｴ', '・ｸ・ｸ']
+  '  "reply": "・ｼ・ｸ・ｴ ・ｸ・ｸ",\n'
+
+.\app\core\ai_client.py:119: ['・ｴ奛語ｳ・ｬ']
+  '  "category": "・ｴ奛語ｳ・ｬ",\n'
+
+.\app\core\ai_client.py:122: ['夋懋ｷｸ', '夋懋ｷｸ']
+  '  "tags": ["夋懋ｷｸ1", "夋懋ｷｸ2"],\n'
+
+.\app\core\ai_client.py:128: ['・ｨ・ｸ', '・一ｸｰ嶹・, '・・晤頗', '・懍侠', '・ｨ・ｸ', '・ｬ・ｩ']
+  # ・ｨ・ｸ ・一ｸｰ嶹・(・・晤頗 ・懍侠 ・ｨ・ｸ ・ｬ・ｩ)
+
+.\app\core\ai_client.py:134: ['・・・, '・ｸ・・]
+  prompt = f"・・・・ｸ・・ {inquiry_text}"
+
+.\app\core\ai_client.py:136: ['・ｵ・', '・晧┳', '・肥ｲｭ']
+  # ・ｵ・ ・晧┳ ・肥ｲｭ
+
+.\app\core\ai_client.py:145: ['・ｰ・ｼ', '甯護恭']
+  # ・ｰ・ｼ 甯護恭
+
+.\app\core\ai_client.py:149: ['﨑・・', '﨑・糖', '・ｰ・ｸ・・, '・ｴ・･']
+  # 﨑・・ 﨑・糖 ・ｰ・ｸ・・・ｴ・･
+
+.\app\core\ai_client.py:154: ['・ｰ夋']
+  result.setdefault("category", "・ｰ夋")
+
+.\app\core\ai_client.py:162: ['・ｰ夋']
+  "category": "・ｰ夋",
+
+.\app\core\ai_client.py:171: ['・・・, '・ｸ・・, '・ｴ・ｩ・・, '・・・﨑們流', '・被ム・ｰ・ｴ奓ｰ', '・ｴ奛語ｳ・ｬ', '・川・, '夋懋ｷｸ', '・ｰ・・懍怱', '・ｼ', '・倆劍﨑ｩ・壱共']
+  ・・・・ｸ・・・ｴ・ｩ・・・・・﨑們流 ・被ム・ｰ・ｴ奓ｰ(・ｴ奛語ｳ・ｬ, ・川・ 夋懋ｷｸ, ・ｰ・・懍怱)・ｼ ・倆劍﨑ｩ・壱共.
+
+.\app\core\ai_client.py:172: ['・ｴ・・, '・ｼ・・, '・俯ｦｬ', '・卓羅・川・', '・ｬ・ｩ・ｩ・壱共']
+  Sync Bot・ｴ・・・ｼ・・・俯ｦｬ ・卓羅・川・ ・ｬ・ｩ・ｩ・壱共.
+
+.\app\core\ai_client.py:176: ['・ｼ・俯ｬｸ・・]
+  "category": "・ｼ・俯ｬｸ・・,
+
+.\app\core\ai_client.py:179: ['奛護侃孖ｸ']
+  "tags": ["奛護侃孖ｸ"],
+
+.\app\core\ai_client.py:194: ['・瀧況', '嶸菩享']
+  "JSON ・瀧況 嶸菩享:\n"
+
+.\app\core\ai_client.py:213: ['・ｰ・ｸ・・, '・ｴ・･']
+  # ・ｰ・ｸ・・・ｴ・･
+
+.\app\core\ai_client.py:232: ['﨑們怱', '嶸ｸ嶹們┳・・, '・・紛', '・・﨑ｩ・壱共']
+  """﨑們怱 嶸ｸ嶹們┳・・・・紛 ・・﨑ｩ・壱共."""
+
+.\app\core\ai_client.py:235: ['・ｸ・､奓ｴ・､', '・晧┳']
+  # ・ｸ・､奓ｴ・､ ・晧┳
+
+.\app\core\config.py:7: ['・､・・, '・川・', '・・ｸ・ｴ']
+  # Supabase ・､・・(env・川・ ・・ｸ・ｴ)
+
+.\app\core\config.py:13: ['・､・・]
+  # Yamato API ・､・・
+
+.\app\core\rakuten_client.py:14: ['・ｼ・奛・, '・懍侠', '・', '奝ｵ・﨑俯株', '增ｴ・ｼ・ｴ・ｸ孖ｸ・・笈・､']
+  ・ｼ・奛・RMS API (・懍侠 InquiryManagementAPI) ・ 奝ｵ・﨑俯株 增ｴ・ｼ・ｴ・ｸ孖ｸ・・笈・､.
+
+.\app\core\rakuten_client.py:15: ['・・', '・懍侠', '尞ｬ・ｷ・・, '・ｬ・ｩ﨑俯ｩｰ', '・罷糖尞ｬ・ｸ孖ｸ・ｼ', '嶸ｸ・懦鮒・壱共']
+  XML ・・ ・懍侠 JSON 尞ｬ・ｷ・・・ｬ・ｩ﨑俯ｩｰ inquirymng-api ・罷糖尞ｬ・ｸ孖ｸ・ｼ 嶸ｸ・懦鮒・壱共.
+
+.\app\core\rakuten_client.py:24: ['・懍侠', '・罷糖尞ｬ・ｸ孖ｸ']
+  # ・懍侠 Inquiry Management API ・罷糖尞ｬ・ｸ孖ｸ
+
+.\app\core\rakuten_client.py:26: ['・ｵ・', '增ｴ・ｼ・ｴ・ｸ孖ｸ', '・ｰ・ｰ', '・ｬ・ｬ・ｩ・ｼ・・, '・ｱ・･', '嵂･・・]
+  # ・ｵ・ HTTP 增ｴ・ｼ・ｴ・ｸ孖ｸ (TCP ・ｰ・ｰ ・ｬ・ｬ・ｩ・ｼ・・・ｱ・･ 嵂･・・
+
+.\app\core\rakuten_client.py:30: ['・ｵ・', '增ｴ・ｼ・ｴ・ｸ孖ｸ・ｼ', '・倆劍﨑ｩ・壱共', '・・愍・ｴ', '・壱｡・, '・晧┳﨑ｩ・壱共']
+  """・ｵ・ HTTP 增ｴ・ｼ・ｴ・ｸ孖ｸ・ｼ ・倆劍﨑ｩ・壱共. ・・愍・ｴ ・壱｡・・晧┳﨑ｩ・壱共."""
+
+.\app\core\rakuten_client.py:36: ['・ｵ・', '增ｴ・ｼ・ｴ・ｸ孖ｸ・ｼ', '・ｫ・ｵ・壱共']
+  """・ｵ・ HTTP 增ｴ・ｼ・ｴ・ｸ孖ｸ・ｼ ・ｫ・ｵ・壱共."""
+
+.\app\core\rakuten_client.py:43: ['・ｼ・奛・, '・罹ｶ奓ｰ', '・ｨ・', '寬們擽・・・, '・ｸ・・, '・ｩ・晧揆', '・們ｧ啄鮒・壱共', '・・徐・ｰ']
+  ・ｼ・奛・RMS・罹ｶ奓ｰ ・ｨ・ 寬們擽・・・・ｸ・・・ｩ・晧揆 ・們ｧ啄鮒・壱共. (・・徐・ｰ Pagination)
+
+.\app\core\rakuten_client.py:74: ['・瀧況', '嶸・椪', '寬們擽・', '・ｸ・・, '・ｴ']
+  print(f"  [API] ・瀧況: totalPages={total_pages}, 嶸・椪 寬們擽・ ・ｸ・・{raw_count}・ｴ", flush=True)
+
+.\app\core\rakuten_client.py:79: ['・・ｳ・, '・ｴ']
+  print(f"  [API] {current_page}繝壹・繧ｸ螳御ｺ・(譛ｪ霑比ｿ｡ ・・ｳ・ {len(all_inquiries)}・ｴ)", flush=True)
+
+.\app\core\rakuten_client.py:87: ['・們ｧ・, '・・｣・, '・・, '・ｴ']
+  print(f"  [API] ・們ｧ・・・｣・ ・・譛ｪ霑比ｿ｡ {len(all_inquiries)}・ｴ", flush=True)
+
+.\app\core\rakuten_client.py:90: ['・ｰ・ｰ', '・､甯ｨ']
+  print(f"  笶・[API] ・ｰ・ｰ ・､甯ｨ: {e}", flush=True)
+
+.\app\core\rakuten_client.py:97: ['・・簿頗', '・ｸ・們乱', '・ｵ・・・, '・懍・﨑ｩ・壱共']
+  ・・簿頗 ・ｸ・們乱 ・ｵ・・・・懍・﨑ｩ・壱共.
+
+.\app\core\rakuten_client.py:98: ['・ｵ・・, '・ｸ・・]
+  ・ｵ・・・ｸ・・ POST https://api.rms.rakuten.co.jp/es/1.0/inquirymng-api/inquiry/reply
+
+.\app\core\rakuten_client.py:108: ['・ｸ・・, '・・, '・ｵ・', '・・・', '・・]
+  logger.info(f"豆 [Rakuten API] ・ｸ・・ID {inquiry_id} (Shop: {shop_id}) ・・・ｵ・ ・・・ ・・..")
+
+.\app\core\rakuten_client.py:113: ['・ｵ・', '・・・', '・ｱ・ｵ']
+  logger.info(f"笨・[Rakuten API] ・ｵ・ ・・・ ・ｱ・ｵ: {inquiry_id}")
+
+.\app\core\rakuten_client.py:116: ['・ｵ・', '・・・', '・､甯ｨ']
+  logger.error(f"笶・[Rakuten API] ・ｵ・ ・・・ ・､甯ｨ ({res.status_code}): {res.text}")
+
+.\app\core\rakuten_client.py:119: ['・懍・', '・・, '・溢匣', '・懍・']
+  logger.error(f"笶・[Rakuten API] ・懍・ ・・・溢匣 ・懍・: {e}")
+
+.\app\core\rakuten_client.py:124: ['・ｼ・ｸ・逸从・ｼ', '・ｰ・們愍・・, '・ｼ・奛・, '・川・', '・ｼ・ｸ', '・・┷', '・簿ｳｴ・ｼ', '・・ｸ・ｵ・壱共']
+  ・ｼ・ｸ・逸从・ｼ ・ｰ・們愍・・・ｼ・奛・Order API v2.0・川・ ・ｼ・ｸ ・・┷ ・簿ｳｴ・ｼ ・・ｸ・ｵ・壱共.
+
+.\app\core\rakuten_client.py:130: ['・川・', '﨑・・', '・緋ｵｬ﨑俯株', '・・・, '・簿ｳｴ']
+  "version": 7  # Rakuten API v2.0・川・ 﨑・・ ・緋ｵｬ﨑俯株 ・・・・簿ｳｴ
+
+.\app\core\rakuten_client.py:134: ['・ｼ・ｸ・逸从', '・・┷', '・ｰ巐・, '・罹巡']
+  logger.info(f"藤 [Rakuten Order API] ・ｼ・ｸ・逸从 {order_number} ・・┷ ・ｰ巐・・罹巡...")
+
+.\app\core\rakuten_client.py:138: ['・瀧況', '・罷糖']
+  logger.info(f"踏 [Rakuten Order API] ・瀧況 ・罷糖: {res.status_code}")
+
+.\app\core\rakuten_client.py:141: ['・・誤ｬｸ・・, '・ｬ・・, '・・擽', '・ｾ・ｰ', '・罹巡']
+  # ・・誤ｬｸ・・・ｬ・・・・擽 ・ｾ・ｰ ・罹巡
+
+.\app\core\rakuten_client.py:146: ['・ｼ・ｸ', '・ｰ・ｴ奓ｰ・ｼ', '・ｾ・・, '・・, '・・慣・壱共']
+  logger.warning(f"笞・・[Rakuten Order API] ・ｼ・ｸ ・ｰ・ｴ奓ｰ・ｼ ・ｾ・・・・・・慣・壱共: {data}")
+
+.\app\core\rakuten_client.py:149: ['・ｰ巐・, '・､甯ｨ']
+  logger.error(f"笶・[Rakuten Order API] ・ｰ巐・・､甯ｨ: {res.text}")
+
+.\app\core\rakuten_client.py:152: ['・溢匣', '・懍・']
+  logger.error(f"笶・[Rakuten Order API] ・溢匣 ・懍・: {e}")
+
+.\app\core\rakuten_client.py:157: ['・ｼ・奛・, '・瀧況・・, '甯護恭﨑ｩ・壱共']
+  ・ｼ・奛・API ・瀧況・・甯護恭﨑ｩ・壱共.
+
+.\app\core\rakuten_client.py:158: ['甯護・']
+  UNICONA 譛ｪ霑比ｿ｡ = noMerchantReply(API) + isCompleted=false(甯護・)
+
+.\app\core\rakuten_client.py:164: ['・瀧況', '・ｴ', '﨑・┣', '・・圸']
+  print(f"  [Parser] API ・瀧況 {len(inquiry_list)}・ｴ (isCompleted 﨑・┣ ・・圸)", flush=True)
+
+.\app\core\rakuten_client.py:169: ['・懍侃奛・, '・尖徐・・｣誤頗', '・ｸ・・, '・懍匣']
+  # isCompleted=true 竊・・懍侃奛・・尖徐・・｣誤頗 ・ｸ・・・懍匣
+
+.\app\core\rakuten_client.py:174: ['・ｼ・ｸ']
+  print(f"    泙 #{inq_no} | {item.get('userName', 'N/A')} | ・ｼ・ｸ: {item.get('orderNumber', 'N/A')}", flush=True)
+
+.\app\core\rakuten_client.py:191: ['・ｰ・ｼ', '・ｴ', '・ｴ', '・懍匣']
+  print(f"  [Parser] ・ｰ・ｼ: 譛ｪ霑比ｿ｡ {len(inquiries)}・ｴ (螳御ｺ・{skipped}・ｴ ・懍匣)", flush=True)
+
+.\app\core\rakuten_client.py:194: ['・､甯ｨ']
+  print(f"  笶・[Parser] ・､甯ｨ: {e}", flush=True)
+
+.\app\core\rakuten_client.py:199: ['・ｼ・奛・, '・ｼ', '奝ｵ﨑ｴ', '・・宙・・, '・・┷', '・､・・, '・ｰ・ｬ・川擽・・, '・､﨑・, '・ｱ', '・・, '・・ｸ・ｵ・壱共']
+  [v2.0] ・ｼ・奛・Item API・ｼ 奝ｵ﨑ｴ ・・宙・・・・┷ ・､・・・ｰ・ｬ・川擽・・・､﨑・・ｱ)・・・・ｸ・ｵ・壱共.
+
+.\app\core\rakuten_client.py:210: ['・溢匣', '・懍・']
+  logger.error(f"櫨 [Rakuten Item API] ・溢匣 ・懍・: {e}")
+
+.\app\core\rakuten_client.py:216: ['孖ｹ・・, '・・宙', '・・, '・削復', '・ｨ・', '・ｩ・晧揆', '・・ｸ・ｵ・壱共']
+  [v2.1] 孖ｹ・・・・宙(manageNumber)・・・削復 ・ｨ・ SKU(variantId) ・ｩ・晧揆 ・・ｸ・ｵ・壱共.
+
+.\app\core\rakuten_client.py:230: ['・溢匣', '・懍・']
+  logger.error(f"櫨 [Rakuten Variant List] ・溢匣 ・懍・: {e}")
+
+.\app\core\rakuten_client.py:236: ['・ｼ・奛・, '・ｼ', '奝ｵ﨑ｴ', '孖ｹ・・, '・・, '嶸・椪', '・・ｩ', '・ｬ・・ｼ', '・ｰ巐醐鮒・壱共']
+  [v2.1] ・ｼ・奛・Inventory API・ｼ 奝ｵ﨑ｴ 孖ｹ・・SKU・・嶸・椪 ・・ｩ ・ｬ・・ｼ ・ｰ巐醐鮒・壱共.
+
+.\app\core\rakuten_client.py:237: ['・一ｳｼ', '・尖洳', '・懍・', '・・, '・・, '・・ｰ', '弡・, '・罹劇', '巐・, '・ｬ・罹巡﨑ｩ・壱共']
+  429(QPS ・一ｳｼ) ・尖洳 ・懍・ ・・1・・・・ｰ 弡・・罹劇 1巐・・ｬ・罹巡﨑ｩ・壱共.
+
+.\app\core\rakuten_client.py:252: ['・瀧況', '・ｰ・ｴ奓ｰ']
+  logger.info(f"投 [Inventory Debug] ・瀧況 ・ｰ・ｴ奓ｰ: {data}")
+
+.\app\core\rakuten_client.py:253: ['・懋ｲｩ', '﨑・糖', '・ｬ・ｩ', '嶸ｹ・', '嶹菩攤']
+  # v2.1 ・懋ｲｩ: inventoryCount 﨑・糖 ・ｬ・ｩ (嶸ｹ・ quantity 嶹菩攤)
+
+.\app\core\rakuten_client.py:256: ['﨑們怱', '嶸ｸ嶹們┳', '・ｴ增ｬ']
+  count = data.get("quantity") # 﨑們怱 嶸ｸ嶹們┳ ・ｴ增ｬ
+
+.\app\core\rakuten_client.py:260: ['・一ｳｼ', '・・, '弡・, '・ｬ・罹巡﨑ｩ・壱共']
+  logger.warning(f"笞・・[Rakuten Inventory] QPS ・一ｳｼ (429). 1・・弡・・ｬ・罹巡﨑ｩ・壱共... ({manage_number}/{variant_id})")
+
+.\app\core\rakuten_client.py:264: ['・一ｳｼ', '・・・]
+  logger.error(f"笶・[Rakuten Inventory] QPS ・一ｳｼ ・・・ {res.text}")
+
+.\app\core\rakuten_client.py:266: ['・ｴ・ｬ﨑們ｧ', '・危株']
+  logger.warning(f"笞・・[Rakuten Inventory v2.1] ・ｴ・ｬ﨑們ｧ ・危株 SKU: {manage_number}/{variant_id}")
+
+.\app\core\rakuten_client.py:269: ['・､・・]
+  logger.error(f"笶・[Rakuten Inventory v2.1] ・､・・ {res.status_code} {res.text}")
+
+.\app\core\rakuten_client.py:272: ['・溢匣', '・懍・']
+  logger.error(f"櫨 [Rakuten Inventory v2.1] ・溢匣 ・懍・: {e}")
+
+.\app\core\security.py:7: ['增ｴ・ｼ・ｴ・ｸ孖ｸ・川・', '・・峡・幗捩', '奝增ｰ・・, '・罹ｲ・卿・川・', '・・晨葺・', '・ｴ・ｩ', '・ｼ', '・倆劍﨑ｩ・壱共']
+  增ｴ・ｼ・ｴ・ｸ孖ｸ・川・ ・・峡・幗捩 Supabase JWT 奝增ｰ・・・罹ｲ・卿・川・ ・・晨葺・ Payload(・ｴ・ｩ)・ｼ ・倆劍﨑ｩ・壱共.
+
+.\app\core\security.py:10: ['・懍侠', '嵓・｡懍晨敢・・, '奝增ｰ', '・罹ｪ・乱', '・・', '・ｱ・・, '・・劇・ｭ', '墲､・ｼ', '・ｬ・ｩ﨑ｩ・壱共']
+  # Supabase ・懍侠 嵓・｡懍晨敢・・奝增ｰ ・罹ｪ・乱 HS256 ・・ ES256 ・ｱ・・・・劇・ｭ 墲､・ｼ ・ｬ・ｩ﨑ｩ・壱共.
+
+.\app\core\security.py:11: ['・ｰ・ｼ・・, '・ｱ・罷糖', '・懦〓・ｿ・ｼ・・, '・・・, '・ｵ嶸ｸ嶹被葺・', '・伎ｳ', '・ｴ・ｩ', '・・, '・ｰ・', '・肥ｶ懦復', '・､']
+  # ・ｰ・ｼ・・・ｱ・罷糖 ・懦〓・ｿ・ｼ・・・・・・ｵ嶸ｸ嶹被葺・ ・伎ｳ, ・ｴ・ｩ(Payload)・・・ｰ・ ・肥ｶ懦復 ・､
+
+.\app\core\security.py:12: ['・､・・, '奝增ｰ', '・巐ｨ・ｱ・', '・ｴ弡・, '・ｼ', '嶸ｸ・懦腹', '・・, '・', '・・', '・・晨葺・・｡・, '・・桷﨑ｩ・壱共']
+  # ・､・・奝增ｰ ・巐ｨ・ｱ・ ・ｴ弡・PostgREST API・ｼ 嶸ｸ・懦腹 ・・DB・ ・・ ・・晨葺・・｡・・・桷﨑ｩ・壱共.
+
+.\app\core\shop_api.py:9: ['・ｼ・奛・, '・ｼ弡・, '・ｱ', '・・, '嵓誤椨尞ｼ・・｡・, '・ｸ・', '・懋ｲｩ・ｴ', '・､・ｴ・・・]
+  ・ｼ・奛・ ・ｼ弡・・ｱ ・・嵓誤椨尞ｼ・・｡・・ｸ・ API ・懋ｲｩ・ｴ ・､・ｴ・・・
+
+.\app\core\shop_api.py:10: ['・ｵ奝ｵ', '・ｸ奓ｰ寬們擽・､・ｼ', '奝ｵ﨑ｴ', '・懍・', '・懍ｧ・揆', '・肥メ嶹被葺・・, '・ｴ・啄┣', '增ｴ・們侃・・笈・､']
+  ・ｵ奝ｵ ・ｸ奓ｰ寬們擽・､・ｼ 奝ｵ﨑ｴ ・懍・ ・懍ｧ・揆 ・肥メ嶹被葺・・・ｴ・啄┣ 增ｴ・們侃・・笈・､.
+
+.\app\core\shop_api.py:16: ['嵓誤椨尞ｼ・・, '・懋ｲｩ・・, '・樌ｶｰ', '・肥ｲｭ・・, '・・ｬ・・, '・ｭ﨑・・, '﨑ｩ・壱共']
+  嵓誤椨尞ｼ・・・懋ｲｩ・・・樌ｶｰ HTTP ・肥ｲｭ・・・・ｬ・・・ｭ﨑・・﨑ｩ・壱共.
+
+.\app\core\shop_api.py:18: ['・懍・', '・罹巡', '・・峡', '・・・, '・ｸ・・]
+  logger.info(f"噫 [{platform.upper()}] API ・懍・ ・罹巡! (・・峡 ・・・・ｸ・・ID: {rakuten_inquiry_id})")
+
+.\app\core\shop_api.py:22: ['・､・・, '・ｼ・奛・, '增ｴ・ｼ・ｴ・ｸ孖ｸ', '嶸ｸ・・]
+  # ・､・・・ｼ・奛・增ｴ・ｼ・ｴ・ｸ孖ｸ 嶸ｸ・・
+
+.\app\core\shop_api.py:24: ['・ｵ', '・', '・・愍・ｴ', '・尖洳', '・ｼ・奛川捩', '﨑・・']
+  # ・ｵ ID・ ・・愍・ｴ ・尖洳 (・ｼ・奛川捩 﨑・・)
+
+.\app\core\shop_api.py:47: ['・ｰ・ｸ', '・俯ｦｬ', '・ｱ', '嶸ｹ・', '・ｸ・・・, '嵓誤椨尞ｼ']
+  # ・ｰ・ｸ ・俯ｦｬ (Amazon ・ｱ 嶸ｹ・ ・ｸ・・・嵓誤椨尞ｼ)
+
+.\app\core\shop_api.py:49: ['・・ｧ・, '・ｬ嶸・据・', '・喜捩', '嵓誤椨尞ｼ', '嶸ｸ・懍桿・壱共']
+  logger.warning(f"笞・・[{platform}] ・・ｧ・・ｬ嶸・据・ ・喜捩 嵓誤椨尞ｼ API 嶸ｸ・懍桿・壱共.")
+
+.\app\core\yamato_client.py:12: ['・ｼ・逸・', '・ｴ・・, '・・罹└・・, '・､・・ｦ・, '增ｴ・ｼ・ｴ・ｸ孖ｸ・・笈・､']
+  ・ｼ・逸・ ・ｴ・・・・罹└・・・､・・ｦ・ Open API 增ｴ・ｼ・ｴ・ｸ孖ｸ・・笈・､.
+
+.\app\core\yamato_client.py:13: ['・ｼ', '奝ｵ﨑ｴ', '・ｴ・・, '嶹俾ｲｽ・・, '・罷糖尞ｬ・ｸ孖ｸ・ｼ', '・尖徐・ｼ・・, '・ｾ・・, '奝ｵ・﨑ｩ・壱共']
+  OIDC Discovery・ｼ 奝ｵ﨑ｴ ・ｴ・・嶹俾ｲｽ・・・罷糖尞ｬ・ｸ孖ｸ・ｼ ・尖徐・ｼ・・・ｾ・・奝ｵ・﨑ｩ・壱共.
+
+.\app\core\yamato_client.py:21: ['・ｰ・ｸ', '・・ｴ・､']
+  # ・ｰ・ｸ ・・ｴ・､ URL
+
+.\app\core\yamato_client.py:34: ['・ｼ', '奝ｵ﨑ｴ', '・倣剳﨑・, '・罷糖尞ｬ・ｸ孖ｸ', '・ｼ・誤･ｼ', '・・ｸ・ｵ・壱共']
+  OIDC Discovery・ｼ 奝ｵ﨑ｴ ・倣剳﨑・・罷糖尞ｬ・ｸ孖ｸ ・ｼ・誤･ｼ ・・ｸ・ｵ・壱共.
+
+.\app\core\yamato_client.py:43: ['奝增ｰ', '・罷糖尞ｬ・ｸ孖ｸ', '・懋ｲｬ']
+  logger.info(f"剥 [Yamato Discovery] 奝增ｰ ・罷糖尞ｬ・ｸ孖ｸ ・懋ｲｬ: {self.token_endpoint}")
+
+.\app\core\yamato_client.py:46: ['・､甯ｨ', '・・, '・ｰ・ｸ・・, '・罹巡', '岺懍､', '・ｽ・・]
+  # Discovery ・､甯ｨ ・・・ｰ・ｸ・・・罹巡 (Gluu/oxAuth 岺懍､ ・ｽ・・
+
+.\app\core\yamato_client.py:48: ['・､甯ｨ', '・ｰ・ｸ', '・ｽ・・, '・ｬ・ｩ']
+  logger.warning(f"笞・・[Yamato Discovery] ・､甯ｨ({res.status_code}), ・ｰ・ｸ ・ｽ・・・ｬ・ｩ: {self.token_endpoint}")
+
+.\app\core\yamato_client.py:51: ['夋・・符・・, '・ｱ', '・懍・', '・・, '・ｰ・ｸ・・]
+  # 夋・・符・・・ｱ ・懍・ ・・・ｰ・ｸ・・
+
+.\app\core\yamato_client.py:53: ['・溢匣', '・懍・', '・ｰ・ｸ', '・ｽ・・, '・ｬ・ｩ']
+  logger.error(f"櫨 [Yamato Discovery] ・溢匣 ・懍・: {e}, ・ｰ・ｸ ・ｽ・・・ｬ・ｩ")
+
+.\app\core\yamato_client.py:58: ['・ｼ', '・ｬ・ｩ﨑們流', '・・, '・懋ｸ雅ｰ幗慣・壱共']
+  Client Credentials Flow・ｼ ・ｬ・ｩ﨑們流 Access Token・・・懋ｸ雅ｰ幗慣・壱共.
+
+.\app\core\yamato_client.py:61: ['・・攷']
+  logger.error("笶・[Yamato Auth] Site ID/Password ・・攷")
+
+.\app\core\yamato_client.py:67: ['嵭､・・]
+  # Basic Auth 嵭､・・
+
+.\app\core\yamato_client.py:88: ['・懋ｸ・, '・ｱ・ｵ']
+  logger.info("笨・[Yamato Auth] Access Token ・懋ｸ・・ｱ・ｵ")
+
+.\app\core\yamato_client.py:91: ['・､甯ｨ']
+  logger.error(f"笶・[Yamato Auth] ・､甯ｨ: {res.status_code} - {res.text}")
+
+.\app\core\yamato_client.py:94: ['・溢匣']
+  logger.error(f"櫨 [Yamato Auth] ・溢匣: {e}")
+
+.\app\core\yamato_client.py:99: ['・ｼ・ｸ・逸从・ｼ', '・ｰ・們愍・・, '・ｼ・逸・', '・､・懋ｰ・, '・肥・, '・簿ｳｴ・ｼ', '・・ｸ・ｵ・壱共']
+  ・ｼ・ｸ・逸从・ｼ ・ｰ・們愍・・・ｼ・逸・ ・､・懋ｰ・・肥・・簿ｳｴ・ｼ ・・ｸ・ｵ・壱共.
+
+.\app\core\yamato_client.py:103: ['・ｸ・・, '・､甯ｨ']
+  return {"status": "error", "message": "・ｸ・・・､甯ｨ"}
+
+.\app\core\yamato_client.py:105: ['・､・・, '嶸ｸ・・, '・ｽ・罹株', '・ｬ・卓・・・, '・樌ｶｰ', '・・ｰ﨑俾ｲ・, '・・・]
+  # ・､・・API 嶸ｸ・・(・ｽ・罹株 ・ｬ・卓・・・・樌ｶｰ ・・ｰ﨑俾ｲ・・・・
+
+.\app\core\yamato_client.py:106: ['・､・・, '・ｬ・卓・', '・・, '・尖株', '・ｽ・・, '嶹菩攤', '﨑・囈']
+  # TODO: ・､・・・ｬ・卓・ PDF・・'Search' ・尖株 'Shipment Status' ・ｽ・・嶹菩攤 﨑・囈
+
+.\app\core\yamato_client.py:115: ['﨑・糖', '・・ｳ・', '・､・ｭ', '甯誤攵・ｸ奓ｰ', '・・┷・懍乱', '・ｰ・ｼ', '・尖株', '・・, '・們・, '・・･']
+  # '險倅ｺ・ 﨑・糖(・・ｳ・) ・､・ｭ 甯誤攵・ｸ奓ｰ (・・┷・懍乱 ・ｰ・ｼ 'remarks' ・尖株 'note'・・・們・・・･)
+
+.\app\core\yamato_client.py:124: ['・ｼ・逸・', '・瀧況', '甯護恭', '・､・・, '・ｬ・・, '・ｰ・・]
+  # ・ｼ・逸・ ・瀧況 甯護恭 (・､・・・ｬ・・・ｰ・・
+
+.\app\core\yamato_client.py:127: ['・ｰ・｡', '・ｰ・ｴ奓ｰ', '・・搆']
+  return {"status": "not_found", "message": "・ｰ・｡ ・ｰ・ｴ奓ｰ ・・搆"}
+
+.\app\core\yamato_client.py:138: ['・ｰ巐・, '・､甯ｨ']
+  return {"status": "error", "message": f"・ｰ巐・・､甯ｨ ({res.status_code})"}
+
+.\app\core\yamato_client.py:140: ['・溢匣']
+  logger.error(f"櫨 [Yamato API] ・溢匣: {e}")
+
+.\app\core\yamato_client.py:141: ['・ｰ・ｰ', '・､・・]
+  return {"status": "error", "message": "・ｰ・ｰ ・､・・}
+
+.\app\models\inquiries.py:6: ['・ｸ・・, '・罹ｪｩ']
+  title: str = Field(..., description="・ｸ・・・罹ｪｩ", min_length=1)
+
+.\app\models\inquiries.py:7: ['・ｸ・・, '・ｴ・ｩ・・┷']
+  content: str = Field(..., description="・ｸ・・・ｴ・ｩ・・┷", min_length=5)
+
+.\app\models\inquiries.py:8: ['・一ｸｰ', '奛護侃孖ｸ', '・ｩ・・擽・・・, '・・椈', '・庭豆・', '・・倣葺・', '・喜愍・ｴ', '・ｰ・ｴ奓ｰ', '・ｬ・ｩ']
+  # ・一ｸｰ 奛護侃孖ｸ ・ｩ・・擽・・・・・椈 ・庭豆・ ・・倣葺・ ・喜愍・ｴ Mock ・ｰ・ｴ奓ｰ ・ｬ・ｩ
+
+.\app\templates\inquiries.html:69: ['・・圸']
+  <button class="btn-primary" onclick="applyFilters()">・・圸</button>
+
+.\app\workers\sync_bot.py:13: ['・､・・・洳', '・・溜', '・ｸ・､奓ｴ・､']
+  # ・､・・・洳 ・・溜 ・ｸ・､奓ｴ・､
+
+.\app\workers\sync_bot.py:19: ['・ｨ・ｼ', '・作攪', '・ｩ・晝ｳｼ', '・ｼ', '・・ｰ﨑們流', '・呟ｸｰ嶹被鮒・壱共']
+  ・ｨ・ｼ ・作攪 RMS 譛ｪ霑比ｿ｡ ・ｩ・晝ｳｼ DB・ｼ ・・ｰ﨑們流 ・呟ｸｰ嶹被鮒・壱共.
+
+.\app\workers\sync_bot.py:20: ['・尖ｧ・, '・壱株', '・ｸ・・, '・・・]
+  - RMS・尖ｧ・・壱株 ・ｸ・・竊・INSERT (・・・
+
+.\app\workers\sync_bot.py:21: ['・尖ｧ・, '・壱株', '・ｸ・・, '・川・', '・・｣・, '・ｵ・・ｨ']
+  - DB・尖ｧ・・壱株 ・ｸ・・竊・DELETE (RMS・川・ ・・｣・・ｵ・・ｨ)
+
+.\app\workers\sync_bot.py:22: ['・卓ｪｽ', '・ｨ・・, '・壱株', '・ｸ・・, '・・']
+  - ・卓ｪｽ ・ｨ・・・壱株 ・ｸ・・竊・・・
+
+.\app\workers\sync_bot.py:31: ['・川・', '嶸・椪', '・ｩ・・, '・們ｧ・]
+  # 1. RMS・川・ 嶸・椪 譛ｪ霑比ｿ｡ ・ｩ・・・們ｧ・
+
+.\app\workers\sync_bot.py:42: ['・ｴ', '・們侠']
+  print(f"  [RMS] {shop_name}: 譛ｪ霑比ｿ｡ {len(rms_ids)}・ｴ ・們侠", flush=True)
+
+.\app\workers\sync_bot.py:44: ['・川・', '嶸・椪', '﨑ｴ・ｹ', '・作攪', '・ｸ・・, '・ｩ・・, '・ｰ巐・]
+  # 2. DB・川・ 嶸・椪 﨑ｴ・ｹ ・作攪 ・ｸ・・・ｩ・・・ｰ巐・
+
+.\app\workers\sync_bot.py:52: ['・ｰ・ｴ', '・ｴ', '・ｴ・']
+  print(f"  [DB]  {shop_name}: ・ｰ・ｴ {len(db_ids)}・ｴ ・ｴ・", flush=True)
+
+.\app\workers\sync_bot.py:54: ['・・ｰ', '・・ｵ・]
+  # 3. ・・ｰ ・・ｵ・
+
+.\app\workers\sync_bot.py:55: ['・尖ｧ・, '・溢搆', '・・・]
+  to_insert = rms_ids - db_ids    # RMS・尖ｧ・・溢搆 竊・・・・
+
+.\app\workers\sync_bot.py:56: ['・尖ｧ・, '・溢搆', '・川・', '・・｣誤勢']
+  to_delete = db_ids - rms_ids    # DB・尖ｧ・・溢搆 竊・RMS・川・ ・・｣誤勢
+
+.\app\workers\sync_bot.py:57: ['・卓ｪｽ', '・ｨ・・, '・・']
+  unchanged = rms_ids & db_ids    # ・卓ｪｽ ・ｨ・・竊・・・
+
+.\app\workers\sync_bot.py:59: ['・・ｰ', '・・・, '・ｴ', '・ｭ・・, '・ｴ', '・・', '・ｴ']
+  print(f"  [・・ｰ] ・・・{len(to_insert)}・ｴ, ・ｭ・・{len(to_delete)}・ｴ, ・・={len(unchanged)}・ｴ", flush=True)
+
+.\app\workers\sync_bot.py:61: ['・・・, '・ｸ・・]
+  # 4. ・・・・ｸ・・INSERT
+
+.\app\workers\sync_bot.py:86: ['・溢譜', '・晧┳', '・ｴ奛語ｳ・ｬ', '・川・, '・・・']
+  # AI ・溢譜 ・晧┳ + ・ｴ奛語ｳ・ｬ/・川・・・・
+
+.\app\workers\sync_bot.py:94: ['・ｴ奛語ｳ・ｬ', '・川・, '夋懋ｷｸ', '・ｰ・・懍怱', '・・魂・ｴ孖ｸ']
+  # ・ｴ奛語ｳ・ｬ, ・川・ 夋懋ｷｸ, ・ｰ・・懍怱 ・・魂・ｴ孖ｸ
+
+.\app\workers\sync_bot.py:103: ['・溢譜', '・・･']
+  # AI ・溢譜 ・・･
+
+.\app\workers\sync_bot.py:111: ['・溢譜', '・晧┳', '・・｣・]
+  print(f"    統 AI ・溢譜 ・晧┳ ・・｣・#{rakuten_id}", flush=True)
+
+.\app\workers\sync_bot.py:113: ['・溢譜', '・晧┳', '・､甯ｨ']
+  print(f"    笞・・AI ・溢譜 ・晧┳ ・､甯ｨ #{rakuten_id}: {ai_err}", flush=True)
+
+.\app\workers\sync_bot.py:116: ['・､甯ｨ']
+  print(f"    笶・INSERT ・､甯ｨ #{rakuten_id}: {e}", flush=True)
+
+.\app\workers\sync_bot.py:118: ['・川・', '・・｣・, '・ｵ・・・, '・ｸ・・, '・・ｨ', '・ｰ・ｴ奓ｰ', '尞ｬ﨑ｨ']
+  # 5. RMS・川・ ・・｣・・ｵ・・・・ｸ・・DELETE (・・ｨ ・ｰ・ｴ奓ｰ 尞ｬ﨑ｨ)
+
+.\app\workers\sync_bot.py:122: ['・・ｨ', '・ｰ・ｴ奓ｰ', '・ｼ・', '・ｭ・・, '・ｸ・倆う', '・懍平']
+  # ・・ｨ ・ｰ・ｴ奓ｰ ・ｼ・ ・ｭ・・(・ｸ・倆う ・懍平)
+
+.\app\workers\sync_bot.py:125: ['・ｸ・・, '・ｭ・・]
+  # ・ｸ・・・ｭ・・
+
+.\app\workers\sync_bot.py:128: ['・川・', '・・｣誤勢']
+  print(f"    卵・・DELETE #{rakuten_id} (RMS・川・ ・・｣誤勢)", flush=True)
+
+.\app\workers\sync_bot.py:131: ['・､甯ｨ']
+  print(f"    笶・DELETE ・､甯ｨ #{rakuten_id}: {e}", flush=True)
+
+.\app\workers\sync_bot.py:139: ['・ｨ・', '・ｰ・・, '・作乱', '・﨑ｴ', '・・, '・倆哩﨑ｩ・壱共']
+  ・ｨ・ ・ｰ・・・作乱 ・﨑ｴ reconciliation・・・倆哩﨑ｩ・壱共.
+
+.\app\workers\sync_bot.py:141: ['・呟ｸｰ嶹・, '・懍梠']
+  print("\n[Sync] === Reconciliation ・呟ｸｰ嶹・・懍梠 ===", flush=True)
+
+.\app\workers\sync_bot.py:154: ['・・, '・・, '・懋ｲｬ']
+  print(f"[Sync] Rakuten ・・{len(rakuten_shops)}・・・懋ｲｬ", flush=True)
+
+.\app\workers\sync_bot.py:161: ['・・ｲｴ', '・滝ｳ・]
+  # ・・ｲｴ ・滝ｳ・
+
+.\app\workers\sync_bot.py:167: ['・呟ｸｰ嶹・, '・・｣・, '・・・, '・ｴ', '・ｭ・・, '・ｴ', '・・', '・ｴ']
+  summary = f"・呟ｸｰ嶹・・・｣・ ・・・{total_inserted}・ｴ, ・ｭ・・{total_deleted}・ｴ, ・・ {total_unchanged}・ｴ"
+
+.\app\workers\sync_bot.py:169: ['・尖洳', '・ｴ']
+  summary += f", ・尖洳 {total_errors}・ｴ"
+
+.\app\workers\sync_bot.py:188: ['・尖洳', '・懍・']
+  return {"summary": f"・尖洳 ・懍・: {str(e)}", "shops": [], "totals": {}}
+
+.\app\workers\sync_bot.py:193: ['・罹ｲ・, '・懍梠', '・・, '嶸ｸ・罹据・ｴ', '・､・・・洳・ｼ', '・懍梠﨑ｩ・壱共']
+  FastAPI ・罹ｲ・・懍梠 ・・嶸ｸ・罹据・ｴ ・､・・・洳・ｼ ・懍梠﨑ｩ・壱共.
+
+.\app\workers\sync_bot.py:197: ['・罹ｲ・, '・溢倣剩', '・・｣・, '・ｫ', '・溢ｧｸ', '・呟ｸｰ嶹・, '・懍梠']
+  print("[Sync Bot] ・罹ｲ・・溢倣剩 ・・｣・ ・ｫ ・溢ｧｸ ・呟ｸｰ嶹・・懍梠...", flush=True)
+
+.\app\workers\sync_bot.py:202: ['・､・・・洳', '・ｱ・・, '・・, '・・ｲｩ']
+  # ・､・・・洳 ・ｱ・・(10・・・・ｲｩ)
+
+.\app\workers\sync_bot.py:206: ['・､・・・洳', '・懍梠', '・・, '・ｼ・ｰ']
+  print("[Sync Bot] ・､・・・洳 ・懍梠 (10・・・ｼ・ｰ reconciliation)", flush=True)
+
+.\knowledge\rakuten_api_guide.md:3: ['・ｴ', '・・ｴ・罹株', '・ｼ・奛・, '・・・, '・・, '﨑ｵ・ｬ', '・・┷・ｼ', '・簿ｦｬ﨑・, '・ｸ・懍桿・壱共']
+  ・ｴ ・・ｴ・罹株 ・ｼ・奛・RMS InquiryManagementAPI(JSON ・・・・・﨑ｵ・ｬ ・・┷・ｼ ・簿ｦｬ﨑・・ｸ・懍桿・壱共.
+
+.\knowledge\rakuten_api_guide.md:5: ['・懍囈']
+  ## 1. ・懍囈
+
+.\knowledge\rakuten_api_guide.md:6: ['・ｼ・奛・, '・ｼ﨑瀧ｪｰ・・, '・・・, '・ｸ・俯･ｼ', '・ｰ巐・, '・ｵ・', '・・ｬ﨑俾ｸｰ', '・・復', '・・笈・､']
+  ・ｼ・奛・・ｼ﨑瀧ｪｰ・・・・・・ｸ・俯･ｼ ・ｰ巐・ ・ｵ・, ・・ｬ﨑俾ｸｰ ・・復 API・・笈・､.
+
+.\knowledge\rakuten_api_guide.md:8: ['・ｸ・・, '・ｩ・・, '・ｰ巐・]
+  ## 2. ・ｸ・・・ｩ・・・ｰ巐・(inquirymngapi.inquiries.get)
+
+.\knowledge\rakuten_api_guide.md:9: ['・・簿頗', '・ｰ・ｴ・・, '・橄株', '・ｸ・・, '・ｬ・､孖ｸ・ｼ', '・・ｸ・ｵ・壱共']
+  ・・簿頗 ・ｰ・ｴ・・・橄株 ・ｸ・・・ｬ・､孖ｸ・ｼ ・・ｸ・ｵ・壱共.
+
+.\knowledge\rakuten_api_guide.md:13: ['・ｼ・・, '・肥ｲｭ', '甯誤攵・ｸ奓ｰ']
+  - **・ｼ・・・肥ｲｭ 甯誤攵・ｸ奓ｰ**:
+
+.\knowledge\rakuten_api_guide.md:14: ['甯誤攵・ｸ奓ｰ・・, '夋・・, '﨑・・', '・ｬ・', '・､・・]
+  | 甯誤攵・ｸ奓ｰ・・| 夋・・| 﨑・・ ・ｬ・ | ・､・・|
+
+.\knowledge\rakuten_api_guide.md:16: ['・懍梠', '・ｼ・・]
+  | `fromDate` | date | Yes | ・懍梠 ・ｼ・・(`yyyy-MM-ddTHH:mm:ss+09:00`) |
+
+.\knowledge\rakuten_api_guide.md:17: ['・・｣・, '・ｼ・・]
+  | `toDate` | date | Yes | ・・｣・・ｼ・・(`yyyy-MM-ddTHH:mm:ss+09:00`) |
+
+.\knowledge\rakuten_api_guide.md:18: ['・､・・, '・・, '・ｸ・ｵ・', '・ｸ・・, '・・, '・倆劍']
+  | `noMerchantReply` | boolean | No | `true` ・､・・・・**・ｸ・ｵ・ ・ｸ・・*・・・倆劍 |
+
+.\knowledge\rakuten_api_guide.md:19: ['寬們擽・・ｹ', '・ｴ・・, '・ｰ・ｸ']
+  | `limit` | int | No | 寬們擽・・ｹ ・ｴ・・(1~100, ・ｰ・ｸ 10) |
+
+.\knowledge\rakuten_api_guide.md:20: ['寬們擽・', '・逸从']
+  | `page` | int | No | 寬們擽・ ・逸从 (1~10000) |
+
+.\knowledge\rakuten_api_guide.md:22: ['・ｼ・們ぎ﨑ｭ', '・', '・・, '・・ｲｩ・', '・罹劇', '・ｼ', '・ｴ・ｴ・ｬ・ｼ', '﨑ｩ・壱共']
+  - **・ｼ・們ぎ﨑ｭ**: `fromDate`・ `toDate`・・・・ｲｩ・ ・罹劇 **31・ｼ** ・ｴ・ｴ・ｬ・ｼ 﨑ｩ・壱共.
+
+.\knowledge\rakuten_api_guide.md:24: ['・ｵ・', '・ｱ・・]
+  ## 3. ・ｵ・ ・ｱ・・(inquirymngapi.reply.post)
+
+.\knowledge\rakuten_api_guide.md:25: ['孖ｹ・・, '・ｸ・們乱', '・﨑ｴ', '・ｵ・・・, '・・・﨑ｩ・壱共']
+  孖ｹ・・・ｸ・們乱 ・﨑ｴ ・ｵ・・・・・・﨑ｩ・壱共.
+
+.\knowledge\rakuten_api_guide.md:29: ['・ｼ・・]
+  - **・ｼ・・Request Body**:
+
+.\knowledge\rakuten_api_guide.md:32: ['・ｸ・俯ｲ逸从']
+  "inquiryNumber": "・ｸ・俯ｲ逸从",
+
+.\knowledge\rakuten_api_guide.md:33: ['・戦小']
+  "shopId": "・戦小ID",
+
+.\knowledge\rakuten_api_guide.md:34: ['・ｵ・', '・ｴ・ｩ', '・罹劇', '・・]
+  "message": "・ｵ・ ・ｴ・ｩ (・罹劇 2000・・",
+
+.\knowledge\rakuten_api_guide.md:38: ['・懦復', '・肥亨・・・, '尞ｬ﨑ｨ・俯株', '・', '・俯糖・・, '・ｬ・ｼ', '﨑俯ｩｰ', '・ｼ・奛・, '嵭溢圸', '・・ｩ肥攤', '・ｱ', '・・, '・・･﨑ｩ・壱共']
+  - **URL ・懦復**: ・肥亨・・・尞ｬ﨑ｨ・俯株 URL・ ・俯糖・・`https`・ｬ・ｼ 﨑俯ｩｰ ・ｼ・奛・嵭溢圸 ・・ｩ肥攤(`rakuten.co.jp` ・ｱ)・・・・･﨑ｩ・壱共.
+
+.\knowledge\rakuten_api_guide.md:40: ['・瀧況', '﨑・糖']
+  ## 4. ・瀧況 﨑・糖 (Inquiry Object)
+
+.\knowledge\rakuten_api_guide.md:41: ['・ｸ・・, '・・', '・逸从']
+  - `inquiryNumber`: ・ｸ・・・・ ・逸从
+
+.\knowledge\rakuten_api_guide.md:42: ['・・・, '・ｱ﨑ｨ']
+  - `userName`: ・・・・ｱ﨑ｨ
+
+.\knowledge\rakuten_api_guide.md:43: ['・ｸ・・, '・ｴ・ｩ']
+  - `message`: ・ｸ・・・ｴ・ｩ
+
+.\knowledge\rakuten_api_guide.md:44: ['・ｸ・・, '・ｱ・・, '・ｼ・・]
+  - `regDate`: ・ｸ・・・ｱ・・・ｼ・・
+
+.\knowledge\rakuten_api_guide.md:45: ['・俯ｦｬ', '・・｣・, '・ｬ・']
+  - `isCompleted`: ・俯ｦｬ ・・｣・・ｬ・ (true/false)
+
+.\knowledge\rakuten_api_guide.md:46: ['・・・, '・ｰ・・, '・ｬ・']
+  - `readByMerchant`: ・・・・ｰ・・・ｬ・
+
+.\knowledge\rakuten_api_guide.md:47: ['・ｰ・ｴ', '・ｵ・', '・ｩ・・, '・ｰ・ｴ']
+  - `replies`: ・ｰ・ｴ ・ｵ・ ・ｩ・・(・ｰ・ｴ)
+
+.\knowledge\rakuten_api_guide.md:49: ['・ｸ・・, '・ｩ・・]
+  ## 5. ・ｸ・・・ｩ・・
+
+.\knowledge\yamato_api_guide.md:1: ['・ｼ・逸・', '・ｴ・・, '・・罹└・・, '・､・・ｦ・, '奝ｵ﨑ｩ', '・・ｴ・・]
+  # ・ｼ・逸・ ・ｴ・・・・罹└・・・､・・ｦ・ Open API 奝ｵ﨑ｩ ・・ｴ・・
+
+.\knowledge\yamato_api_guide.md:3: ['・ｴ', '・ｸ・罹株', '・ｼ・逸・', '・ｴ・們乱・・, '・懋ｳｵ﨑俯株', '・・罹└・・, '・､・・ｦ・, '・ｰ・・, '・､嵓・, '・・, '・ｰ・｡', '・・ｬ', '・ｰ・呷揆', '・・復', '・・ｨ・懍桿・壱共']
+  ・ｴ ・ｸ・罹株 ・ｼ・逸・ ・ｴ・們乱・・・懋ｳｵ﨑俯株 '・・罹└・・・､・・ｦ・ID ・ｰ・・・､嵓・API' ・・'・ｰ・｡ ・・ｬ API' ・ｰ・呷揆 ・・復 ・・ｨ・懍桿・壱共.
+
+.\knowledge\yamato_api_guide.md:7: ['・懍侃奛・, '・懍囈']
+  ## 1. ・懍侃奛・・懍囈
+
+.\knowledge\yamato_api_guide.md:8: ['・ｩ・・, '・・罹└・・, '・､・・ｦ・, '巐護寳', '・ｸ・・, '・ｰ・・, '・・, '・ｰ・｡', '・ｼ・・, '・･・・, '・・ｽ', '・ｱ', '・罹ｹ・侃', '嶸ｸ・・]
+  - **・ｩ・・*: ・・罹└・・・､・・ｦ・巐護寳 ・ｸ・・ID ・ｰ・・ ・・・ｰ・｡ ・ｼ・・・･・・・・ｽ ・ｱ ・罹ｹ・侃 API 嶸ｸ・・
+
+.\knowledge\yamato_api_guide.md:9: ['・ｼ・・, '・ｰ・･', '・ｼ・ｸ', '・ｰ巐・, '・ｰ・｡', '・ｱ・・, '・・・', '嶹菩攤', '・們ｷｨ', '・・ｽ', '・ｱ']
+  - **・ｼ・・・ｰ・･**: ・ｼ・ｸ ・ｰ巐・ ・ｰ・｡ ・ｱ・・ ・・・ 嶹菩攤, ・們ｷｨ ・・ｽ ・ｱ
+
+.\knowledge\yamato_api_guide.md:10: ['嵓・｡懦・・・]
+  - **嵓・｡懦・・・*: OAuth 2.0 / OpenID Connect (OIDC)
+
+.\knowledge\yamato_api_guide.md:14: ['・ｸ・・, '・・, '・醐復', '・・ｬ']
+  ## 2. ・ｸ・・・・・醐復 ・・ｬ (Auth)
+
+.\knowledge\yamato_api_guide.md:16: ['・ｸ・・, '・ｩ・・]
+  ### 2.1 ・ｸ・・・ｩ・・(Flow)
+
+.\knowledge\yamato_api_guide.md:17: ['・､・・ｦ・, '・ｴ・ｩ']
+  1. **Authorization Code Flow (・､・・ｦ・・ｴ・ｩ)**
+
+.\knowledge\yamato_api_guide.md:18: ['・懍攤', '巐護寳', '・簿ｳｴ・', '尞ｬ﨑ｨ・・, '・ｰ・ｴ奓ｰ', '・戦劍', '・・, '・ｬ・ｩ']
+  - ・懍攤 巐護寳 ・簿ｳｴ・ 尞ｬ﨑ｨ・・・ｰ・ｴ奓ｰ ・戦劍 ・・・ｬ・ｩ
+
+.\knowledge\yamato_api_guide.md:19: ['・ｬ・ｩ・・, '・ｸ・・, '・・, '・醐復', '・呷攪', '・ｼ・菩擽', '尞ｬ﨑ｨ・ｨ']
+  - ・ｬ・ｩ・・・ｸ・・・・・醐復 ・呷攪 ・ｼ・菩擽 尞ｬ﨑ｨ・ｨ
+
+.\knowledge\yamato_api_guide.md:20: ['・護侃孖ｸ', '・ｴ・ｩ']
+  2. **Client Credentials Flow (・護侃孖ｸ ・ｴ・ｩ)**
+
+.\knowledge\yamato_api_guide.md:21: ['・・嚮・・, '・護侃孖ｸ', '・ｰ・ｴ奓ｰ', '・俯ｦｬ', '・・, '・ｬ・ｩ']
+  - ・・嚮・・・護侃孖ｸ) ・ｰ・ｴ奓ｰ ・俯ｦｬ ・・・ｬ・ｩ
+
+.\knowledge\yamato_api_guide.md:22: ['・ｬ・ｴ孖ｸ', '・・, '・ｸ・晤ｧ護愍・・, '奝增ｰ', '・懋ｸ・]
+  - ・ｬ・ｴ孖ｸ ・・・ｸ・晤ｧ護愍・・奝增ｰ ・懋ｸ・
+
+.\knowledge\yamato_api_guide.md:24: ['・ｼ・・, '甯誤攵・ｸ奓ｰ']
+  ### 2.2 ・ｼ・・甯誤攵・ｸ奓ｰ
+
+.\knowledge\yamato_api_guide.md:25: ['・ｴ・ｩ', '・ｬ・ｴ孖ｸ', '・ｬ・・, '・ｱ・・, '﨑・・']
+  - **client_id**: ・ｴ・ｩ ・ｬ・ｴ孖ｸ ID (・ｬ・・・ｱ・・﨑・・)
+
+.\knowledge\yamato_api_guide.md:26: ['・ｴ・ｩ', '・ｬ・ｴ孖ｸ', '甯ｨ・､・誤糖', '・ｵ奝ｵ', '・・ｰ墲､']
+  - **client_secret**: ・ｴ・ｩ ・ｬ・ｴ孖ｸ 甯ｨ・､・誤糖 (・ｵ奝ｵ ・・ｰ墲､)
+
+.\knowledge\yamato_api_guide.md:27: ['・ｸ・・, '弡・, '・護符・ｬ', '・ｬ・・, '・ｱ・晤頗', '・・ｴ・､', '・ｼ', '・ｼ・倆紛・ｼ', '﨑ｨ']
+  - **redirect_uri**: ・ｸ・・弡・・護符・ｬ URL (・ｬ・・・ｱ・晤頗 ・・ｴ・､ URL・ｼ ・ｼ・倆紛・ｼ 﨑ｨ)
+
+.\knowledge\yamato_api_guide.md:28: ['・ｬ・ｩ﨑', '・醐復', '・・, '・ｰ・｡・ｼ・罹ｳ・ｽ', '・ｱ']
+  - **scope**: ・ｬ・ｩ﨑 API ・醐復 (・・ `openid`, `profile`, ・ｰ・｡・ｼ・罹ｳ・ｽ ・ｱ)
+
+.\knowledge\yamato_api_guide.md:32: ['・罷糖尞ｬ・ｸ孖ｸ', '奛護侃孖ｸ', '嶹俾ｲｽ']
+  ## 3. API ・罷糖尞ｬ・ｸ孖ｸ (奛護侃孖ｸ 嶹俾ｲｽ)
+
+.\knowledge\yamato_api_guide.md:34: ['・ｬ・・]
+  | ・ｬ・・| URL |
+
+.\knowledge\yamato_api_guide.md:36: ['・ｸ・・, '・罹ｲ・, '・ｰ・・]
+  | **・ｸ・・・罹ｲ・(ID ・ｰ・・** | `https://test-id.kuronekoyamato.co.jp` |
+
+.\knowledge\yamato_api_guide.md:37: ['・､嵂・, '・罹ｲ・, '・們ｷｨ・・ｽ', '・ｱ']
+  | **API ・､嵂・・罹ｲ・(・們ｷｨ・・ｽ ・ｱ)** | `https://dev03-api.nrcs.kuronekoyamato.co.jp` |
+
+.\knowledge\yamato_api_guide.md:38: ['・・・, '・・ｹ・, '・夋・]
+  | **・・・API (・・ｹ・・夋・** | `https://test.e-map.ne.jp/p/yamato08test/` |
+
+.\knowledge\yamato_api_guide.md:42: ['・ｵ奝ｵ', '・懍ｹ・, '・・, '嵭､・・]
+  ## 4. ・ｵ奝ｵ ・懍ｹ・・・嵭､・・
+
+.\knowledge\yamato_api_guide.md:44: ['・肥ｲｭ', '嵭､・・]
+  ### 4.1 ・肥ｲｭ 嵭､・・
+
+.\knowledge\yamato_api_guide.md:51: ['奝增ｰ', '・・ｬ']
+  ### 4.2 奝增ｰ ・・ｬ
+
+.\knowledge\yamato_api_guide.md:52: ['嶸ｸ・・, '・・, '・ｬ・ｩ', '・巐ｨ・ｰ・・, '・ｴ・ｬ']
+  - **Access Token**: API 嶸ｸ・・・・・ｬ・ｩ (・巐ｨ・ｰ・・・ｴ・ｬ)
+
+.\knowledge\yamato_api_guide.md:53: ['・誤｣・, '・・, '・ｱ・・ｩ・ｼ・・, '・ｬ・ｩ', '巐護┳']
+  - **Refresh Token**: Access Token ・誤｣・・・・ｱ・・ｩ・ｼ・・・ｬ・ｩ (1巐護┳)
+
+.\knowledge\yamato_api_guide.md:54: ['・ｬ・ｩ・・, '・ｸ・・, '・簿ｳｴ・ｼ', '・ｴ・', '嶸菩享']
+  - **ID Token**: ・ｬ・ｩ・・・ｸ・・・簿ｳｴ・ｼ ・ｴ・ JWT 嶸菩享
+
+.\knowledge\yamato_api_guide.md:58: ['﨑ｵ・ｬ', '・懦・､']
+  ## 5. 﨑ｵ・ｬ API ・懦・､
+
+.\knowledge\yamato_api_guide.md:60: ['奝增ｰ', '・懋ｸ・, '彧尖ｦ・]
+  ### 5.1 奝增ｰ ・懋ｸ・彧尖ｦ・(Authorization Code Flow)
+
+.\knowledge\yamato_api_guide.md:61: ['・ｸ・・, '・緋ｵｬ', '嶸ｸ・・, '・懋ｷｸ・ｸ', '嶹罷ｩｴ', '岺懍亨']
+  1. **・ｸ・・・緋ｵｬ (GET)**: `/authz` 嶸ｸ・・-> ・懋ｷｸ・ｸ 嶹罷ｩｴ 岺懍亨
+
+.\knowledge\yamato_api_guide.md:62: ['・ｸ・・, '・瀧況', '・ｼ・ｬ', '・､孖ｸ・・愍・・, '・們侠']
+  2. **・ｸ・・・瀧況**: ・ｼ・ｬ ・､孖ｸ・・愍・・`code` ・們侠
+
+.\knowledge\yamato_api_guide.md:63: ['奝增ｰ', '・肥ｲｭ', '嶸ｸ・・]
+  3. **奝增ｰ ・肥ｲｭ (POST)**: `/token` 嶸ｸ・・(grant_type=authorization_code)
+
+.\knowledge\yamato_api_guide.md:64: ['奝增ｰ', '・瀧況', '・們侠']
+  4. **奝增ｰ ・瀧況**: `access_token`, `id_token`, `refresh_token` ・們侠
+
+.\knowledge\yamato_api_guide.md:66: ['嶸ｸ・・]
+  ### 5.2 API 嶸ｸ・・
+
+.\knowledge\yamato_api_guide.md:67: ['・懋ｸ雅ｰ幗捩', '・・, '嵭､・肥乱', '・ｴ・・, '・・, '・罹ｹ・侃', '・罷糖尞ｬ・ｸ孖ｸ', '・ｰ・｡', '・ｱ・・, '・們ｷｨ', '・・ｽ', '・ｱ', '嶸ｸ・・]
+  ・懋ｸ雅ｰ幗捩 `access_token`・・嵭､・肥乱 ・ｴ・・・・・罹ｹ・侃 ・罷糖尞ｬ・ｸ孖ｸ(・ｰ・｡ ・ｱ・・ ・們ｷｨ ・・ｽ ・ｱ) 嶸ｸ・・
+
+.\knowledge\yamato_api_guide.md:71: ['・ｼ・們ぎ﨑ｭ', '・卓囈']
+  ## 6. ・ｼ・們ぎ﨑ｭ (・卓囈)
+
+.\knowledge\yamato_api_guide.md:72: ['・ｴ・・, '・・, '・', '・罹ｲ・, '・｡・川・', '・溢・葺・・, '・・ｬ﨑ｴ・ｼ', '﨑ｨ']
+  - **・ｴ・・*: `client_secret` ・・`access_token`・ ・罹ｲ・・｡・川・ ・溢・葺・・・・ｬ﨑ｴ・ｼ 﨑ｨ
+
+.\knowledge\yamato_api_guide.md:73: ['・懦復', '・ｼ・逸・', '嶹俾ｲｽ・川・', '・滝ｷｼ', '嵭溢圸・・, '・・紛', '・嵓誤ｦｬ・・ｴ・・, '・罹ｲ・攪', '・ｵ・ｸ', '・ｼ', '・ｬ・・, '・ｱ・晨紛・ｼ', '﨑ｨ']
+  - **IP ・懦復**: ・ｼ・逸・ 嶹俾ｲｽ・川・ ・滝ｷｼ 嵭溢圸・・・・紛 **・嵓誤ｦｬ・・ｴ・・・罹ｲ・攪 ・ｵ・ｸ IP**・ｼ ・ｬ・・・ｱ・晨紛・ｼ 﨑ｨ
+
+.\knowledge\yamato_api_guide.md:74: ['・・款', '・ｬ・・, '・､・・ｦ・, '・ｴ・ｩ・ｼ', '・・, '・護侃孖ｸ', '・ｴ・ｩ・・, '・ｰ・ｼ', '・ｸ・・, '・ｩ・晧擽', '・､・ｴ・・・, '・懍ｧ・, '・・ｸｰ', '﨑・囈']
+  - **・・款 ・ｬ・・*: KM(・､・・ｦ・ ・ｴ・ｩ・ｼ ・КM(・護侃孖ｸ) ・ｴ・ｩ・・・ｰ・ｼ ・ｸ・・・ｩ・晧擽 ・､・ｴ・・・・懍ｧ・・・ｸｰ 﨑・囈
+
+.\knowledge\yamato_api_guide.md:75: ['奛護侃孖ｸ', '・ｰ・ｴ奓ｰ', '・・・', '奛護侃孖ｸ・ｼ', '・・紛・罹株', '・ｼ・逸・・川・', '・懋ｳｵ﨑俯株', '奛護侃孖ｸ・ｩ', '・・像', '・逸从', '・', '﨑・囈﨑ｨ']
+  - **奛護侃孖ｸ ・ｰ・ｴ奓ｰ**: ・・・ 奛護侃孖ｸ・ｼ ・・紛・罹株 ・ｼ・逸・・川・ ・懋ｳｵ﨑俯株 奛護侃孖ｸ・ｩ **・・像 ・逸从**・ 﨑・囈﨑ｨ
+
+.\knowledge\yamato_api_guide.md:79: ['・・ｨ', '・ｸ・・]
+  ## 7. ・・ｨ ・ｸ・・
+
+.\knowledge\yamato_api_guide.md:80: ['・・罹└・・, '・､・・ｦ・, '・､嵓・, '・ｬ・卓・', '增ｴ・ｼ・ｴ・ｸ孖ｸ・ｩ']
+  - 04_・・罹└・・・､・・ｦ・・､嵓・API ・ｬ・卓・縲戦・・ｼ・ｴ・ｸ孖ｸ・ｩ縲・
+
+.\knowledge\yamato_api_guide.md:81: ['・・罹└・・, '・､・・ｦ・, '・ｰ・・, '・肥圸甯・, '・ｬ・卓・']
+  - Uni-ID ・・罹└・・・､・・ｦ・ID ・ｰ・・・肥圸甯・・ｬ・卓・
+
+Total: 653 lines with Korean text

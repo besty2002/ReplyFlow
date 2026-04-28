@@ -1,0 +1,265 @@
+﻿  1: {% extends "base.html" %}
+  2: 
+  3: {% block title %}ReplyFlow | Inquiry Management{% endblock %}
+  4: 
+  5: {% block content %}
+  6: <div class="dashboard-layout">
+  7:     <aside class="sidebar glass-panel" style="border-radius: 0;">
+  8:         <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 2rem;">
+  9:             <img src="/static/img/logo.png" alt="ReplyFlow Logo" style="width: 32px; height: 32px; border-radius: 6px;">
+ 10:             <h2 style="margin: 0; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.5rem; letter-spacing: -0.5px;">ReplyFlow</h2>
+ 11:         </div>
+ 12:         <nav>
+ 13:             <a href="/dashboard" class="nav-link">???</a>
+ 14:             <a href="/inquiries" class="nav-link active">???????</a>
+ 15:             <a href="/training" class="nav-link">AI????</a>
+ 16:             <a href="/settings" class="nav-link">??</a>
+ 17:             
+ 18:             <div class="sidebar-footer" style="margin-top: auto; padding-top: 2rem;">
+ 19:                 <a href="#" class="nav-link" id="logout-btn" style="color: var(--danger);">?????</a>
+ 20:             </div>
+ 21:         </nav>
+ 22:     </aside>
+ 23: 
+ 24:     <main class="main-content">
+ 25:         <header style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: flex-end;">
+ 26:             <div>
+ 27:                 <h1 style="margin: 0; font-weight: 600;">????????????</h1>
+ 28:                 <p style="color: var(--text-muted); margin-top: 0.5rem;">?????????AI???????????????</p>
+ 29:             </div>
+ 30:         </header>
+ 31: 
+ 32:         <!-- ?????????? -->
+ 33:         <section class="glass-panel" style="padding: 1.5rem; margin-bottom: 2rem;">
+ 34:             <div style="display: flex; gap: 1                    <label class="form-label" style="font-size: 0.75rem;">?????</label>
+ 35:                     <select id="filter-status" class="form-input" onchange="applyFilters()">
+ 36:                         <option value="">????????</option>
+ 37:                         <option value="pending" {% if selected_status == 'pending' %}selected{% endif %}>????</option>
+ 38:                         <option value="in_progress" {% if selected_status == 'in_progress' %}selected{% endif %}>???</option>
+ 39:                         <option value="replied" {% if selected_status == 'replied' %}selected{% endif %}>????</option>
+ 40:                         <option value="escalated" {% if selected_status == 'escalated' %}selected{% endif %}>????????</option>
+ 41:                     </select>
+ 42:                 </div>
+ 43:                 <div class="form-group" style="margin: 0; min-width: 150px;">
+ 44:                     <label class="form-label" style="font-size: 0.75rem;">??</label>
+ 45:                     <select id="filter-sentiment" class="form-input" onchange="applyFilters()">
+ 46:                         <option value="">?????</option>
+ 47:                         <option value="angry">??/??</option>
+ 48:                         <option value="curious">??/??</option>
+ 49:                         <option value="grateful">??</option>
+ 50:                         <option value="neutral">??</option>
+ 51:                     </select>
+ 52:                 </div>
+ 53:                 <div class="form-group" style="margin: 0; min-width: 150px;">
+ 54:                     <label class="form-label" style="font-size: 0.75rem;">????</label>
+ 55:                     <select id="filter-shop" class="form-input" onchange="applyFilters()">
+ 56:                         <option value="">???????</option>
+ 57:                         {% for shop in connected_shops %}
+ 58:                         <option value="{{ shop.id }}" {% if selected_shop == shop.id %}selected{% endif %}>{{ shop.shop_name }}</option>
+ 59:                         {% endfor %}
+ 60:                     </select>
+ 61:                 </div>
+ 62:                 <div class="form-group" style="margin: 0; flex: 1; min-width: 250px;">
+ 63:                     <label class="form-label" style="font-size: 0.75rem;">??</label>
+ 64:                     <input type="text" id="search-query" class="form-input" placeholder="???ID???????????..." value="{{ search_query or '' }}">
+ 65:                 </div>
+ 66:                 <div style="display: flex; align-items: flex-end;">
+ 67:                     <button class="btn-primary" onclick="applyFilters()">??</button>??..." value="{{ search_query or '' }}">
+ 68:                 </div>
+ 69:                 <div style="display: flex; align-items: flex-end;">
+ 70:                     <button class="btn-primary" onclick="applyFilters()">??</button>
+ 71:                 </div>
+ 72:             </div>
+ 73:         </section>
+ 74: 
+ 75:         <!-- ??????? -->
+ 76:         <section class="glass-panel" style="padding: 1.5rem; min-height: 400px;">
+ 77:             <div style="overflow-x: auto;">
+ 78:                 <table class="modern-table">
+ 79:                     <thead>
+ 80:                         <tr>
+ 81:                             <th>?????</th>
+ 82:                             <th>???</th>
+ 83:                             <th>??</th>
+ 84:                             <th>??? / ????</th>
+ 85:                             <th>????</th>
+ 86:                             <th>????</th>
+ 87:                         </tr>
+ 88:                     </thead>
+ 89:                     <tbody>
+ 90:                         {% for item in inquiries %}
+ 91:                         <tr class="inquiry-row" onclick="openInspector('{{ item.id }}')">
+ 92:                             <td><span class="badge badge-{{ item.status }}">{{ item.status | upper }}</span></td>
+ 93:                             <td><span class="priority-dot priority-{{ item.priority or 'normal' }}"></span> {{ (item.priority or 'normal') | capitalize }}</td>
+ 94:                             <td>
+ 95:                                 {% if item.sentiment %}
+ 96:                                 <span class="sentiment-icon {{ item.sentiment }}"></span>
+ 97:                                 {% else %}
+ 98:                                 -
+ 99:                                 {% endif %}
+100:                             </td>
+101:                             <td>
+102:                                 <div style="display: flex; flex-direction: column;">
+103:                                     <strong>{{ item.customer_id }}</strong>
+104:                                     <span style="font-size: 0.75rem; color: var(--primary-color);">{{ item.order_number or '??????' }}</span>
+105:                                 </div>
+106:                             </td>
+107:                             <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+108:                                 {{ item.content }}
+109:                             </td>
+110:                             <td style="font-size: 0.85rem; color: var(--text-muted);">
+111:                                 {{ item.received_at[:16].replace('T', ' ') }}
+112:                             </td>
+113:                         </tr>
+114:                         {% endfor %}
+115:                     </tbody>
+116:                 </table>
+117:             </div>
+118:             
+119:             <!-- ??????????????? -->
+120:         </section>
+121:     </main>
+122: </div>
+123: 
+124: <!-- ???????????? -->
+125: <aside id="inspector-panel" class="inspector-panel glass-panel hidden">
+126:     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+127:         <h2 style="margin: 0; font-size: 1.25rem;">???????</h2>
+128:         <button onclick="closeInspector()" style="background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;">&times;</button>
+129:     </div>
+130:     
+131:     <div id="inspector-loader" class="hidden" style="text-align: center; padding: 2rem;">?????...</div>
+132:     
+133:     <div id="inspector-content">
+134:         <!-- JS????????? -->
+135:     </div>
+136: </aside>
+137: 
+138: <style>
+139:     .priority-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; }
+140:     .priority-urgent { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+141:     .priority-high { background: #f59e0b; }
+142:     .priority-normal { background: #10b981; }
+143:     .priority-low { background: #6b7280; }
+144:     
+145:     .sentiment-icon.angry::before { content: '?'; }
+146:     .sentiment-icon.curious::before { content: '?'; }
+147:     .sentiment-icon.grateful::before { content: '?'; }
+148:     .sentiment-icon.neutral::before { content: '?'; }
+149:     
+150:     .inspector-panel {
+151:         position: fixed; right: 0; top: 0; width: 500px; height: 100vh; z-index: 1000;
+152:         background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px);
+153:         border-left: 1px solid rgba(255,255,255,0.1); padding: 2rem;
+154:         overflow-y: auto; box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+155:         transition: transform 0.3s ease;
+156:     }
+157:     .inspector-panel.hidden { transform: translateX(100%); }
+158: </style>
+159: 
+160: <script>
+161:     let currentInquiryId = null;
+162: 
+163:     function applyFilters() {
+164:         const status = document.getElementById('filter-status').value;
+165:         const sentiment = document.getElementById('filter-sentiment').value;
+166:         const shop = document.getElementById('filter-shop').value;
+167:         const query = document.getElementById('search-query').value;
+168:         
+169:         let url = '/inquiries?';
+170:         if (status) url += `status=${status}&`;
+171:         if (sentiment) url += `sentiment=${sentiment}&`;
+172:         if (shop) url += `shop_id=${shop}&`;
+173:         if (query) url += `q=${encodeURIComponent(query)}&`;
+174:         
+175:         window.location.href = url;
+176:     }
+177: 
+178:     async function openInspector(id) {
+179:         currentInquiryId = id;
+180:         const panel = document.getElementById('inspector-panel');
+181:         const content = document.getElementById('inspector-content');
+182:         const loader = document.getElementById('inspector-loader');
+183:         
+184:         panel.classList.remove('hidden');
+185:         content.innerHTML = '';
+186:         loader.classList.remove('hidden');
+187:         
+188:         try {
+189:             const res = await fetch(`/api/v1/inquiries/${id}`);
+190:             const data = await res.json();
+191:             const inq = data.data;
+192:             
+193:             loader.classList.add('hidden');
+194:             renderInquiryDetail(inq);
+195:         } catch (err) {
+196:             content.innerHTML = '<p style="color:var(--danger)">??????????????</p>';
+197:         }
+198:     }
+199: 
+200:     function renderInquiryDetail(inq) {
+201:         const content = document.getElementById('inspector-content');
+202:         content.innerHTML = `
+203:             <div style="margin-bottom: 1.5rem;">
+204:                 <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+205:                     <span class="badge badge-${inq.status}">${inq.status.upper()}</span>
+206:                     <span class="badge" style="background:rgba(255,255,255,0.1)">${inq.category || '???'}</span>
+207:                 </div>
+208:                 <h3 style="margin-bottom: 0.5rem;">${inq.title || '??????'}</h3>
+209:                 <p style="font-size: 0.9rem; color: var(--text-muted);">${inq.received_at.replace('T', ' ')}</p>
+210:             </div>
+211:             
+212:             <div class="glass-panel" style="padding: 1rem; margin-bottom: 1.5rem; background: rgba(0,0,0,0.2);">
+213:                 <label style="font-size: 0.75rem; color: var(--primary-color); font-weight: bold;">???????</label>
+214:                 <p style="white-space: pre-wrap; font-size: 0.95rem; margin-top: 0.5rem;">${inq.content}</p>
+215:             </div>
+216:             
+217:             <div style="margin-bottom: 1.5rem;">
+218:                 <label style="font-weight: bold; margin-bottom: 0.5rem; display: block;">????</label>
+219:                 <div id="notes-list" style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem;">
+220:                     ${(inq.internal_notes || []).map(note => `
+221:                         <div style="background: rgba(255,255,255,0.05); padding: 0.75rem; border-radius: 8px; font-size: 0.85rem;">
+222:                             <div style="color: var(--text-muted); font-size: 0.7rem; margin-bottom: 0.2rem;">${note.created_at.split('T')[0]}</div>
+223:                             ${note.content}
+224:                         </div>
+225:                     `).join('')}
+226:                 </div>
+227:                 <div style="display: flex; gap: 0.5rem;">
+228:                     <input type="text" id="new-note" class="form-input" style="flex: 1;" placeholder="?????...">
+229:                     <button class="btn-primary" onclick="addNote()" style="padding: 0.5rem 1rem;">??</button>
+230:                 </div>
+231:             </div>
+232:             
+233:             <div style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;">
+234:                 <label style="font-weight: bold; margin-bottom: 0.5rem; display: block;">?????AI????</label>
+235:                 <textarea id="reply-text" class="form-input" style="height: 200px; margin-bottom: 1rem;">${(inq.reply_drafts && inq.reply_drafts[0]) ? inq.reply_drafts[0].ai_suggested_reply : ''}</textarea>
+236:                 <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+237:                     <button class="btn-primary" style="background: var(--primary-hover)" onclick="generateDraft()">?????</button>
+238:                     <button class="btn-primary" onclick="sendReply()">????</button>
+239:                 </div>
+240:             </div>
+241:         `;
+242:     }
+243: 
+244:     function closeInspector() {
+245:         document.getElementById('inspector-panel').classList.add('hidden');
+246:     }
+247: 
+248:     async function addNote() {
+249:         const content = document.getElementById('new-note').value;
+250:         if (!content) return;
+251:         
+252:         try {
+253:             const res = await fetch(`/api/v1/inquiries/${currentInquiryId}/notes`, {
+254:                 method: 'POST',
+255:                 headers: { 'Content-Type': 'application/json' },
+256:                 body: JSON.stringify({ content })
+257:             });
+258:             if (res.ok) openInspector(currentInquiryId);
+259:         } catch (err) { alert('????????????'); }
+260:     }
+261:     
+262:     // sendReply, generateDraft ?????????
+263: </script>
+264: {% endblock %}
+265: 

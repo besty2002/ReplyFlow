@@ -1,0 +1,27 @@
+﻿  check_db.py: 58 chars remaining
+  debug_bot.py: 33 chars remaining
+  fix_and_sync.py: 125 chars remaining
+  force_sync.py: 39 chars remaining
+  last_check.py: 85 chars remaining
+  render.yaml: CLEAN
+  tmp_db_cleaner.py: 24 chars remaining
+  app\main.py: 30 chars remaining
+  app\api\dependencies.py: 41 chars remaining
+  app\api\endpoints\auth.py: 14 chars remaining
+  app\api\endpoints\inquiries.py: 223 chars remaining
+  app\api\endpoints\pages.py: 88 chars remaining
+  app\api\endpoints\shops.py: 32 chars remaining
+  app\api\endpoints\training.py: 59 chars remaining
+  app\api\endpoints\user.py: 11 chars remaining
+  app\core\ai_client.py: 111 chars remaining
+  app\core\config.py: CLEAN
+  app\core\rakuten_client.py: 89 chars remaining
+  app\core\security.py: 26 chars remaining
+  app\core\shop_api.py: 31 chars remaining
+  app\core\yamato_client.py: 50 chars remaining
+  app\models\inquiries.py: 6 chars remaining
+  app\workers\sync_bot.py: 53 chars remaining
+  knowledge\rakuten_api_guide.md: 57 chars remaining
+  knowledge\yamato_api_guide.md: 149 chars remaining
+
+Modified: 25 files

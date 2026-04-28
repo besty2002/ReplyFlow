@@ -1,0 +1,44 @@
+﻿  修正: check_db.py (残り韓国語文字: 177)
+  修正: debug_bot.py (残り韓国語文字: 103)
+  修正: fix_and_sync.py (残り韓国語文字: 382)
+  修正: force_sync.py (残り韓国語文字: 125)
+  修正: last_check.py (残り韓国語文字: 285)
+  完了: render.yaml
+  修正: tmp_db_cleaner.py (残り韓国語文字: 80)
+  修正: app\main.py (残り韓国語文字: 94)
+  修正: app\api\dependencies.py (残り韓国語文字: 105)
+  修正: app\api\endpoints\auth.py (残り韓国語文字: 42)
+  修正: app\api\endpoints\inquiries.py (残り韓国語文字: 745)
+  修正: app\api\endpoints\pages.py (残り韓国語文字: 291)
+  修正: app\api\endpoints\shops.py (残り韓国語文字: 114)
+  修正: app\api\endpoints\training.py (残り韓国語文字: 238)
+  修正: app\api\endpoints\user.py (残り韓国語文字: 45)
+  修正: app\core\ai_client.py (残り韓国語文字: 387)
+  修正: app\core\config.py (残り韓国語文字: 2)
+  修正: app\core\rakuten_client.py (残り韓国語文字: 305)
+  修正: app\core\security.py (残り韓国語文字: 103)
+  修正: app\core\shop_api.py (残り韓国語文字: 118)
+  修正: app\core\yamato_client.py (残り韓国語文字: 185)
+  修正: app\models\inquiries.py (残り韓国語文字: 26)
+  完了: app\templates\inquiries.html
+  修正: app\workers\sync_bot.py (残り韓国語文字: 173)
+  修正: knowledge\rakuten_api_guide.md (残り韓国語文字: 170)
+  修正: knowledge\yamato_api_guide.md (残り韓国語文字: 453)
+
+=== 結果 ===
+スキャンファイル数: 39
+修正ファイル数: 26
+python : Traceback (most recent call last):
+発生場所 行:1 文字:1
++ python scratch\korean_to_japanese.py 2>&1 | Out-File -FilePath scratc ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "C:\Users\TAMAZI-0\Documents\TAMAZI\ReplyFlow\scratch\korean_to_japanese.py", line 415, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\TAMAZI-0\Documents\TAMAZI\ReplyFlow\scratch\korean_to_japanese.py", line 410, in main
+    print(f"\n\u26a0 まだ韓国語が残っているファイル ({len(files_with_remaining)}件):")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'cp932' codec can't encode character '\u26a0' in position 2: illegal multibyte sequence

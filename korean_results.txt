@@ -1,0 +1,97 @@
+dashboard.html:43:                 <!-- 데이터 통계나 다운로드 등 주요 비즈니스 액션 영역 -->
+dashboard.html:79:         <!-- 임시 UI 영역 -> 실제 데이터 표출 영역 -->
+dashboard.html:84:                 <!-- 필터 영역 -->
+dashboard.html:150:                 <!-- 상세 인스펙터 패널 (숨김 상태로 시작) -->
+dashboard.html:158:                         <!-- 정보 카드들 -->
+dashboard.html:172:                                 <!-- JS에서 동적 생성 -->
+dashboard.html:264:                     /* 기본 숨김 처리 */
+dashboard.html:267:                     /* 툴팁 컨테이너 */
+dashboard.html:272:                     /* 툴팁 내용 스타일 */
+dashboard.html:290:                         pointer-events: none; /* 마우스 간섭 방지 */
+dashboard.html:292:                     /* 화살표 */
+dashboard.html:303:                     /* 호버 시 노출 */
+dashboard.html:407:         // 실시간 정보 페칭 (라쿠텐 API 직접 호출 결과)
+dashboard.html:408:         if (data.order_number && data.order_number !== '주문번호 없음') {
+dashboard.html:527:     // 2. 상세 인스펙터 닫기
+dashboard.html:534:     // 3. 답변 전송
+dashboard.html:567:     // 4. 로그아웃
+dashboard.html:574:     // 유틸리티: 쿠키 읽기
+dashboard.html:581: // AI 초안 생성 호출
+dashboard.html:586:     // 현재 인스펙터에 표시된 실시간 정보 수집
+dashboard.html:703:         // 파일 추출 완료 안내 표출
+inquiries.html:13:             <a href="/dashboard" class="nav-link">홈 (대시보드)</a>
+inquiries.html:14:             <a href="/inquiries" class="nav-link active">문의 관리</a>
+inquiries.html:15:             <a href="/training" class="nav-link">AI 학습 검증</a>
+inquiries.html:16:             <a href="/settings" class="nav-link">설정</a>
+inquiries.html:19:                 <a href="#" class="nav-link" id="logout-btn" style="color: var(--danger);">로그아웃</a>
+inquiries.html:27:                 <h1 style="margin: 0; font-weight: 600;">고객 문의 통합 관리</h1>
+inquiries.html:28:                 <p style="color: var(--text-muted); margin-top: 0.5rem;">고급 필터와 AI 분석을 통해 효율적으로 대응하세요.</p>
+inquiries.html:32:         <!-- 필터 섹션 -->
+inquiries.html:36:                     <label class="form-label" style="font-size: 0.75rem;">상태</label>
+inquiries.html:38:                         <option value="">전체 상태</option>
+inquiries.html:39:                         <option value="pending" {% if selected_status == 'pending' %}selected{% endif %}>대기중</option>
+inquiries.html:40:                         <option value="in_progress" {% if selected_status == 'in_progress' %}selected{% endif %}>처리중</option>
+inquiries.html:41:                         <option value="replied" {% if selected_status == 'replied' %}selected{% endif %}>답변완료</option>
+inquiries.html:42:                         <option value="escalated" {% if selected_status == 'escalated' %}selected{% endif %}>에스컬레이션</option>
+inquiries.html:46:                     <label class="form-label" style="font-size: 0.75rem;">감정</label>
+inquiries.html:48:                         <option value="">전체 감정</option>
+inquiries.html:49:                         <option value="angry">불만/화남</option>
+inquiries.html:50:                         <option value="curious">질문/확인</option>
+inquiries.html:51:                         <option value="grateful">감사</option>
+inquiries.html:52:                         <option value="neutral">보통</option>
+inquiries.html:56:                     <label class="form-label" style="font-size: 0.75rem;">상점</label>
+inquiries.html:58:                         <option value="">전체 상점</option>
+inquiries.html:65:                     <label class="form-label" style="font-size: 0.75rem;">검색</label>
+inquiries.html:66:                     <input type="text" id="search-query" class="form-input" placeholder="고객ID, 주문번호, 내용 검색..." value="{{ search_query or '' }}">
+inquiries.html:69:                     <button class="btn-primary" onclick="applyFilters()">적용</button>
+inquiries.html:74:         <!-- 문의 목록 -->
+inquiries.html:80:                             <th>상태</th>
+inquiries.html:81:                             <th>중요도</th>
+inquiries.html:82:                             <th>감정</th>
+inquiries.html:83:                             <th>고객 / 주문번호</th>
+inquiries.html:84:                             <th>내용 요약</th>
+inquiries.html:85:                             <th>접수일시</th>
+inquiries.html:103:                                     <span style="font-size: 0.75rem; color: var(--primary-color);">{{ item.order_number or '주문번호 없음' }}</span>
+inquiries.html:118:             <!-- 페이지네이션 생략 (필요시 추가) -->
+inquiries.html:123: <!-- 상세 인스펙터 패널 -->
+inquiries.html:126:         <h2 style="margin: 0; font-size: 1.25rem;">문의 상세</h2>
+inquiries.html:130:     <div id="inspector-loader" class="hidden" style="text-align: center; padding: 2rem;">로딩 중...</div>
+inquiries.html:133:         <!-- JS로 동적 렌더링 -->
+inquiries.html:195:             content.innerHTML = '<p style="color:var(--danger)">데이터를 불러오지 못했습니다.</p>';
+inquiries.html:205:                     <span class="badge" style="background:rgba(255,255,255,0.1)">${inq.category || '미분류'}</span>
+inquiries.html:207:                 <h3 style="margin-bottom: 0.5rem;">${inq.title || '제목 없음'}</h3>
+inquiries.html:212:                 <label style="font-size: 0.75rem; color: var(--primary-color); font-weight: bold;">문의 내용</label>
+inquiries.html:217:                 <label style="font-weight: bold; margin-bottom: 0.5rem; display: block;">내부 메모</label>
+inquiries.html:227:                     <input type="text" id="new-note" class="form-input" style="flex: 1;" placeholder="메모 추가...">
+inquiries.html:228:                     <button class="btn-primary" onclick="addNote()" style="padding: 0.5rem 1rem;">추가</button>
+inquiries.html:233:                 <label style="font-weight: bold; margin-bottom: 0.5rem; display: block;">답변 작성 (AI 초안)</label>
+inquiries.html:236:                     <button class="btn-primary" style="background: var(--primary-hover)" onclick="generateDraft()">초안 생성</button>
+inquiries.html:237:                     <button class="btn-primary" onclick="sendReply()">답변 발송</button>
+inquiries.html:258:         } catch (err) { alert('메모 추가 실패'); }
+inquiries.html:261:     // sendReply, generateDraft 등 추가 구현 필요
+profile.html:119:         <!-- 추가 제안 기능 섹션 (Placeholder) -->
+profile.html:150: // 초기 데이터 로드
+profile.html:174: // 가이드라인 문자수 카운터
+profile.html:179: // 파일에서 읽어오기
+profile.html:197: // 가이드라인 저장
+profile.html:234: // 회사명 저장
+profile.html:269: // 비밀번호 저장
+signup.html:55:         // [중요] 회원가입을 호출하며 raw_user_meta_data에 회사 이름을 끼워 넣습니다.
+signup.html:56:         // 이것을 Supabase 내부의 트리거(Trigger)가 인식하여 데이터베이스를 지어줍니다.
+signup.html:69:         // Supabase 대시보드 옵션에 맞춰 가입 확인 메일이 활성화된 경우와 그렇지 않은 경우 대응
+signup.html:74:             // 이메일 인증이 필요하거나 기타 사유 시 리다이렉션
+training.html:13:             <a href="/dashboard" class="nav-link">홈 (대시보드)</a>
+training.html:14:             <a href="/inquiries" class="nav-link">문의 관리</a>
+training.html:15:             <a href="/training" class="nav-link active">AI 학습 검증</a>
+training.html:16:             <a href="/settings" class="nav-link">설정</a>
+training.html:19:                 <a href="#" class="nav-link" id="logout-btn" style="color: var(--danger);">로그아웃</a>
+training.html:26:             <h1 style="margin: 0; font-weight: 600;">AI 학습 데이터 검증</h1>
+training.html:27:             <p style="color: var(--text-muted); margin-top: 0.5rem;">Human-in-the-Loop: AI의 답변을 검증하여 모델의 정확도를 높이세요.</p>
+training.html:32:                 <p style="text-align: center; color: var(--text-muted); padding: 3rem;">리뷰 대기 중인 데이터가 없습니다.</p>
+training.html:50:                     <strong>문의 ID: ${rev.inquiry_id.slice(0,8)}</strong>
+training.html:51:                     <span class="badge">${rev.original_category || '미분류'}</span>
+training.html:55:                         <label class="form-label">고객 질문</label>
+training.html:59:                         <label class="form-label">AI 답변 (검증/수정 필요)</label>
+training.html:64:                     <button class="btn-primary" style="width: auto; background: var(--success);" onclick="submitReview('${rev.id}', true)">승인</button>
+training.html:65:                     <button class="btn-primary" style="width: auto; background: var(--primary-color);" onclick="submitReview('${rev.id}', false)">수정 후 승인</button>
+training.html:83:             alert('검증 완료!');

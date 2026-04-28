@@ -1,5 +1,5 @@
 services:
-  # FastAPI Web Service (백그라운드 봇 포함)
+  # FastAPI Web Service (バックグラウンド ボット 含む)
   - type: web
     name: replyflow-web
     env: docker
