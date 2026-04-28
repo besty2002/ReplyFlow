@@ -1,148 +1,206 @@
 import asyncio
 import os
 import logging
+import datetime
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from supabase import create_client, Client
 from app.core.config import settings
-from app.core.ai_client import ai_client
 from app.core.rakuten_client import RakutenRMSClient
-import uuid
-import datetime
 
 logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 
 # 스케줄러 전역 인스턴스
 scheduler = AsyncIOScheduler()
 
-async def fetch_and_process_inquiries():
+
+async def reconcile_shop_inquiries(shop: dict, supabase: Client) -> dict:
     """
-    주기적으로 모든 active 숍의 새 문의를 수집하고 AI 분류를 거쳐 DB에 저장합니다.
+    단일 숍의 RMS 未返信 목록과 DB를 대조하여 동기화합니다.
+    - RMS에만 있는 문의 → INSERT (신규)
+    - DB에만 있는 문의 → DELETE (RMS에서 완료/답변됨)
+    - 양쪽 모두 있는 문의 → 유지
     """
-    logger.info("[Sync Bot] Shops external inquiry synchronization scheduler running...")
-    
-    # .env 파일 강제 로드 (봇 환경에서 누락 방지)
+    platform = shop["platform"]
+    shop_name = shop["shop_name"]
+    shop_id = shop.get("id")
+    company_id = shop.get("company_id")
+
+    result = {"shop": shop_name, "inserted": 0, "deleted": 0, "unchanged": 0, "errors": []}
+
+    # 1. RMS에서 현재 未返信 목록 수집
+    rms_inquiries = []
+    if platform == "rakuten":
+        rakuten = RakutenRMSClient(
+            service_secret=shop.get("api_key", ""),
+            license_key=shop.get("api_secret", "")
+        )
+        rms_inquiries = await rakuten.get_inquiry_list()
+
+    rms_map = {inq["rakuten_inquiry_id"]: inq for inq in rms_inquiries}
+    rms_ids = set(rms_map.keys())
+    print(f"  [RMS] {shop_name}: 未返信 {len(rms_ids)}건 수신", flush=True)
+
+    # 2. DB에서 현재 해당 숍의 문의 목록 조회
+    db_res = supabase.table("inquiries") \
+        .select("id, rakuten_inquiry_id") \
+        .eq("shop_id", shop_id) \
+        .execute()
+    db_data = db_res.data or []
+    db_map = {row["rakuten_inquiry_id"]: row["id"] for row in db_data if row.get("rakuten_inquiry_id")}
+    db_ids = set(db_map.keys())
+    print(f"  [DB]  {shop_name}: 기존 {len(db_ids)}건 보유", flush=True)
+
+    # 3. 대조 비교
+    to_insert = rms_ids - db_ids    # RMS에만 있음 → 신규
+    to_delete = db_ids - rms_ids    # DB에만 있음 → RMS에서 완료됨
+    unchanged = rms_ids & db_ids    # 양쪽 모두 → 유지
+
+    print(f"  [대조] 신규={len(to_insert)}건, 삭제={len(to_delete)}건, 유지={len(unchanged)}건", flush=True)
+
+    # 4. 신규 문의 INSERT
+    for rakuten_id in to_insert:
+        ext_inq = rms_map[rakuten_id]
+        try:
+            new_data = {
+                "company_id": company_id,
+                "shop_id": shop_id,
+                "rakuten_inquiry_id": rakuten_id,
+                "customer_id": ext_inq.get("customer_id", "Unknown"),
+                "title": ext_inq.get("title", "No Title"),
+                "content": ext_inq.get("content", ""),
+                "received_at": ext_inq.get("received_at", datetime.datetime.utcnow().isoformat()),
+                "status": "pending",
+                "order_number": ext_inq.get("order_number"),
+                "item_name": ext_inq.get("item_name"),
+                "item_number": ext_inq.get("item_number"),
+                "category": ext_inq.get("category"),
+                "inquiry_type": ext_inq.get("type"),
+            }
+            inq_res = supabase.table("inquiries").insert(new_data).execute()
+            if inq_res.data:
+                result["inserted"] += 1
+                new_inq_id = inq_res.data[0]["id"]
+                print(f"    ✅ INSERT #{rakuten_id} ({ext_inq.get('customer_id')})", flush=True)
+                
+                # AI 초안 생성 + 카테고리/감정 분석
+                try:
+                    from app.core.ai_client import ai_client
+                    ai_result = await ai_client.generate_reply(
+                        inquiry_text=new_data["content"],
+                        context=new_data
+                    )
+                    
+                    # 카테고리, 감정, 태그, 우선순위 업데이트
+                    supabase.table("inquiries").update({
+                        "category": ai_result.get("category", "その他"),
+                        "sentiment": ai_result.get("sentiment"),
+                        "sentiment_score": ai_result.get("sentiment_score"),
+                        "ai_tags": ai_result.get("tags"),
+                        "priority": ai_result.get("priority_suggestion")
+                    }).eq("id", new_inq_id).execute()
+                    
+                    # AI 초안 저장
+                    supabase.table("reply_drafts").insert({
+                        "company_id": company_id,
+                        "inquiry_id": new_inq_id,
+                        "ai_suggested_reply": ai_result.get("reply", "エラー"),
+                        "status": "draft"
+                    }).execute()
+                    
+                    print(f"    📝 AI 초안 생성 완료 #{rakuten_id}", flush=True)
+                except Exception as ai_err:
+                    print(f"    ⚠️ AI 초안 생성 실패 #{rakuten_id}: {ai_err}", flush=True)
+        except Exception as e:
+            result["errors"].append(f"INSERT {rakuten_id}: {str(e)}")
+            print(f"    ❌ INSERT 실패 #{rakuten_id}: {e}", flush=True)
+
+    # 5. RMS에서 완료/답변된 문의 DELETE (관련 데이터 포함)
+    for rakuten_id in to_delete:
+        db_id = db_map[rakuten_id]
+        try:
+            # 관련 데이터 먼저 삭제 (외래키 제약)
+            supabase.table("reply_drafts").delete().eq("inquiry_id", db_id).execute()
+            supabase.table("internal_notes").delete().eq("inquiry_id", db_id).execute()
+            # 문의 삭제
+            supabase.table("inquiries").delete().eq("id", db_id).execute()
+            result["deleted"] += 1
+            print(f"    🗑️ DELETE #{rakuten_id} (RMS에서 완료됨)", flush=True)
+        except Exception as e:
+            result["errors"].append(f"DELETE {rakuten_id}: {str(e)}")
+            print(f"    ❌ DELETE 실패 #{rakuten_id}: {e}", flush=True)
+
+    result["unchanged"] = len(unchanged)
+    return result
+
+
+async def reconcile_all_shops():
+    """
+    모든 연동 숍에 대해 reconciliation을 수행합니다.
+    """
+    print("\n[Sync] === Reconciliation 동기화 시작 ===", flush=True)
+
     from dotenv import load_dotenv
     load_dotenv()
-    
-    # Supabase 서비스 키를 우선적으로 사용 (보안 정책 우회용 관리자 권한)
-    admin_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SERVICE_ROLE_KEY") or settings.SUPABASE_KEY
+
+    admin_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or settings.SUPABASE_KEY
     supabase: Client = create_client(settings.SUPABASE_URL, admin_key)
-    
-    # [디버그] 연결 권한 확인
-    print(f"[Sync Bot] Permission check: {'Master' if 'ey' in admin_key[:10] else 'Anon'}")
-    
+
     try:
-        print(f"[Sync Bot] DB connection attempt... (URL: {settings.SUPABASE_URL})")
-        # [긴급] 모든 보안 정책을 무시하고 테이블의 전 데이터를 긁어옵니다.
-        # RLS가 걸려있어도 service_role_key를 쓰면 이 쿼리로 다 가져옵니다.
         shops_res = supabase.table("connected_shops").select("*").execute()
-        active_shops = shops_res.data
-        
-        print(f"[Sync Bot] Number of shops queried: {len(active_shops) if active_shops else 0} cases")
-        
-        if not active_shops:
-            print("[Sync Bot] No shop information linked to the DB! Please register a shop in business settings first.")
-            return
+        shops = shops_res.data or []
+        rakuten_shops = [s for s in shops if s["platform"] == "rakuten"]
 
-        for shop in active_shops:
-            platform = shop["platform"]
-            shop_name = shop["shop_name"]
-            api_key = shop.get("api_key")
-            api_secret = shop.get("api_secret")
-            company_id = shop.get("company_id")
-            shop_id = shop.get("id")
-            
-            print(f"[Sync Bot] {platform.upper()} platform '{shop_name}' collection started...")
-            
-            # TODO: 실제 프로덕션에서는 각 platform API(Rakuten SDK 등)를 호출하여 새 문의를 가져옵니다.
-            # 여기서는 API 연동 시뮬레이션을 위해 "조건부 목업"을 주입합니다.
-            
-            # --- [실제 API 호출 로직 시작] ---
-            fetched_inquiries = []
-            
-            if platform == "rakuten":
-                # 라쿠텐 실전 클라이언트 기동 (비동기 처리)
-                rakuten = RakutenRMSClient(service_secret=api_key, license_key=shop.get("api_secret", ""))
-                fetched_inquiries = await rakuten.get_inquiry_list()
-            
-            # TODO: 야후, 큐텐 등 다른 플랫폼 클라이언트도 이곳에 추가 가능
-            
-            for ext_inq in fetched_inquiries:
-                raw_id = ext_inq["rakuten_inquiry_id"]
-                
-                # 1. 중복 수집 방지 (이미 DB에 있는지 체크)
-                exists = supabase.table("inquiries").select("id").eq("rakuten_inquiry_id", raw_id).execute()
-                if exists.data:
-                    continue # 이미 수집된 문의는 스킵
+        print(f"[Sync] Rakuten 숍 {len(rakuten_shops)}개 발견", flush=True)
 
-                logger.info(f"👉 [{platform.upper()}] 新規問い合わせ収集: {raw_id}")
-                
-                new_inquiry_data = {
-                    "company_id": company_id,
-                    "shop_id": shop_id,
-                    "rakuten_inquiry_id": raw_id,
-                    "customer_id": ext_inq.get("customer_id", "Unknown"),
-                    "title": ext_inq.get("title", "No Title"),
-                    "content": ext_inq.get("content", ""),
-                    "received_at": ext_inq.get("received_at", datetime.datetime.utcnow().isoformat()),
-                    "status": "pending",
-                    "order_number": ext_inq.get("order_number"),
-                    "item_name": ext_inq.get("item_name"),
-                    "item_number": ext_inq.get("item_number"),
-                    "category": ext_inq.get("category"),
-                    "inquiry_type": ext_inq.get("type")
-                }
-                
-                # 2. DB 저장
-                inq_res = supabase.table("inquiries").insert(new_inquiry_data).execute()
-                if not inq_res.data:
-                    logger.error(f"❌ [{platform.upper()}] DB 저장 실패: {raw_id}")
-                    continue
-                    
-                new_inq_id = inq_res.data[0]["id"]
-                
-                # 3. AI 초안 생성 및 분류 (고객 이름 등 Context 포함)
-                ai_result = await ai_client.generate_reply(
-                    inquiry_text=new_inquiry_data["content"],
-                    context=new_inquiry_data
-                )
-                
-                # 4. 카테고리, 감정, 태그, 우선순위 업데이트 및 초안 저장
-                supabase.table("inquiries").update({
-                    "category": ai_result.get("category", "その他"),
-                    "sentiment": ai_result.get("sentiment"),
-                    "sentiment_score": ai_result.get("sentiment_score"),
-                    "ai_tags": ai_result.get("tags"),
-                    "priority": ai_result.get("priority_suggestion")
-                }).eq("id", new_inq_id).execute()
+        all_results = []
+        for shop in rakuten_shops:
+            shop_result = await reconcile_shop_inquiries(shop, supabase)
+            all_results.append(shop_result)
 
-                supabase.table("reply_drafts").insert({
-                    "company_id": company_id,
-                    "inquiry_id": new_inq_id,
-                    "ai_suggested_reply": ai_result.get("reply", "エラー"),
-                    "status": "draft"
-                }).execute()
-                
-                logger.info(f"✅ [{platform.upper()}] 連携完了 (Inquiry ID: {new_inq_id})")
-            # --- [실제 API 호출 로직 끝] ---
-            
+        # 전체 집계
+        total_inserted = sum(r["inserted"] for r in all_results)
+        total_deleted = sum(r["deleted"] for r in all_results)
+        total_unchanged = sum(r["unchanged"] for r in all_results)
+        total_errors = sum(len(r["errors"]) for r in all_results)
+
+        summary = f"동기화 완료: 신규 {total_inserted}건, 삭제 {total_deleted}건, 유지 {total_unchanged}건"
+        if total_errors > 0:
+            summary += f", 에러 {total_errors}건"
+
+        print(f"[Sync] === {summary} ===\n", flush=True)
+
+        return {
+            "summary": summary,
+            "shops": all_results,
+            "totals": {
+                "inserted": total_inserted,
+                "deleted": total_deleted,
+                "unchanged": total_unchanged,
+                "errors": total_errors,
+            }
+        }
+
     except Exception as e:
-        logger.error(f"❌ [Sync Bot] Critical Error: {e}")
+        import traceback
+        print(f"❌ [Sync] Critical Error: {e}", flush=True)
+        traceback.print_exc()
+        return {"summary": f"에러 발생: {str(e)}", "shops": [], "totals": {}}
+
 
 async def start_bot():
     """
-    FastAPI 등 구동 시 호출되어 스케줄러를 시작합니다.
+    FastAPI 서버 시작 시 호출되어 스케줄러를 시작합니다.
     """
-    # 백그라운드 태스크로 봇 실행 (5초 딜레이를 주어 서버 응답성 우선 확보)
     async def delayed_start():
         await asyncio.sleep(5)
-        logger.info("[Sync Bot] Server stabilized. Starting first collection...")
-        await fetch_and_process_inquiries()
+        print("[Sync Bot] 서버 안정화 완료. 첫 번째 동기화 시작...", flush=True)
+        await reconcile_all_shops()
 
     asyncio.create_task(delayed_start())
-    
-    # 스케줄러 등록 (10분 간격으로 단축하여 더 빠른 동기화 제공)
+
+    # 스케줄러 등록 (10분 간격)
     if not scheduler.running:
-        scheduler.add_job(fetch_and_process_inquiries, 'interval', minutes=10)
+        scheduler.add_job(reconcile_all_shops, 'interval', minutes=10)
         scheduler.start()
-        logger.info("[Sync Bot] Scheduler operation complete (10 minute cycle)")
+        print("[Sync Bot] 스케줄러 시작 (10분 주기 reconciliation)", flush=True)

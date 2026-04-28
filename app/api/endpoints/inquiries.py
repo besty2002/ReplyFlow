@@ -395,20 +395,40 @@ async def get_realtime_details(
                     else:
                         full_display_code = display_sub_code or "-"
                     
+                    # お届け目安 判定
+                    delivery_estimate = "当日出荷" if (stock_count is not None and stock_count > 0) else "7-10日営業日発送"
+                    
                     items.append({
                         "itemName": item.get("itemName"),
                         "itemNumber": item.get("itemNumber"),
                         "skuCode": full_display_code,
                         "units": item.get("units"),
                         "stockCount": stock_count,
-                        "raw_item_full": item # 디버깅용 전체 데이터
+                        "deliveryEstimate": delivery_estimate,
                     })
 
-        # 4. 야마토 배송 추적 연동 (발송 완료 상태일 때)
+        # 4. 発送判定 (全SKUの在庫を確認)
+        out_of_stock_skus = []
+        for itm in items:
+            if itm.get("stockCount") is None or itm["stockCount"] <= 0:
+                out_of_stock_skus.append(f"{itm.get('itemNumber', '?')}/{itm.get('skuCode', '?')}")
+        
+        all_shippable = len(out_of_stock_skus) == 0 and len(items) > 0
+        shipping_verdict = {
+            "canShip": all_shippable,
+            "status": "発送可能" if all_shippable else "発送不可",
+            "reason": "全SKU在庫あり" if all_shippable else f"在庫切れ: {', '.join(out_of_stock_skus)}",
+            "details": [
+                {"sku": itm.get("skuCode"), "stock": itm.get("stockCount"), "estimate": itm.get("deliveryEstimate")}
+                for itm in items
+            ]
+        }
+        print(f"  [発送判定] {shipping_verdict['status']} ({shipping_verdict['reason']})", flush=True)
+
+        # 5. 야마토 배송 추적 연동 (발송 완료 상태일 때)
         delivery_info = None
         order_progress = str(order_data.get("orderProgress", ""))
         
-        # 라쿠텐에서 700(발송완료) 이상인 경우 추적 시도
         if order_progress >= "700":
             from app.core.yamato_client import yamato_client
             logger.info(f"🚚 [Yamato] 발송된 주문 {order_number} 추적 시작...")
@@ -423,6 +443,7 @@ async def get_realtime_details(
                 "total_price": order_data.get("totalPrice")
             },
             "items": items,
+            "shipping_verdict": shipping_verdict,
             "delivery_info": delivery_info
         }
     except Exception as e:

@@ -7,7 +7,7 @@
     <aside class="sidebar glass-panel" style="border-radius: 0;">
         <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 2rem;">
             <img src="/static/img/logo.png" alt="ReplyFlow Logo" style="width: 32px; height: 32px; border-radius: 6px;">
-            <h2 style="margin: 0; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.5rem; letter-spacing: -0.5px;">ReplyFlow</h2>
+            <h2 style="margin: 0; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.5rem; letter-spacing: -0.5px;">ReplyFlow</h2>
         </div>
         <nav>
             <a href="/dashboard" class="nav-link active">ホーム (ダッシュボード)</a>
@@ -173,6 +173,13 @@
                                 <div><label style="font-size: 0.7rem; color: var(--text-muted); display: block;">商品コード</label><span id="ins-item-number" style="color: #fff;">-</span></div>
                                 <div><label style="font-size: 0.7rem; color: var(--text-muted); display: block;">サブコード</label><span id="ins-sub-code" style="color: #fff;">-</span></div>
                                 <div><label style="font-size: 0.7rem; color: var(--text-muted); display: block;">在庫</label><span id="ins-stock-count" style="color: var(--success);">-</span></div>
+                            </div>
+                            <div style="margin-top: 0.7rem; padding: 0.5rem 0.8rem; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <label style="font-size: 0.7rem; color: var(--text-muted);">発送判定</label>
+                                    <span id="ins-shipping-verdict" style="font-weight: bold; font-size: 0.85rem;">-</span>
+                                </div>
+                                <div id="ins-shipping-reason" style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.2rem;"></div>
                             </div>
                         </div>
 
@@ -416,6 +423,16 @@
                         document.getElementById('ins-stock-count').innerText = stock;
                     }
 
+                    // 発送判定表示
+                    if (details.shipping_verdict) {
+                        const v = details.shipping_verdict;
+                        const verdictEl = document.getElementById('ins-shipping-verdict');
+                        const reasonEl = document.getElementById('ins-shipping-reason');
+                        verdictEl.innerText = v.canShip ? '✅ 発送可能' : '❌ 発送不可';
+                        verdictEl.style.color = v.canShip ? '#10b981' : '#ef4444';
+                        reasonEl.innerText = v.reason || '';
+                    }
+
                     // ヤマト配送情報処理
                     const deliverySection = document.getElementById('ins-delivery-section');
                     if (details.delivery_info && details.delivery_info.status === 'success') {
@@ -507,6 +524,8 @@ async function generateDraft(inquiryId, btnElement) {
     const stockCount = parseInt(stockRaw.replace(/[^0-9]/g, '')) || null;
     const itemName = document.getElementById('ins-item-name').innerText;
     const subCode = document.getElementById('ins-sub-code').innerText;
+    const shippingVerdict = document.getElementById('ins-shipping-verdict').innerText;
+    const shippingReason = document.getElementById('ins-shipping-reason').innerText;
 
     try {
         const token = getCookie('sb-access-token');
@@ -521,6 +540,8 @@ async function generateDraft(inquiryId, btnElement) {
                 stock_count: stockCount,
                 item_name: itemName,
                 sub_code: subCode,
+                shipping_verdict: shippingVerdict,
+                shipping_reason: shippingReason,
                 delivery_info: {
                     tracking_number: document.getElementById('ins-tracking-number').innerText,
                     current_status: document.getElementById('ins-delivery-status').innerText,

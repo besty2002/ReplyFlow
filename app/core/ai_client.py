@@ -58,8 +58,15 @@ class AIClient:
         order_status = context.get("order_status", "確認中")
         stock_count = context.get("stock_count")
         item_name = context.get("item_name", "該当商品")
+        shipping_verdict = context.get("shipping_verdict", "")
+        shipping_reason = context.get("shipping_reason", "")
         
-        stock_info = f"{stock_count}개" if stock_count is not None else "확인 중"
+        stock_info = f"{stock_count}個" if stock_count is not None else "確認中"
+        
+        # 발송 판정 컨텍스트
+        shipping_context = ""
+        if shipping_verdict:
+            shipping_context = f"■ 発送判定: {shipping_verdict}\n■ 判定理由: {shipping_reason}\n"
         
         # 야마토 배송 정보 추출
         delivery_info = context.get("delivery_info")
@@ -80,18 +87,20 @@ class AIClient:
             f"■ 대상 상품: {item_name}\n"
             f"■ 주문 상태: {order_status}\n"
             f"■ 현재 재고: {stock_info}\n"
+            f"{shipping_context}"
             f"{delivery_context}"
             "--------------------------------------------------\n\n"
             "【응대 가이드라인】\n"
-            "1. 재고가 있으면 '즉시 발송 가능'함을 강조하세요.\n"
-            "2. 이미 발송되었다면 배송 상태(현재 위치 등)를 구체적으로 언급하며 안심시키세요.\n"
-            "3. 답변은 매우 정중하고 자연스러운 일본어로 작성하세요.\n"
-            "4. 반드시 JSON 형식으로만 응답하세요.\n"
-            "5. 카테고리는 [배송문의, 재고문의, 취소/환불, サイズ交換, 商品不良, 기타] 중 하나로 분류하세요.\n"
-            "6. 감정 분석을 수행하세요: angry(화남/불만), curious(궁금함), grateful(감사함), neutral(보통) 중 하나.\n"
-            "7. sentiment_score는 0.0~1.0 사이의 강도입니다 (1.0이 가장 강함).\n"
-            "8. tags는 문의 내용에서 추출한 핵심 키워드 태그 배열입니다 (예: [\"배송지연\", \"긴급\"]).\n"
-            "9. priority_suggestion은 urgent, high, normal, low 중 하나입니다.\n\n"
+            "1. 発送可能の場合は「即日発送可能」を強調してください。\n"
+            "2. 発送不可の場合は「お取り寄せとなり、7-10営業日ほどお時間をいただきます」と案内してください。\n"
+            "3. 이미 발송되었다면 배송 상태(현재 위치 등)를 구체적으로 언급하며 안심시키세요.\n"
+            "4. 답변은 매우 정중하고 자연스러운 일본어로 작성하세요.\n"
+            "5. 반드시 JSON 형식으로만 응답하세요.\n"
+            "6. 카테고리는 [배송문의, 재고문의, 취소/환불, サイズ交換, 商品不良, 기타] 중 하나로 분류하세요.\n"
+            "7. 감정 분석을 수행하세요: angry(화남/불만), curious(궁금함), grateful(감사함), neutral(보통) 중 하나.\n"
+            "8. sentiment_score는 0.0~1.0 사이의 강도입니다 (1.0이 가장 강함).\n"
+            "9. tags는 문의 내용에서 추출한 핵심 키워드 태그 배열입니다 (예: [\"배송지연\", \"긴급\"]).\n"
+            "10. priority_suggestion은 urgent, high, normal, low 중 하나입니다.\n\n"
             "JSON 응답 형식:\n"
             "{\n"
             '  "reply": "일본어 본문",\n'

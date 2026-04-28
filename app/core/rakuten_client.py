@@ -23,6 +23,20 @@ class RakutenRMSClient:
         }
         # 최신 Inquiry Management API 엔드포인트
         self.base_url = "https://api.rms.rakuten.co.jp/es/1.0/inquirymng-api"
+        # 공유 HTTP 클라이언트 (TCP 연결 재사용으로 성능 향상)
+        self._shared_client: httpx.AsyncClient | None = None
+
+    async def _get_client(self) -> httpx.AsyncClient:
+        """공유 HTTP 클라이언트를 반환합니다. 없으면 새로 생성합니다."""
+        if self._shared_client is None or self._shared_client.is_closed:
+            self._shared_client = httpx.AsyncClient(timeout=15.0, headers=self.headers)
+        return self._shared_client
+
+    async def close(self):
+        """공유 HTTP 클라이언트를 닫습니다."""
+        if self._shared_client and not self._shared_client.is_closed:
+            await self._shared_client.aclose()
+            self._shared_client = None
 
     async def get_inquiry_list(self) -> List[Dict[str, Any]]:
         """
@@ -31,7 +45,6 @@ class RakutenRMSClient:
         endpoint = "https://api.rms.rakuten.co.jp/es/1.0/inquirymng-api/inquiries"
         
         now = datetime.datetime.now()
-        # [수정] 수집 기간을 30일로 확대 (4월 17일 등 과거 데이터 수집 목적)
         start_date = (now - datetime.timedelta(days=30)).strftime("%Y-%m-%dT00:00:00")
         end_date = now.strftime("%Y-%m-%dT%H:%M:%S")
         
@@ -40,7 +53,6 @@ class RakutenRMSClient:
         total_pages = 1
         
         try:
-            import asyncio
             async with httpx.AsyncClient(timeout=30.0) as client:
                 while current_page <= total_pages:
                     params = {
@@ -48,31 +60,36 @@ class RakutenRMSClient:
                         "toDate": end_date,
                         "limit": 50,
                         "page": current_page,
-                        "noMerchantReply": "true" # [공식문서 적용] 미답변 문의 필터
+                        "noMerchantReply": "true",  # 公式API: 未返信のみ取得
                     }
-                    logger.info(f"📡 [Rakuten API] ページ {current_page}/{total_pages} 非同期収集中...")
+                    print(f"  [API] ページ {current_page}/{total_pages} 未返信のみ取得中... ({start_date} ~ {end_date})", flush=True)
                     res = await client.get(endpoint, headers=self.headers, params=params)
+                    
+                    print(f"  [API] HTTP {res.status_code}", flush=True)
                     
                     if res.status_code == 200:
                         json_data = res.json()
                         total_pages = json_data.get("totalPageCount", 1)
+                        raw_count = len(json_data.get("list", []))
+                        print(f"  [API] 응답: totalPages={total_pages}, 현재 페이지 문의={raw_count}건", flush=True)
                         
                         inquiries = self._parse_json_inquiries(json_data)
                         all_inquiries.extend(inquiries)
                         
-                        logger.info(f"✅ [Rakuten API] {current_page}ページ完了! (累계 {len(all_inquiries)}件)")
+                        print(f"  [API] {current_page}ページ完了 (未返信 누계: {len(all_inquiries)}건)", flush=True)
                         current_page += 1
                         
-                        # 서버 이벤트 루프를 양보하여 다른 요청 처리 가능하게 함
                         await asyncio.sleep(0.1)
                     else:
-                        logger.error(f"❌ [Rakuten API] {current_page}ページ失敗: {res.text}")
+                        print(f"  ❌ [API] HTTP {res.status_code}: {res.text[:200]}", flush=True)
                         break
                 
-                logger.info(f"🏁 [Rakuten API] 全量収集完了! 合計 {len(all_inquiries)}件 確保")
+                print(f"  [API] 수집 완료! 총 未返信 {len(all_inquiries)}건", flush=True)
                 return all_inquiries
         except Exception as e:
-            logger.error(f"❌ [Rakuten API - NEW JSON] 연결 실패: {e}")
+            print(f"  ❌ [API] 연결 실패: {e}", flush=True)
+            import traceback
+            traceback.print_exc()
             return []
 
     async def send_reply(self, inquiry_id: str, shop_id: str, reply_text: str) -> bool:
@@ -137,35 +154,31 @@ class RakutenRMSClient:
 
     def _parse_json_inquiries(self, json_data: Dict[str, Any]) -> List[Dict[str, Any]]:
         """
-        라쿠텐 최신 API 응답(json)에서 데이터를 추출합니다.
+        라쿠텐 API 응답을 파싱합니다.
+        UNICONA 未返信 = noMerchantReply(API) + isCompleted=false(파서)
         """
         inquiries = []
+        skipped = 0
         try:
-            # [확인됨] 라쿠텐 최신 API는 'list'라는 키에 데이터를 담아줍니다.
             inquiry_list = json_data.get("list", [])
-            logger.info(f"🔍 [Rakuten API] 응답 데이터 건수: {len(inquiry_list)}건 (상세 필터링 시작)")
+            print(f"  [Parser] API 응답 {len(inquiry_list)}건 (isCompleted 필터 적용)", flush=True)
+            
             for item in inquiry_list:
                 inq_no = str(item.get("inquiryNumber", "UNKNOWN"))
                 
-                # [초정밀 필터링]
-                # 1. '완료' 상태(isCompleted=true)인 문의는 제외
+                # isCompleted=true → 시스템 자동완료된 문의 제외
                 if item.get("isCompleted") is True:
-                    logger.info(f"⏩ [Skip] 문의 {inq_no}: 완료(isCompleted=true) 상태임")
+                    skipped += 1
                     continue
                 
-                # 2. 이미 상점(merchant)에서 답변을 보낸 기록이 있는 경우 제외
-                replies = item.get("replies", [])
-                if any(r.get("replyFrom") == "merchant" for r in replies):
-                    logger.info(f"⏩ [Skip] 문의 {inq_no}: 이미 상점 답변이 존재함")
-                    continue
+                print(f"    🟢 #{inq_no} | {item.get('userName', 'N/A')} | 주문: {item.get('orderNumber', 'N/A')}", flush=True)
                 
-                # 라쿠텐 API 응답 오타(meessage) 및 정상(message) 대응
                 content = item.get("meessage") or item.get("message") or ""
                 
                 inquiries.append({
                     "rakuten_inquiry_id": inq_no,
                     "customer_id": item.get("userName", "Anonymous"),
-                    "title": "楽天 顧客問い合わせ", 
+                    "title": "楽天 顧客問い合わせ",
                     "content": content,
                     "received_at": item.get("regDate") or item.get("inquiryDateTime", ""),
                     "order_number": item.get("orderNumber"),
@@ -174,9 +187,11 @@ class RakutenRMSClient:
                     "category": item.get("category"),
                     "type": item.get("type")
                 })
+            
+            print(f"  [Parser] 결과: 未返信 {len(inquiries)}건 (完了 {skipped}건 제외)", flush=True)
             return inquiries
         except Exception as e:
-            logger.error(f"❌ [JSON Parsing] 실패: {e}")
+            print(f"  ❌ [Parser] 실패: {e}", flush=True)
             return []
 
     async def get_item_details(self, item_url: str) -> Dict[str, Any]:
@@ -187,10 +202,10 @@ class RakutenRMSClient:
         params = {"itemUrl": item_url}
         
         try:
-            async with httpx.AsyncClient(timeout=10.0) as client:
-                res = await client.get(endpoint, headers=self.headers, params=params)
-                if res.status_code == 200:
-                    return res.json().get("itemModel", {})
+            client = await self._get_client()
+            res = await client.get(endpoint, params=params)
+            if res.status_code == 200:
+                return res.json().get("itemModel", {})
         except Exception as e:
             logger.error(f"🔥 [Rakuten Item API] 예외 발생: {e}")
             
@@ -206,11 +221,11 @@ class RakutenRMSClient:
         url = f"https://api.rms.rakuten.co.jp/es/2.1/inventories/variant-lists/manage-numbers/{manage_number.lower()}"
         
         try:
-            async with httpx.AsyncClient(timeout=10.0) as client:
-                res = await client.get(url, headers=self.headers)
-                if res.status_code == 200:
-                    data = res.json()
-                    return data.get("variantList", [])
+            client = await self._get_client()
+            res = await client.get(url)
+            if res.status_code == 200:
+                data = res.json()
+                return data.get("variantList", [])
         except Exception as e:
             logger.error(f"🔥 [Rakuten Variant List] 예외 발생: {e}")
             
@@ -227,32 +242,32 @@ class RakutenRMSClient:
         manage_number = manage_number.lower()
         url = f"https://api.rms.rakuten.co.jp/es/2.1/inventories/manage-numbers/{manage_number}/variants/{variant_id}"
         
+        client = await self._get_client()
         for attempt in range(2):
             try:
-                async with httpx.AsyncClient(timeout=10.0) as client:
-                    res = await client.get(url, headers=self.headers)
-                    
-                    if res.status_code == 200:
-                        data = res.json()
-                        logger.info(f"📊 [Inventory Debug] 응답 데이터: {data}")
-                        # v2.1 규격: inventoryCount 필드 사용 (혹은 quantity 확인)
-                        count = data.get("inventoryCount")
-                        if count is None:
-                            count = data.get("quantity") # 하위 호환성 체크
-                        return count
-                    elif res.status_code == 429:
-                        if attempt == 0:
-                            logger.warning(f"⚠️ [Rakuten Inventory] QPS 초과 (429). 1초 후 재시도합니다... ({manage_number}/{variant_id})")
-                            await asyncio.sleep(1)
-                            continue
-                        else:
-                            logger.error(f"❌ [Rakuten Inventory] QPS 초과 지속: {res.text}")
-                    elif res.status_code == 404:
-                        logger.warning(f"⚠️ [Rakuten Inventory v2.1] 존재하지 않는 SKU: {manage_number}/{variant_id}")
-                        return None
+                res = await client.get(url)
+                
+                if res.status_code == 200:
+                    data = res.json()
+                    logger.info(f"📊 [Inventory Debug] 응답 데이터: {data}")
+                    # v2.1 규격: inventoryCount 필드 사용 (혹은 quantity 확인)
+                    count = data.get("inventoryCount")
+                    if count is None:
+                        count = data.get("quantity") # 하위 호환성 체크
+                    return count
+                elif res.status_code == 429:
+                    if attempt == 0:
+                        logger.warning(f"⚠️ [Rakuten Inventory] QPS 초과 (429). 1초 후 재시도합니다... ({manage_number}/{variant_id})")
+                        await asyncio.sleep(1)
+                        continue
                     else:
-                        logger.error(f"❌ [Rakuten Inventory v2.1] 오류: {res.status_code} {res.text}")
-                        return None
+                        logger.error(f"❌ [Rakuten Inventory] QPS 초과 지속: {res.text}")
+                elif res.status_code == 404:
+                    logger.warning(f"⚠️ [Rakuten Inventory v2.1] 존재하지 않는 SKU: {manage_number}/{variant_id}")
+                    return None
+                else:
+                    logger.error(f"❌ [Rakuten Inventory v2.1] 오류: {res.status_code} {res.text}")
+                    return None
             except Exception as e:
                 logger.error(f"🔥 [Rakuten Inventory v2.1] 예외 발생: {e}")
                 return None
