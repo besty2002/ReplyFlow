@@ -7,7 +7,7 @@
     <aside class="sidebar glass-panel" style="border-radius: 0;">
         <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 2rem;">
             <img src="/static/img/logo.png" alt="ReplyFlow Logo" style="width: 32px; height: 32px; border-radius: 6px;">
-            <h2 style="margin: 0; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.5rem; letter-spacing: -0.5px;">ReplyFlow</h2>
+            <h2 style="margin: 0; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.5rem; letter-spacing: -0.5px;">ReplyFlow</h2>
         </div>
         <nav>
             <a href="/dashboard" class="nav-link">ホーム (ダッシュボード)</a>
@@ -75,7 +75,48 @@
             </section>
         </div>
 
-        <!-- 추가 제안 기능 섹션 (Placeholder) -->
+        <!-- CS対応ガイドラインセクション -->
+        <section class="glass-panel" style="padding: 1.5rem; margin-top: 2rem;">
+            <h3 style="margin-top: 0; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem;">
+                📋 CS対応ガイドライン
+            </h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0.5rem 0 0.8rem 0;">
+                ここに記載した内容がAI回答生成時に参照されます。<br>
+                サンプルテンプレートをダウンロードして、自社の方針に合わせて編集後、貼り付けまたはアップロードしてください。
+            </p>
+
+            <!-- テンプレートダウンロード & ファイルアップロード -->
+            <div style="display: flex; gap: 0.8rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                <a href="/static/templates/cs_guidelines_template.txt" download="cs_guidelines_template.txt"
+                   style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 1rem; border-radius: 8px; background: rgba(129, 140, 248, 0.15); border: 1px solid rgba(129, 140, 248, 0.3); color: #818cf8; font-size: 0.8rem; text-decoration: none; cursor: pointer; transition: all 0.2s;"
+                   onmouseover="this.style.background='rgba(129, 140, 248, 0.25)'" onmouseout="this.style.background='rgba(129, 140, 248, 0.15)'">
+                    📥 サンプルテンプレートをダウンロード
+                </a>
+                <label for="guidelines-file-input"
+                   style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 1rem; border-radius: 8px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;"
+                   onmouseover="this.style.background='rgba(16, 185, 129, 0.2)'" onmouseout="this.style.background='rgba(16, 185, 129, 0.1)'">
+                    📤 ファイルから読み込み
+                </label>
+                <input type="file" id="guidelines-file-input" accept=".txt,.md,.text" style="display: none;">
+            </div>
+
+            <form id="guidelines-form" style="display: flex; flex-direction: column; gap: 1rem;">
+                <textarea id="guidelines-text" class="form-input" rows="16"
+                    style="resize: vertical; font-size: 0.82rem; line-height: 1.6; font-family: 'Consolas', 'Monaco', monospace; white-space: pre-wrap;"
+                    placeholder="サンプルテンプレートをダウンロードして、自社の方針に合わせて編集後、こちらに貼り付けてください。"></textarea>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span id="guidelines-char-count" style="font-size: 0.75rem; color: var(--text-muted);">0文字</span>
+                    {% if user_context.role in ['admin', 'owner'] %}
+                    <button type="submit" id="save-guidelines-btn" class="btn-primary" style="padding: 0.5rem 1.5rem;">💾 ガイドラインを保存</button>
+                    {% else %}
+                    <span style="font-size: 0.8rem; color: var(--danger);">ガイドラインの編集には管理者権限が必要です。</span>
+                    {% endif %}
+                </div>
+            </form>
+            <div id="guidelines-msg" style="margin-top: 1rem; display: none; font-size: 0.9rem;"></div>
+        </section>
+
+        <!-- 追加提案機能セクション (Placeholder) -->
         <section class="glass-panel" style="padding: 1.5rem; margin-top: 2rem; border-style: dashed; opacity: 0.8;">
             <h3 style="margin-top: 0; color: var(--text-muted);">✨ 今後のアップデート予定</h3>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
@@ -106,7 +147,7 @@ function getCookie(name) {
     if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-// 초기 데이터 로드
+// 初期データ読み込み
 async function loadProfile() {
     try {
         const token = getCookie('sb-access-token');
@@ -119,13 +160,78 @@ async function loadProfile() {
             document.getElementById('company-id').value = data.company.id;
             document.getElementById('company-name').value = data.company.name || '';
             document.getElementById('user-email').value = data.user.email;
+            
+            // ガイドライン読み込み
+            const guidelinesText = data.company.cs_guidelines || '';
+            document.getElementById('guidelines-text').value = guidelinesText;
+            document.getElementById('guidelines-char-count').textContent = `${guidelinesText.length}文字`;
         }
     } catch (err) {
         console.error("Profile load failed:", err);
     }
 }
 
-// 회사명 저장
+// ガイドライン文字数カウンター
+document.getElementById('guidelines-text').addEventListener('input', (e) => {
+    document.getElementById('guidelines-char-count').textContent = `${e.target.value.length}文字`;
+});
+
+// ファイルから読み込み
+document.getElementById('guidelines-file-input').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+        const text = ev.target.result;
+        document.getElementById('guidelines-text').value = text;
+        document.getElementById('guidelines-char-count').textContent = `${text.length}文字`;
+        const msg = document.getElementById('guidelines-msg');
+        msg.textContent = `✅ 「${file.name}」を読み込みました（${text.length}文字）。保存ボタンを押してください。`;
+        msg.style.color = "#818cf8";
+        msg.style.display = "block";
+    };
+    reader.readAsText(file, 'UTF-8');
+    e.target.value = ''; // 同じファイル再選択可能に
+});
+
+// ガイドライン保存
+document.getElementById('guidelines-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('save-guidelines-btn');
+    const msg = document.getElementById('guidelines-msg');
+    const guidelines = document.getElementById('guidelines-text').value;
+    
+    btn.disabled = true;
+    btn.textContent = "保存中...";
+    msg.style.display = 'none';
+
+    try {
+        const token = getCookie('sb-access-token');
+        const res = await fetch('/api/v1/user/guidelines', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ guidelines: guidelines })
+        });
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.detail || "保存に失敗しました");
+        
+        msg.textContent = "✅ " + data.message;
+        msg.style.color = "var(--success)";
+        msg.style.display = "block";
+    } catch (err) {
+        msg.textContent = "❌ " + err.message;
+        msg.style.color = "var(--danger)";
+        msg.style.display = "block";
+    } finally {
+        btn.disabled = false;
+        btn.textContent = "💾 ガイドラインを保存";
+    }
+});
+
+// 会社名保存
 document.getElementById('company-form')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = document.getElementById('save-company-btn');
@@ -160,7 +266,7 @@ document.getElementById('company-form')?.addEventListener('submit', async (e) =>
     }
 });
 
-// 비밀번호 저장
+// パスワード保存
 document.getElementById('password-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = document.getElementById('save-password-btn');

@@ -60,6 +60,7 @@ class AIClient:
         item_name = context.get("item_name", "該当商品")
         shipping_verdict = context.get("shipping_verdict", "")
         shipping_reason = context.get("shipping_reason", "")
+        cs_guidelines = context.get("cs_guidelines", "")
         
         stock_info = f"{stock_count}個" if stock_count is not None else "確認中"
         
@@ -101,6 +102,17 @@ class AIClient:
             "8. sentiment_score는 0.0~1.0 사이의 강도입니다 (1.0이 가장 강함).\n"
             "9. tags는 문의 내용에서 추출한 핵심 키워드 태그 배열입니다 (예: [\"배송지연\", \"긴급\"]).\n"
             "10. priority_suggestion은 urgent, high, normal, low 중 하나입니다.\n\n"
+        )
+        
+        # 회사 CS 가이드라인 주입
+        if cs_guidelines:
+            system_instruction += (
+                "【会社CS対応ガイドライン（必ず遵守してください）】\n"
+                f"{cs_guidelines}\n"
+                "--------------------------------------------------\n\n"
+            )
+        
+        system_instruction += (
             "JSON 응답 형식:\n"
             "{\n"
             '  "reply": "일본어 본문",\n'

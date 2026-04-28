@@ -7,29 +7,29 @@
     <aside class="sidebar glass-panel" style="border-radius: 0;">
         <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 2rem;">
             <img src="/static/img/logo.png" alt="ReplyFlow Logo" style="width: 32px; height: 32px; border-radius: 6px;">
-            <h2 style="margin: 0; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.5rem; letter-spacing: -0.5px;">ReplyFlow</h2>
+            <h2 style="margin: 0; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.5rem; letter-spacing: -0.5px;">ReplyFlow</h2>
         </div>
         <nav>
-            <a href="/dashboard" class="nav-link">홈 (대시보드)</a>
-            <a href="/inquiries" class="nav-link">문의 관리</a>
-            <a href="/training" class="nav-link active">AI 학습 검증</a>
-            <a href="/settings" class="nav-link">설정</a>
+            <a href="/dashboard" class="nav-link">ホーム</a>
+            <a href="/inquiries" class="nav-link">問い合わせ管理</a>
+            <a href="/training" class="nav-link active">AI学習検証</a>
+            <a href="/settings" class="nav-link">設定</a>
             
             <div class="sidebar-footer" style="margin-top: auto; padding-top: 2rem;">
-                <a href="#" class="nav-link" id="logout-btn" style="color: var(--danger);">로그아웃</a>
+                <a href="#" class="nav-link" id="logout-btn" style="color: var(--danger);">ログアウト</a>
             </div>
         </nav>
     </aside>
 
     <main class="main-content">
         <header style="margin-bottom: 2rem;">
-            <h1 style="margin: 0; font-weight: 600;">AI 학습 데이터 검증</h1>
-            <p style="color: var(--text-muted); margin-top: 0.5rem;">Human-in-the-Loop: AI의 답변을 검증하여 모델의 정확도를 높이세요.</p>
+            <h1 style="margin: 0; font-weight: 600;">AI学習データ検証</h1>
+            <p style="color: var(--text-muted); margin-top: 0.5rem;">Human-in-the-Loop: AIの回答を検証し、モデルの精度を向上させましょう。</p>
         </header>
 
         <section class="glass-panel" style="padding: 1.5rem;">
             <div id="reviews-container">
-                <p style="text-align: center; color: var(--text-muted); padding: 3rem;">리뷰 대기 중인 데이터가 없습니다.</p>
+                <p style="text-align: center; color: var(--text-muted); padding: 3rem;">レビュー待ちのデータがありません。</p>
             </div>
         </section>
     </main>
@@ -47,22 +47,22 @@
         container.innerHTML = reviews.map(rev => `
             <div class="glass-panel" style="padding: 1.5rem; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.05);">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
-                    <strong>문의 ID: ${rev.inquiry_id.slice(0,8)}</strong>
-                    <span class="badge">${rev.original_category || '미분류'}</span>
+                    <strong>問い合わせID: ${rev.inquiry_id.slice(0,8)}</strong>
+                    <span class="badge">${rev.original_category || '未分類'}</span>
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
                     <div>
-                        <label class="form-label">고객 질문</label>
+                        <label class="form-label">お客様の質問</label>
                         <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; font-size: 0.9rem;">${rev.original_question}</div>
                     </div>
                     <div>
-                        <label class="form-label">AI 답변 (검증/수정 필요)</label>
+                        <label class="form-label">AI回答（検証/修正が必要）</label>
                         <textarea class="form-input" style="height: 120px;" id="answer-${rev.id}">${rev.original_ai_answer}</textarea>
                     </div>
                 </div>
                 <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
-                    <button class="btn-primary" style="width: auto; background: var(--success);" onclick="submitReview('${rev.id}', true)">승인</button>
-                    <button class="btn-primary" style="width: auto; background: var(--primary-color);" onclick="submitReview('${rev.id}', false)">수정 후 승인</button>
+                    <button class="btn-primary" style="width: auto; background: var(--success);" onclick="submitReview('${rev.id}', true)">承認</button>
+                    <button class="btn-primary" style="width: auto; background: var(--primary-color);" onclick="submitReview('${rev.id}', false)">修正後承認</button>
                 </div>
             </div>
         `).join('');
@@ -80,7 +80,7 @@
             })
         });
         if (res.ok) {
-            alert('검증 완료!');
+            alert('検証完了！');
             loadReviews();
         }
     }

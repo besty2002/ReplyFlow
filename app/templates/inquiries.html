@@ -7,16 +7,16 @@
     <aside class="sidebar glass-panel" style="border-radius: 0;">
         <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 2rem;">
             <img src="/static/img/logo.png" alt="ReplyFlow Logo" style="width: 32px; height: 32px; border-radius: 6px;">
-            <h2 style="margin: 0; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.5rem; letter-spacing: -0.5px;">ReplyFlow</h2>
+            <h2 style="margin: 0; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.5rem; letter-spacing: -0.5px;">ReplyFlow</h2>
         </div>
         <nav>
-            <a href="/dashboard" class="nav-link">홈 (대시보드)</a>
-            <a href="/inquiries" class="nav-link active">문의 관리</a>
-            <a href="/training" class="nav-link">AI 학습 검증</a>
-            <a href="/settings" class="nav-link">설정</a>
+            <a href="/dashboard" class="nav-link">ホーム</a>
+            <a href="/inquiries" class="nav-link active">問い合わせ管理</a>
+            <a href="/training" class="nav-link">AI学習検証</a>
+            <a href="/settings" class="nav-link">設定</a>
             
             <div class="sidebar-footer" style="margin-top: auto; padding-top: 2rem;">
-                <a href="#" class="nav-link" id="logout-btn" style="color: var(--danger);">로그아웃</a>
+                <a href="#" class="nav-link" id="logout-btn" style="color: var(--danger);">ログアウト</a>
             </div>
         </nav>
     </aside>
@@ -24,46 +24,46 @@
     <main class="main-content">
         <header style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: flex-end;">
             <div>
-                <h1 style="margin: 0; font-weight: 600;">고객 문의 통합 관리</h1>
-                <p style="color: var(--text-muted); margin-top: 0.5rem;">고급 필터와 AI 분석을 통해 효율적으로 대응하세요.</p>
+                <h1 style="margin: 0; font-weight: 600;">お客様問い合わせ統合管理</h1>
+                <p style="color: var(--text-muted); margin-top: 0.5rem;">高度なフィルターとAI分析で効率的に対応しましょう。</p>
             </div>
         </header>
 
-        <!-- 필터 섹션 -->
+        <!-- フィルターセクション -->
         <section class="glass-panel" style="padding: 1.5rem; margin-bottom: 2rem;">
-            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end;">
                 <div class="form-group" style="margin: 0; min-width: 150px;">
-                    <label class="form-label" style="font-size: 0.75rem;">상태</label>
+                    <label class="form-label" style="font-size: 0.75rem;">ステータス</label>
                     <select id="filter-status" class="form-input" onchange="applyFilters()">
-                        <option value="">전체 상태</option>
-                        <option value="pending" {% if selected_status == 'pending' %}selected{% endif %}>대기중</option>
-                        <option value="in_progress" {% if selected_status == 'in_progress' %}selected{% endif %}>처리중</option>
-                        <option value="replied" {% if selected_status == 'replied' %}selected{% endif %}>답변완료</option>
-                        <option value="escalated" {% if selected_status == 'escalated' %}selected{% endif %}>에스컬레이션</option>
+                        <option value="">全てのステータス</option>
+                        <option value="pending" {% if selected_status == 'pending' %}selected{% endif %}>対応待ち</option>
+                        <option value="in_progress" {% if selected_status == 'in_progress' %}selected{% endif %}>処理中</option>
+                        <option value="replied" {% if selected_status == 'replied' %}selected{% endif %}>回答済み</option>
+                        <option value="escalated" {% if selected_status == 'escalated' %}selected{% endif %}>エスカレーション</option>
                     </select>
                 </div>
                 <div class="form-group" style="margin: 0; min-width: 150px;">
-                    <label class="form-label" style="font-size: 0.75rem;">감정</label>
+                    <label class="form-label" style="font-size: 0.75rem;">感情</label>
                     <select id="filter-sentiment" class="form-input" onchange="applyFilters()">
-                        <option value="">전체 감정</option>
-                        <option value="angry">불만/화남</option>
-                        <option value="curious">질문/확인</option>
-                        <option value="grateful">감사</option>
-                        <option value="neutral">보통</option>
+                        <option value="">全ての感情</option>
+                        <option value="angry">不満/怒り</option>
+                        <option value="curious">質問/確認</option>
+                        <option value="grateful">感謝</option>
+                        <option value="neutral">普通</option>
                     </select>
                 </div>
                 <div class="form-group" style="margin: 0; min-width: 150px;">
-                    <label class="form-label" style="font-size: 0.75rem;">상점</label>
+                    <label class="form-label" style="font-size: 0.75rem;">ショップ</label>
                     <select id="filter-shop" class="form-input" onchange="applyFilters()">
-                        <option value="">전체 상점</option>
+                        <option value="">全てのショップ</option>
                         {% for shop in connected_shops %}
                         <option value="{{ shop.id }}" {% if selected_shop == shop.id %}selected{% endif %}>{{ shop.shop_name }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="form-group" style="margin: 0; flex: 1; min-width: 250px;">
-                    <label class="form-label" style="font-size: 0.75rem;">검색</label>
-                    <input type="text" id="search-query" class="form-input" placeholder="고객ID, 주문번호, 내용 검색..." value="{{ search_query or '' }}">
+                    <label class="form-label" style="font-size: 0.75rem;">検索</label>
+                    <input type="text" id="search-query" class="form-input" placeholder="お客様ID、注文番号、内容で検索..." value="{{ search_query or '' }}">
                 </div>
                 <div style="display: flex; align-items: flex-end;">
                     <button class="btn-primary" onclick="applyFilters()">적용</button>
@@ -71,18 +71,18 @@
             </div>
         </section>
 
-        <!-- 문의 목록 -->
+        <!-- 問い合わせ一覧 -->
         <section class="glass-panel" style="padding: 1.5rem; min-height: 400px;">
             <div style="overflow-x: auto;">
                 <table class="modern-table">
                     <thead>
                         <tr>
-                            <th>상태</th>
-                            <th>중요도</th>
-                            <th>감정</th>
-                            <th>고객 / 주문번호</th>
-                            <th>내용 요약</th>
-                            <th>접수일시</th>
+                            <th>ステータス</th>
+                            <th>重要度</th>
+                            <th>感情</th>
+                            <th>お客様 / 注文番号</th>
+                            <th>内容要約</th>
+                            <th>受付日時</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -100,7 +100,7 @@
                             <td>
                                 <div style="display: flex; flex-direction: column;">
                                     <strong>{{ item.customer_id }}</strong>
-                                    <span style="font-size: 0.75rem; color: var(--primary-color);">{{ item.order_number or '주문번호 없음' }}</span>
+                                    <span style="font-size: 0.75rem; color: var(--primary-color);">{{ item.order_number or '注文番号なし' }}</span>
                                 </div>
                             </td>
                             <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
@@ -115,22 +115,22 @@
                 </table>
             </div>
             
-            <!-- 페이지네이션 생략 (필요시 추가) -->
+            <!-- ページネーション（必要時追加） -->
         </section>
     </main>
 </div>
 
-<!-- 상세 인스펙터 패널 -->
+<!-- 詳細インスペクターパネル -->
 <aside id="inspector-panel" class="inspector-panel glass-panel hidden">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-        <h2 style="margin: 0; font-size: 1.25rem;">문의 상세</h2>
+        <h2 style="margin: 0; font-size: 1.25rem;">問い合わせ詳細</h2>
         <button onclick="closeInspector()" style="background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;">&times;</button>
     </div>
     
-    <div id="inspector-loader" class="hidden" style="text-align: center; padding: 2rem;">로딩 중...</div>
+    <div id="inspector-loader" class="hidden" style="text-align: center; padding: 2rem;">読み込み中...</div>
     
     <div id="inspector-content">
-        <!-- JS로 동적 렌더링 -->
+        <!-- JSで動的レンダリング -->
     </div>
 </aside>
 
@@ -192,7 +192,7 @@
             loader.classList.add('hidden');
             renderInquiryDetail(inq);
         } catch (err) {
-            content.innerHTML = '<p style="color:var(--danger)">데이터를 불러오지 못했습니다.</p>';
+            content.innerHTML = '<p style="color:var(--danger)">データの取得に失敗しました。</p>';
         }
     }
 
@@ -202,19 +202,19 @@
             <div style="margin-bottom: 1.5rem;">
                 <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
                     <span class="badge badge-${inq.status}">${inq.status.upper()}</span>
-                    <span class="badge" style="background:rgba(255,255,255,0.1)">${inq.category || '미분류'}</span>
+                    <span class="badge" style="background:rgba(255,255,255,0.1)">${inq.category || '未分類'}</span>
                 </div>
-                <h3 style="margin-bottom: 0.5rem;">${inq.title || '제목 없음'}</h3>
+                <h3 style="margin-bottom: 0.5rem;">${inq.title || 'タイトルなし'}</h3>
                 <p style="font-size: 0.9rem; color: var(--text-muted);">${inq.received_at.replace('T', ' ')}</p>
             </div>
             
             <div class="glass-panel" style="padding: 1rem; margin-bottom: 1.5rem; background: rgba(0,0,0,0.2);">
-                <label style="font-size: 0.75rem; color: var(--primary-color); font-weight: bold;">문의 내용</label>
+                <label style="font-size: 0.75rem; color: var(--primary-color); font-weight: bold;">問い合わせ内容</label>
                 <p style="white-space: pre-wrap; font-size: 0.95rem; margin-top: 0.5rem;">${inq.content}</p>
             </div>
             
             <div style="margin-bottom: 1.5rem;">
-                <label style="font-weight: bold; margin-bottom: 0.5rem; display: block;">내부 메모</label>
+                <label style="font-weight: bold; margin-bottom: 0.5rem; display: block;">内部メモ</label>
                 <div id="notes-list" style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem;">
                     ${(inq.internal_notes || []).map(note => `
                         <div style="background: rgba(255,255,255,0.05); padding: 0.75rem; border-radius: 8px; font-size: 0.85rem;">
@@ -224,17 +224,17 @@
                     `).join('')}
                 </div>
                 <div style="display: flex; gap: 0.5rem;">
-                    <input type="text" id="new-note" class="form-input" style="flex: 1;" placeholder="메모 추가...">
-                    <button class="btn-primary" onclick="addNote()" style="padding: 0.5rem 1rem;">추가</button>
+                    <input type="text" id="new-note" class="form-input" style="flex: 1;" placeholder="メモを追加...">
+                    <button class="btn-primary" onclick="addNote()" style="padding: 0.5rem 1rem;">追加</button>
                 </div>
             </div>
             
             <div style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;">
-                <label style="font-weight: bold; margin-bottom: 0.5rem; display: block;">답변 작성 (AI 초안)</label>
+                <label style="font-weight: bold; margin-bottom: 0.5rem; display: block;">回答作成（AI下書き）</label>
                 <textarea id="reply-text" class="form-input" style="height: 200px; margin-bottom: 1rem;">${(inq.reply_drafts && inq.reply_drafts[0]) ? inq.reply_drafts[0].ai_suggested_reply : ''}</textarea>
                 <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
-                    <button class="btn-primary" style="background: var(--primary-hover)" onclick="generateDraft()">초안 생성</button>
-                    <button class="btn-primary" onclick="sendReply()">답변 발송</button>
+                    <button class="btn-primary" style="background: var(--primary-hover)" onclick="generateDraft()">下書き生成</button>
+                    <button class="btn-primary" onclick="sendReply()">回答送信</button>
                 </div>
             </div>
         `;
@@ -255,9 +255,9 @@
                 body: JSON.stringify({ content })
             });
             if (res.ok) openInspector(currentInquiryId);
-        } catch (err) { alert('메모 추가 실패'); }
+        } catch (err) { alert('メモの追加に失敗しました'); }
     }
     
-    // sendReply, generateDraft 등 추가 구현 필요
+    // sendReply, generateDraft 等の追加実装が必要
 </script>
 {% endblock %}

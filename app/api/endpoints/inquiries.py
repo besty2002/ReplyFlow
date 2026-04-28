@@ -78,6 +78,14 @@ async def generate_draft(
     full_context = inquiry.copy()
     if request:
         full_context.update(request.dict(exclude_none=True))
+    
+    # 3.5. 회사 CS 가이드라인 로드
+    try:
+        comp_res = supabase_client.table("companies").select("cs_guidelines").eq("id", company_id).execute()
+        if comp_res.data and comp_res.data[0].get("cs_guidelines"):
+            full_context["cs_guidelines"] = comp_res.data[0]["cs_guidelines"]
+    except Exception:
+        pass  # 가이드라인 로드 실패 시 무시
 
     # 4. AI 초안 생성 및 카테고리 분류
     ai_result = await ai_client.generate_reply(
@@ -333,7 +341,10 @@ async def get_realtime_details(
         # 실시간 주문 정보 조회
         order_data = await rakuten.get_order_details(order_number)
         
-        if not order_data:
+        # 서브스테이터스 디버그 로그
+        if order_data:
+            print(f"  [Order] subStatusId={order_data.get('subStatusId')}, subStatusName={order_data.get('subStatusName')}, orderProgress={order_data.get('orderProgress')}", flush=True)
+        else:
             logger.warning(f"⚠️ [Realtime Details] 라쿠텐 주문 조회 결과 없음: {order_number}")
             return {"status": "failed", "message": "라쿠텐에서 주문 정보를 찾을 수 없습니다."}
 
@@ -425,20 +436,68 @@ async def get_realtime_details(
         }
         print(f"  [発送判定] {shipping_verdict['status']} ({shipping_verdict['reason']})", flush=True)
 
-        # 5. 야마토 배송 추적 연동 (발송 완료 상태일 때)
+        # 5. 배송 정보 추출 (라쿠텐 주문 데이터에서 직접)
         delivery_info = None
         order_progress = str(order_data.get("orderProgress", ""))
         
-        if order_progress >= "700":
-            from app.core.yamato_client import yamato_client
-            logger.info(f"🚚 [Yamato] 발송된 주문 {order_number} 추적 시작...")
-            delivery_info = await yamato_client.get_tracking_by_order_number(order_number)
+        # 配送会社ID → 名前マッピング
+        company_map = {
+            "1001": "ヤマト運輸", "1002": "佐川急便", "1003": "日本郵便",
+            "1004": "西濃運輸", "1005": "セイノースーパーエクスプレス",
+            "1006": "福山通運", "1007": "名鉄運輸", "1008": "トナミ運輸",
+            "1009": "第一貨物", "1010": "新潟運輸", "1011": "中越運送",
+            "1012": "岡山県貨物", "1013": "久留米運送", "1014": "山陽自動車運送",
+            "1015": "NXトランスポート", "1016": "エコ配", "1017": "EMS",
+            "1018": "DHL", "1019": "FedEx", "1020": "UPS",
+            "1021": "日本通運", "1022": "TNT", "1023": "OCS",
+            "1024": "USPS", "1025": "SFエクスプレス", 
+            "1026": "Aramex", "1027": "SGHグローバル・ジャパン",
+        }
+        
+        # PackageModelList → ShippingModelList에서 전표번호 추출
+        try:
+            # 注文レベルの備考からお届け日を抽出（例: [配送日時指定] 2026-04-28(火)）
+            order_delivery_date = None
+            remarks = order_data.get("remarks") or order_data.get("memo") or ""
+            if not remarks:
+                # deliveryDate が注文トップレベルにある可能性
+                order_delivery_date = order_data.get("deliveryDate") or order_data.get("arrivalDate")
+            else:
+                import re
+                date_match = re.search(r'配送日[時指定]*[】\]]\s*(\d{4}-\d{2}-\d{2})', str(remarks))
+                if date_match:
+                    order_delivery_date = date_match.group(1)
+            
+            packages = order_data.get("PackageModelList") or []
+            for pkg in packages:
+                shipping_list = pkg.get("ShippingModelList") or []
+                for ship in shipping_list:
+                    tracking = ship.get("shippingNumber")
+                    # API応答の実フィールド: deliveryCompanyName = "ヤマト運輸"
+                    company_name = ship.get("deliveryCompanyName") or ship.get("deliveryCompany") or "-"
+                    
+                    if tracking:
+                        delivery_info = {
+                            "status": "success",
+                            "tracking_number": str(tracking),
+                            "shipping_company": company_name,
+                            "shipping_date": ship.get("shippingDate"),
+                            "delivery_date": order_delivery_date,
+                        }
+                        print(f"  [配送] 伝票={tracking}, 会社={company_name}, 発送={ship.get('shippingDate')}, 届け={order_delivery_date}", flush=True)
+                        break
+                if delivery_info:
+                    break
+        except Exception as e:
+            print(f"  ⚠️ [配送] 情報抽出エラー: {e}", flush=True)
 
         return {
             "status": "success",
             "order_info": {
                 "order_number": order_data.get("orderNumber"),
                 "order_status": order_data.get("orderProgress"),
+                "sub_status_id": order_data.get("subStatusId"),
+                "sub_status_name": order_data.get("subStatusName"),
                 "order_date": order_data.get("orderDatetime"),
                 "total_price": order_data.get("totalPrice")
             },

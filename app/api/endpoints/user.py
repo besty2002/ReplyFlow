@@ -76,3 +76,35 @@ def update_password(
         return {"status": "success", "message": "パスワードが正常に更新されました。"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"パスワードの変更に失敗しました: {str(e)}")
+
+
+class GuidelinesUpdate(BaseModel):
+    guidelines: str
+
+
+@router.put("/guidelines")
+def update_guidelines(
+    data: GuidelinesUpdate,
+    user_context: dict = Depends(get_current_user_context),
+    supabase_client: Client = Depends(get_user_supabase_client)
+):
+    """
+    会社のCS対応ガイドラインを保存します。（管理者専用）
+    AI回答生成時にこのガイドラインが参照されます。
+    """
+    if user_context["role"] not in ["admin", "owner"]:
+        raise HTTPException(status_code=403, detail="管理者権限が必要です。")
+
+    company_id = user_context["company_id"]
+    try:
+        res = supabase_client.table("companies").update({
+            "cs_guidelines": data.guidelines
+        }).eq("id", company_id).execute()
+        char_count = len(data.guidelines)
+        return {
+            "status": "success",
+            "message": f"ガイドラインが保存されました（{char_count}文字）",
+            "char_count": char_count
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"ガイドラインの保存に失敗しました: {str(e)}")
