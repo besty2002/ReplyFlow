@@ -132,6 +132,22 @@ async def dashboard_page(request: Request, user_context: dict | None = Depends(g
                 shop_res = await client.get(shop_url, headers=headers)
                 if shop_res.status_code == 200:
                     connected_shops = shop_res.json()
+                    
+                    # --- [추가] API 키 만료 임박 체크 (7일 이내) ---
+                    now = datetime.datetime.now(datetime.timezone.utc)
+                    warning_threshold = now + datetime.timedelta(days=7)
+                    expiring_shops = []
+                    for s in connected_shops:
+                        if s.get("expires_at"):
+                            try:
+                                exp_date = datetime.datetime.fromisoformat(s["expires_at"].replace('Z', '+00:00'))
+                                if now <= exp_date <= warning_threshold:
+                                    # 남은 일수 계산
+                                    diff = exp_date - now
+                                    s["days_left"] = diff.days if diff.days >= 0 else 0
+                                    expiring_shops.append(s)
+                            except: pass
+                    # ------------------------------------------
                 
                 # カテゴリー リスト 수집 및 유니크 処理
                 cat_res = await client.get(category_url, headers=headers)
@@ -186,7 +202,8 @@ async def dashboard_page(request: Request, user_context: dict | None = Depends(g
             "total_count": total_count,
             "selected_shop": shop_id,
             "selected_category": category,
-            "stats": stats
+            "stats": stats,
+            "expiring_shops": expiring_shops if 'expiring_shops' in locals() else []
         }
     )
 

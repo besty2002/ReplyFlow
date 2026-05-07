@@ -81,13 +81,13 @@ class RakutenRMSClient:
                         
                         await asyncio.sleep(0.1)
                     else:
-                        print(f"  ❌ [API] HTTP {res.status_code}: {res.text[:200]}", flush=True)
+                        print(f"  [ERROR] [API] HTTP {res.status_code}: {res.text[:200]}", flush=True)
                         break
                 
                 print(f"  [API] 수집 完了! 合計 未返信 {len(all_inquiries)}件", flush=True)
                 return all_inquiries
         except Exception as e:
-            print(f"  ❌ [API] 接続 失敗: {e}", flush=True)
+            print(f"  [ERROR] [API] 接続 失敗: {e}", flush=True)
             import traceback
             traceback.print_exc()
             return []
@@ -105,18 +105,18 @@ class RakutenRMSClient:
         }
         
         try:
-            logger.info(f"📤 [Rakuten API] 問い合わせID {inquiry_id} (Shop: {shop_id}) 에 返信送信 중...")
+            logger.info(f"[SEND] [Rakuten API] 問い合わせID {inquiry_id} (Shop: {shop_id}) 에 返信送信 중...")
             async with httpx.AsyncClient(timeout=10.0) as client:
                 res = await client.post(endpoint, headers=self.headers, json=payload)
                 
                 if res.status_code in [200, 201]:
-                    logger.info(f"✅ [Rakuten API] 返信送信 成功: {inquiry_id}")
+                    logger.info(f"[SUCCESS] [Rakuten API] 返信送信 成功: {inquiry_id}")
                     return True
                 else:
-                    logger.error(f"❌ [Rakuten API] 返信送信 失敗 ({res.status_code}): {res.text}")
+                    logger.error(f"[ERROR] [Rakuten API] 返信送信 失敗 ({res.status_code}): {res.text}")
                     return False
         except Exception as e:
-            logger.error(f"❌ [Rakuten API] 発送 중 例外 발생: {e}")
+            logger.error(f"[ERROR] [Rakuten API] 発送 중 例外 발생: {e}")
             return False
 
     async def get_order_details(self, order_number: str) -> Dict[str, Any]:
@@ -131,11 +131,11 @@ class RakutenRMSClient:
         }
         
         try:
-            logger.info(f"📡 [Rakuten Order API] 注文番号 {order_number} 詳細 照会 試行...")
+            logger.info(f"[FETCH] [Rakuten Order API] 注文番号 {order_number} 詳細 照회 試行...")
             async with httpx.AsyncClient(timeout=15.0) as client:
                 res = await client.post(endpoint, headers=self.headers, json=payload)
                 
-                logger.info(f"📥 [Rakuten Order API] レスポンス コード: {res.status_code}")
+                logger.info(f"[RECEIVE] [Rakuten Order API] レスポンス コード: {res.status_code}")
                 if res.status_code == 200:
                     data = res.json()
                     # 대소문자 구분 없이 찾기 試行
@@ -143,13 +143,13 @@ class RakutenRMSClient:
                     if order_list:
                         return order_list[0]
                     else:
-                        logger.warning(f"⚠️ [Rakuten Order API] 注文 データ를 찾을 수 ありません: {data}")
+                        logger.warning(f"[WARNING] [Rakuten Order API] 注文 데이터를 찾을 수 ありません: {data}")
                         return {}
                 else:
-                    logger.error(f"❌ [Rakuten Order API] 照会 失敗: {res.text}")
+                    logger.error(f"[ERROR] [Rakuten Order API] 照会 失敗: {res.text}")
                     return {}
         except Exception as e:
-            logger.error(f"❌ [Rakuten Order API] 例外 발생: {e}")
+            logger.error(f"[ERROR] [Rakuten Order API] 例外 발생: {e}")
             return {}
 
     def _parse_json_inquiries(self, json_data: Dict[str, Any]) -> List[Dict[str, Any]]:
@@ -171,7 +171,7 @@ class RakutenRMSClient:
                     skipped += 1
                     continue
                 
-                print(f"    🟢 #{inq_no} | {item.get('userName', 'N/A')} | 注文: {item.get('orderNumber', 'N/A')}", flush=True)
+                print(f"    [ITEM] #{inq_no} | {item.get('userName', 'N/A')} | 注文: {item.get('orderNumber', 'N/A')}", flush=True)
                 
                 content = item.get("meessage") or item.get("message") or ""
                 
@@ -191,7 +191,7 @@ class RakutenRMSClient:
             print(f"  [Parser] 結果: 未返信 {len(inquiries)}件 (完了 {skipped}件 除外)", flush=True)
             return inquiries
         except Exception as e:
-            print(f"  ❌ [Parser] 失敗: {e}", flush=True)
+            print(f"  [ERROR] [Parser] 失敗: {e}", flush=True)
             return []
 
     async def get_item_details(self, item_url: str) -> Dict[str, Any]:
@@ -207,7 +207,7 @@ class RakutenRMSClient:
             if res.status_code == 200:
                 return res.json().get("itemModel", {})
         except Exception as e:
-            logger.error(f"🔥 [Rakuten Item API] 例外 발생: {e}")
+            logger.error(f"[CRITICAL] [Rakuten Item API] 例外 발생: {e}")
             
         return {}
 
@@ -227,7 +227,7 @@ class RakutenRMSClient:
                 data = res.json()
                 return data.get("variantList", [])
         except Exception as e:
-            logger.error(f"🔥 [Rakuten Variant List] 例外 발생: {e}")
+            logger.error(f"[CRITICAL] [Rakuten Variant List] 例外 발생: {e}")
             
         return []
 
@@ -249,7 +249,7 @@ class RakutenRMSClient:
                 
                 if res.status_code == 200:
                     data = res.json()
-                    logger.info(f"📊 [Inventory Debug] レスポンス データ: {data}")
+                    logger.info(f"[DEBUG] [Inventory Debug] レスポンス 데이터: {data}")
                     # v2.1 規格: inventoryCount フィールド 使用 (혹은 quantity 確認)
                     count = data.get("inventoryCount")
                     if count is None:
@@ -257,19 +257,19 @@ class RakutenRMSClient:
                     return count
                 elif res.status_code == 429:
                     if attempt == 0:
-                        logger.warning(f"⚠️ [Rakuten Inventory] QPS 超過 (429). 1초 후 再試行します... ({manage_number}/{variant_id})")
+                        logger.warning(f"[WARNING] [Rakuten Inventory] QPS 超過 (429). 1초 후 再試行합니다... ({manage_number}/{variant_id})")
                         await asyncio.sleep(1)
                         continue
                     else:
-                        logger.error(f"❌ [Rakuten Inventory] QPS 超過 지속: {res.text}")
+                        logger.error(f"[ERROR] [Rakuten Inventory] QPS 超過 지속: {res.text}")
                 elif res.status_code == 404:
-                    logger.warning(f"⚠️ [Rakuten Inventory v2.1] 존재하지 않는 SKU: {manage_number}/{variant_id}")
+                    logger.warning(f"[WARNING] [Rakuten Inventory v2.1] 존재하지 않는 SKU: {manage_number}/{variant_id}")
                     return None
                 else:
-                    logger.error(f"❌ [Rakuten Inventory v2.1] エラー: {res.status_code} {res.text}")
+                    logger.error(f"[ERROR] [Rakuten Inventory v2.1] エラー: {res.status_code} {res.text}")
                     return None
             except Exception as e:
-                logger.error(f"🔥 [Rakuten Inventory v2.1] 例外 발생: {e}")
+                logger.error(f"[CRITICAL] [Rakuten Inventory v2.1] 例外 발생: {e}")
                 return None
         
         return None

@@ -73,7 +73,11 @@ ALTER TABLE ai_training_logs
   ADD COLUMN IF NOT EXISTS human_edited_answer TEXT,
   ADD COLUMN IF NOT EXISTS original_ai_answer TEXT;
 
--- 5. 검색 인덱스
+-- 5. connected_shops 테이블 확장 (API 키 관리)
+ALTER TABLE connected_shops
+  ADD COLUMN IF NOT EXISTS expires_at TIMESTAMPTZ;
+
+-- 6. 검색 인덱스
 CREATE INDEX IF NOT EXISTS idx_inquiries_customer ON inquiries(customer_id);
 CREATE INDEX IF NOT EXISTS idx_inquiries_customer_email ON inquiries(customer_email);
 CREATE INDEX IF NOT EXISTS idx_inquiries_status ON inquiries(status);
@@ -81,3 +85,4 @@ CREATE INDEX IF NOT EXISTS idx_inquiries_received_at ON inquiries(received_at DE
 CREATE INDEX IF NOT EXISTS idx_inquiries_assigned_to ON inquiries(assigned_to);
 CREATE INDEX IF NOT EXISTS idx_inquiries_priority ON inquiries(priority);
 CREATE INDEX IF NOT EXISTS idx_inquiries_sentiment ON inquiries(sentiment);
+CREATE INDEX IF NOT EXISTS idx_connected_shops_expires ON connected_shops(expires_at);

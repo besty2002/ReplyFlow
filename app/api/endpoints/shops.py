@@ -12,6 +12,14 @@ class ShopCreate(BaseModel):
     shop_name: str
     api_key: str
     api_secret: str = ""
+    expires_at: str | None = None
+
+class ShopUpdate(BaseModel):
+    shop_name: str | None = None
+    api_key: str | None = None
+    api_secret: str | None = None
+    expires_at: str | None = None
+    is_active: bool | None = None
 
 @router.get("/")
 def get_connected_shops(
@@ -45,6 +53,7 @@ def add_connected_shop(
         "shop_name": shop_data.shop_name,
         "api_key": shop_data.api_key,
         "api_secret": shop_data.api_secret,
+        "expires_at": shop_data.expires_at,
         "is_active": True
     }
     
@@ -53,6 +62,37 @@ def add_connected_shop(
         return {"status": "success", "message": "新しい ショップ이 連携되었します.", "data": res.data[0] if res.data else None}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"ショップ 連携 失敗: {str(e)}")
+
+@router.put("/{shop_id}")
+def update_connected_shop(
+    shop_id: str,
+    shop_data: ShopUpdate,
+    user_context: dict = Depends(get_current_user_context),
+    supabase_client: Client = Depends(get_user_supabase_client)
+):
+    """
+    既存 連携된 ショップ의 情報(API 키, 유효기간 등)를 更新합니다.
+    """
+    company_id = user_context["company_id"]
+    
+    update_data = shop_data.dict(exclude_unset=True)
+    
+    if not update_data:
+        raise HTTPException(status_code=400, detail="更新するデータがありません。")
+        
+    try:
+        res = supabase_client.table("connected_shops")\
+            .update(update_data)\
+            .eq("id", shop_id)\
+            .eq("company_id", company_id)\
+            .execute()
+            
+        if not res.data:
+            raise HTTPException(status_code=404, detail="ショップが見つからないか、権限がありません。")
+            
+        return {"status": "success", "message": "ショップ情報が更新されました。", "data": res.data[0]}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"ショップ更新失敗: {str(e)}")
 
 @router.delete("/{shop_id}")
 def delete_connected_shop(

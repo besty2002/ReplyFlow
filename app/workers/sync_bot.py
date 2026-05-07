@@ -81,7 +81,7 @@ async def reconcile_shop_inquiries(shop: dict, supabase: Client) -> dict:
             if inq_res.data:
                 result["inserted"] += 1
                 new_inq_id = inq_res.data[0]["id"]
-                print(f"    ✅ INSERT #{rakuten_id} ({ext_inq.get('customer_id')})", flush=True)
+                print(f"    [SUCCESS] INSERT #{rakuten_id} ({ext_inq.get('customer_id')})", flush=True)
                 
                 # AI下書き生成 + カテゴリー/感情分析
                 try:
@@ -113,7 +113,7 @@ async def reconcile_shop_inquiries(shop: dict, supabase: Client) -> dict:
                     print(f"    [AI] 下書き生成失敗 #{rakuten_id}: {ai_err}", flush=True)
         except Exception as e:
             result["errors"].append(f"INSERT {rakuten_id}: {str(e)}")
-            print(f"    ❌ INSERT 失敗 #{rakuten_id}: {e}", flush=True)
+            print(f"    [ERROR] INSERT 失敗 #{rakuten_id}: {e}", flush=True)
 
     # 5. RMSで完了/返信済みのお問い合わせ DELETE (関連データ含む)
     for rakuten_id in to_delete:
@@ -128,7 +128,7 @@ async def reconcile_shop_inquiries(shop: dict, supabase: Client) -> dict:
             print(f"    [DEL] DELETE #{rakuten_id} (RMSで完了済み)", flush=True)
         except Exception as e:
             result["errors"].append(f"DELETE {rakuten_id}: {str(e)}")
-            print(f"    ❌ DELETE 失敗 #{rakuten_id}: {e}", flush=True)
+            print(f"    [ERROR] DELETE 失敗 #{rakuten_id}: {e}", flush=True)
 
     result["unchanged"] = len(unchanged)
     return result
@@ -148,10 +148,22 @@ async def reconcile_all_shops():
 
     try:
         shops_res = supabase.table("connected_shops").select("*").execute()
-        shops = shops_res.data or []
-        rakuten_shops = [s for s in shops if s["platform"] == "rakuten"]
+        now = datetime.datetime.now(datetime.timezone.utc)
+        rakuten_shops = []
+        for s in (shops_res.data or []):
+            if s.get("platform") == "rakuten":
+                # APIキーの有効期限をチェック
+                if s.get("expires_at"):
+                    try:
+                        exp_date = datetime.datetime.fromisoformat(s["expires_at"].replace('Z', '+00:00'))
+                        if exp_date < now:
+                            print(f"[Sync] ショップ {s['shop_name']} はAPIキーが期限切れです。同期をスキップします。", flush=True)
+                            continue
+                    except:
+                        pass
+                rakuten_shops.append(s)
 
-        print(f"[Sync] Rakuten ショップ {len(rakuten_shops)}件 発見", flush=True)
+        print(f"[Sync] Rakuten ショップ {len(rakuten_shops)}件 対象 (有効期限内)", flush=True)
 
         all_results = []
         for shop in rakuten_shops:
@@ -183,7 +195,7 @@ async def reconcile_all_shops():
 
     except Exception as e:
         import traceback
-        print(f"❌ [Sync] Critical Error: {e}", flush=True)
+        print(f"[ERROR] [Sync] Critical Error: {e}", flush=True)
         traceback.print_exc()
         return {"summary": f"エラーが発生しました: {str(e)}", "shops": [], "totals": {}}
 
