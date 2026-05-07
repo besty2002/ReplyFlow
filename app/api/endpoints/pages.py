@@ -293,6 +293,42 @@ async def inquiries_page(
         }
     )
 
+@router.get("/inquiries/{inquiry_id}/chat", response_class=HTMLResponse)
+async def inquiry_chat_page(
+    request: Request,
+    inquiry_id: str,
+    user_context: dict | None = Depends(get_web_user_context)
+):
+    if not user_context or "error" in user_context:
+        return RedirectResponse(url="/login")
+        
+    sb_access_token = request.cookies.get("sb-access-token")
+    inquiry = {}
+    draft_reply = ""
+    
+    if sb_access_token:
+        headers = {
+            "apikey": settings.SUPABASE_KEY,
+            "Authorization": f"Bearer {sb_access_token}"
+        }
+        async with httpx.AsyncClient() as client:
+            inq_url = f"{settings.SUPABASE_URL}/rest/v1/inquiries?id=eq.{inquiry_id}&select=*,reply_drafts(*),connected_shops(*)"
+            res = await client.get(inq_url, headers=headers)
+            if res.status_code == 200 and res.json():
+                inquiry = res.json()[0]
+                if inquiry.get("reply_drafts") and len(inquiry["reply_drafts"]) > 0:
+                    draft_reply = inquiry["reply_drafts"][0].get("ai_suggested_reply", "")
+
+    return templates.TemplateResponse(
+        request=request,
+        name="inquiry_thread.html",
+        context={
+            "user_context": user_context,
+            "inquiry": inquiry,
+            "draft_reply": draft_reply
+        }
+    )
+
 @router.get("/training", response_class=HTMLResponse)
 async def training_page(request: Request, user_context: dict | None = Depends(get_web_user_context)):
     if not user_context or "error" in user_context:

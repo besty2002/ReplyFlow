@@ -61,8 +61,21 @@ class AIClient:
         shipping_verdict = context.get("shipping_verdict", "")
         shipping_reason = context.get("shipping_reason", "")
         cs_guidelines = context.get("cs_guidelines", "")
+        inquiry_thread = context.get("inquiry_thread", "記録なし")
         
-        stock_info = f"{stock_count}個" if stock_count is not None else "確認中"
+        # 복수 상품 정보 처리
+        items_list = context.get("items", [])
+        items_context = ""
+        if items_list:
+            for idx, itm in enumerate(items_list, 1):
+                i_name = itm.get("item_name", "名称不明")
+                i_sub = itm.get("sub_code", "コードなし")
+                i_stock = itm.get("stock_count")
+                i_stock_str = f"{i_stock}個" if i_stock is not None else "確認中"
+                items_context += f"■ 対象商品{idx}: {i_name} (サブコード: {i_sub})\n■ 商品{idx}の在庫: {i_stock_str}\n"
+        else:
+            stock_info = f"{stock_count}個" if stock_count is not None else "確認中"
+            items_context = f"■ 対象商品: {item_name}\n■ 現在の在庫: {stock_info}\n"
         
         # 発送 판정 コンテキスト
         shipping_context = ""
@@ -74,40 +87,43 @@ class AIClient:
         delivery_context = ""
         if delivery_info and delivery_info.get("tracking_number") != "-":
             delivery_context = (
-                f"■ 전표 番号: {delivery_info.get('tracking_number')}\n"
-                f"■ 配送 ステータス: {delivery_info.get('current_status')}\n"
-                f"■ 現在 위치/예정: {delivery_info.get('current_location')}\n"
+                f"■ 伝票番号: {delivery_info.get('tracking_number')}\n"
+                f"■ 配送ステータス: {delivery_info.get('current_status')}\n"
+                f"■ 現在位置/予定: {delivery_info.get('current_location')}\n"
             )
 
         # システム プロンプト (일본어 대응 중심 + 感情分析 + 태깅)
         system_instruction = (
-            "あなたは日本 楽天市場のショップ担当者です。\n"
-            f"顧客名（{customer_name} 様）へ丁寧な日本語で対応してください。\n"
-            "以下の【リアルタイム 情報】를 바탕で 返信을 작성하してください:\n"
+            "あなたは日本 楽天市場の優秀なカスタマーサポート専門AIです。\n"
+            f"顧客名（{customer_name} 様）へ丁寧かつ自然な日本語で対応してください。\n\n"
+            "【厳守事項 - 曖昧な回答の禁止】\n"
+            "❌ 「確認して改めてご連絡します」「担当部署に申し伝えます」「現状ではわかりかねます」等の曖昧・一時的な回答は絶対に禁止です。\n"
+            "⭕ 与えられた「全対話スレッド」「リアルタイム情報」「会社CSガイドライン」のみに基づいて、即時解決できる『最終的な回答(1-shot resolution)』を作成してください。\n"
+            "もし情報が不足して本当に解決できない場合は、回答を作成する代わりに category を「要確認(Human Review)」としてください。\n\n"
+            "以下の【リアルタイム 情報】を基に回答を作成してください:\n"
             "--------------------------------------------------\n"
-            f"■ 대상 商品: {item_name}\n"
             f"■ 注文ステータス: {order_status}\n"
-            f"■ 現在の在庫: {stock_info}\n"
+            f"{items_context}"
             f"{shipping_context}"
             f"{delivery_context}"
             "--------------------------------------------------\n\n"
-            "【응대 ガイド라인】\n"
+            "【応対ガイドライン】\n"
             "1. 発送可能の場合は「即日発送可能」を強調してください。\n"
-            "2. 発送不可の場合は「お取り寄せとなり、7-10営業日ほどお時間をいただきます」と案内してください。\n"
-            "3. 이미 発送되었다면 配送 ステータス(現在 위치 등)를 구체적で 언급하며 안심시키してください.\n"
-            "4. 返信은 매우 정중하고 자연스러운 일본어로 작성하してください.\n"
-            "5. 반드시 JSON 形式で만 レスポンス하してください.\n"
-            "6. カテゴリー는 [配送お問い合わせ, 在庫お問い合わせ, キャンセル/환불, サイズ交換, 商品不良, その他] 중 하나로 分類하してください.\n"
-            "7. 感情 分析을 수행하してください: angry(화남/불만), curious(궁금함), grateful(感謝함), neutral(普通) 중 하나.\n"
-            "8. sentiment_score는 0.0~1.0 사이의 강도です (1.0이 가장 강함).\n"
-            "9. tags는 お問い合わせ内容で 抽出한 핵심 キーワード タグ 配列です (예: [\"配送지연\", \"緊急\"]).\n"
-            "10. priority_suggestion은 urgent, high, normal, low 중 하나です.\n\n"
+            "2. 発送不可(在庫なし)の場合は「お取り寄せとなり、7-10営業日ほどお時間をいただきます」と明確に案内してください。\n"
+            "3. 既に発送済みの場合は、配送ステータス(現在の位置等)を具体的に言及し安心させてください。\n"
+            "4. 顧客がスレッド(過去のやり取り)で既に伝えた情報(写真送付済み等)は再度尋ねないでください。\n"
+            "5. 必ずJSON形式でのみレスポンスしてください。\n"
+            "6. カテゴリーは [配送問い合わせ, 在庫問い合わせ, キャンセル/返金, サイズ交換, 商品不良, その他, 要確認(Human Review)] から分類してください。\n"
+            "7. 感情分析: angry(不満/怒り), curious(質問/確認), grateful(感謝), neutral(通常)。\n"
+            "8. sentiment_scoreは 0.0~1.0 の間。\n"
+            "9. tagsは問い合わせの核心キーワード配列 (例: [\"配送遅延\", \"緊急\"])。\n"
+            "10. priority_suggestionは urgent, high, normal, low のいずれか。\n\n"
         )
         
         # 会社 CS ガイド라인 주입
         if cs_guidelines:
             system_instruction += (
-                "【会社CS対応ガイドライン（必ず遵守してください）】\n"
+                "【会社CS対応ガイドライン（必ず優先して遵守してください）】\n"
                 f"{cs_guidelines}\n"
                 "--------------------------------------------------\n\n"
             )
@@ -115,7 +131,7 @@ class AIClient:
         system_instruction += (
             "JSON 応答形式:\n"
             "{\n"
-            '  "reply": "일본어 본문",\n'
+            '  "reply": "日本語本文 (1-shot resolution)",\n'
             '  "category": "カテゴリー",\n'
             '  "sentiment": "angry|curious|grateful|neutral",\n'
             '  "sentiment_score": 0.0~1.0,\n'
@@ -131,7 +147,8 @@ class AIClient:
                 system_instruction=system_instruction
             )
             
-            prompt = f"お客様のお問い合わせ: {inquiry_text}"
+            # 단일 메시지 대신 전체 스레드를 프롬프트로 전달
+            prompt = f"【顧客との全対話スレッド】\n{inquiry_thread}\n\n上記のスレッドの流れを把握した上で、ショップ側の最新の返答を『reply』フィールドに作成してください。"
             
             # 返信 生成 リクエスト
             response = await model.generate_content_async(

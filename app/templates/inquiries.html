@@ -87,7 +87,7 @@
                     </thead>
                     <tbody>
                         {% for item in inquiries %}
-                        <tr class="inquiry-row" onclick="openInspector('{{ item.id }}')">
+                        <tr class="inquiry-row" onclick="window.open('/inquiries/{{ item.id }}/chat', '_blank')">
                             <td><span class="badge badge-{{ item.status }}">{{ item.status | upper }}</span></td>
                             <td><span class="priority-dot priority-{{ item.priority or 'normal' }}"></span> {{ (item.priority or 'normal') | capitalize }}</td>
                             <td>
@@ -147,13 +147,26 @@
     .sentiment-icon.neutral::before { content: '😐'; }
     
     .inspector-panel {
-        position: fixed; right: 0; top: 0; width: 500px; height: 100vh; z-index: 1000;
+        position: fixed; right: 0; top: 0; width: 600px; height: 100vh; z-index: 1000;
         background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px);
         border-left: 1px solid rgba(255,255,255,0.1); padding: 2rem;
         overflow-y: auto; box-shadow: -10px 0 30px rgba(0,0,0,0.5);
         transition: transform 0.3s ease;
     }
     .inspector-panel.hidden { transform: translateX(100%); }
+    
+    /* 채팅형 말풍선 UI CSS */
+    .chat-container { display: flex; flex-direction: column; gap: 1rem; max-height: 450px; overflow-y: auto; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.05); }
+    .chat-bubble { max-width: 85%; padding: 0.8rem 1rem; border-radius: 12px; font-size: 0.95rem; line-height: 1.4; position: relative; }
+    .chat-bubble.customer { align-self: flex-start; background: rgba(255,255,255,0.1); border-bottom-left-radius: 2px; }
+    .chat-bubble.shop { align-self: flex-end; background: rgba(129, 140, 248, 0.15); border: 1px solid rgba(129, 140, 248, 0.3); border-bottom-right-radius: 2px; }
+    .chat-meta { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.4rem; text-align: right; }
+    .chat-bubble.customer .chat-meta { text-align: left; }
+    
+    /* 스크롤바 디자인 */
+    .chat-container::-webkit-scrollbar { width: 6px; }
+    .chat-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+    .chat-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
 </style>
 
 <script>
@@ -185,33 +198,68 @@
         loader.classList.remove('hidden');
         
         try {
-            const res = await fetch(`/api/v1/inquiries/${id}`);
-            const data = await res.json();
-            const inq = data.data;
+            // 병렬로 문의 상세 데이터와 전체 메시지(스레드) 데이터를 가져옵니다.
+            const [resDetail, resMsg] = await Promise.all([
+                fetch(`/api/v1/inquiries/${id}`),
+                fetch(`/api/v1/inquiries/${id}/messages`)
+            ]);
+            
+            const dataDetail = await resDetail.json();
+            const dataMsg = resMsg.ok ? await resMsg.json() : { data: [] };
+            
+            const inq = dataDetail.data;
+            // 라쿠텐 API 응답의 시간 역순/정순에 대비하여 날짜순 정렬 보장 (오래된 순)
+            const messages = (dataMsg.data || []).sort((a, b) => {
+                const tA = new Date(a.createdDateTime || 0).getTime();
+                const tB = new Date(b.createdDateTime || 0).getTime();
+                return tA - tB;
+            });
             
             loader.classList.add('hidden');
-            renderInquiryDetail(inq);
+            renderInquiryDetail(inq, messages);
         } catch (err) {
             content.innerHTML = '<p style="color:var(--danger)">データの取得に失敗しました。</p>';
+            console.error(err);
         }
     }
 
-    function renderInquiryDetail(inq) {
+    function renderInquiryDetail(inq, messages) {
         const content = document.getElementById('inspector-content');
+        
+        // 메시지 말풍선 UI 생성
+        let messagesHtml = '<div class="chat-container" id="chat-container">';
+        if (messages && messages.length > 0) {
+            messages.forEach(msg => {
+                // 라쿠텐 API 기준: 1=고객, 2=점포
+                const isCustomer = msg.senderType == '1';
+                const bubbleClass = isCustomer ? 'customer' : 'shop';
+                const senderName = isCustomer ? (inq.customer_id || 'お客様') : 'ショップ';
+                
+                messagesHtml += `
+                    <div class="chat-bubble ${bubbleClass}">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.3rem;">${senderName}</div>
+                        <div style="white-space: pre-wrap; word-break: break-all;">${msg.message || ''}</div>
+                        <div class="chat-meta">${(msg.createdDateTime || '').replace('T', ' ').substring(0, 16)}</div>
+                    </div>
+                `;
+            });
+        } else {
+            messagesHtml += '<p style="text-align:center; color:var(--text-muted); margin:auto;">メッセージ記録がありません。</p>';
+        }
+        messagesHtml += '</div>';
+
         content.innerHTML = `
             <div style="margin-bottom: 1.5rem;">
                 <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
-                    <span class="badge badge-${inq.status}">${inq.status.upper()}</span>
+                    <span class="badge badge-${inq.status}">${(inq.status || '').toUpperCase()}</span>
                     <span class="badge" style="background:rgba(255,255,255,0.1)">${inq.category || '未分類'}</span>
                 </div>
                 <h3 style="margin-bottom: 0.5rem;">${inq.title || 'タイトルなし'}</h3>
-                <p style="font-size: 0.9rem; color: var(--text-muted);">${inq.received_at.replace('T', ' ')}</p>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">注文番号: ${inq.order_number || '-'}</p>
             </div>
             
-            <div class="glass-panel" style="padding: 1rem; margin-bottom: 1.5rem; background: rgba(0,0,0,0.2);">
-                <label style="font-size: 0.75rem; color: var(--primary-color); font-weight: bold;">問い合わせ内容</label>
-                <p style="white-space: pre-wrap; font-size: 0.95rem; margin-top: 0.5rem;">${inq.content}</p>
-            </div>
+            <label style="font-size: 0.85rem; color: var(--primary-color); font-weight: bold; margin-bottom: 0.5rem; display: block;">大話の履歴 (全スレッド)</label>
+            ${messagesHtml}
             
             <div style="margin-bottom: 1.5rem;">
                 <label style="font-weight: bold; margin-bottom: 0.5rem; display: block;">内部メモ</label>

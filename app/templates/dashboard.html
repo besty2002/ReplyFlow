@@ -115,7 +115,7 @@
                     </thead>
                     <tbody>
                         {% for item in inquiries %}
-                        <tr class="inquiry-row" onclick='openInspector({{ item | tojson | forceescape }})' style="border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer;">
+                        <tr class="inquiry-row" onclick="window.open('/inquiries/{{ item.id }}/chat', '_blank')" style="border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer;">
                             <td style="padding: 1rem;">
                                 <span class="badge badge-{{ item.status }}">
                                     {{ '待機' if item.status == 'pending' else '完了' }}
@@ -197,8 +197,10 @@
                         </div>
 
                         <div style="margin-bottom: 1.5rem;">
-                            <label style="font-weight: bold; display: block; margin-bottom: 0.5rem; color: #fff;">問い合わせ内容</label>
-                            <div id="ins-content" style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; font-size: 0.9rem; line-height: 1.6; color: #cbd5e1; max-height: 200px; overflow-y: auto;"></div>
+                            <label style="font-weight: bold; display: block; margin-bottom: 0.5rem; color: #fff;">大話の履歴 (全スレッド)</label>
+                            <div id="ins-content" style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; font-size: 0.9rem; line-height: 1.6; color: #cbd5e1; max-height: 400px; overflow-y: auto;">
+                                <div style="color: var(--text-muted); font-size: 0.85rem; text-align: center;">読み込み中...</div>
+                            </div>
                         </div>
 
                         <div style="margin-top: 2rem;">
@@ -263,6 +265,14 @@
 
                     /* デフォルト非表示 */
                     .hidden { display: none !important; }
+                    
+                    /* 채팅형 말풍선 UI CSS */
+                    .chat-container { display: flex; flex-direction: column; gap: 1rem; width: 100%; }
+                    .chat-bubble { max-width: 85%; padding: 0.8rem 1rem; border-radius: 12px; font-size: 0.95rem; line-height: 1.4; position: relative; }
+                    .chat-bubble.customer { align-self: flex-start; background: rgba(255,255,255,0.1); border-bottom-left-radius: 2px; }
+                    .chat-bubble.shop { align-self: flex-end; background: rgba(129, 140, 248, 0.15); border: 1px solid rgba(129, 140, 248, 0.3); border-bottom-right-radius: 2px; }
+                    .chat-meta { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.4rem; text-align: right; }
+                    .chat-bubble.customer .chat-meta { text-align: left; }
                     
                     /* ツールチップコンテナ */
                     .tooltip-trigger {
@@ -399,7 +409,43 @@
         document.getElementById('ins-received-at').innerText = '受付日時: ' + (data.received_at ? data.received_at.substring(0, 16).replace('T', ' ') : '-');
         document.getElementById('ins-items-container').innerHTML = '<div style="color: var(--text-muted); font-size: 0.85rem;">照会中...</div>';
         document.getElementById('ins-order-status').innerText = '-';
-        document.getElementById('ins-content').innerText = data.content || '';
+        document.getElementById('ins-content').innerHTML = '<div style="color: var(--text-muted); font-size: 0.85rem; text-align: center;">読み込み中...</div>';
+        
+        // 전체 메시지(스레드) 페칭
+        const token = getCookie('sb-access-token');
+        fetch(`/api/v1/inquiries/${data.id}/messages`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        }).then(res => res.ok ? res.json() : { data: [] })
+          .then(msgData => {
+              const messages = (msgData.data || []).sort((a, b) => {
+                  const tA = new Date(a.createdDateTime || 0).getTime();
+                  const tB = new Date(b.createdDateTime || 0).getTime();
+                  return tA - tB;
+              });
+              
+              let messagesHtml = '<div class="chat-container">';
+              if (messages.length > 0) {
+                  messages.forEach(msg => {
+                      const isCustomer = msg.senderType == '1';
+                      const bubbleClass = isCustomer ? 'customer' : 'shop';
+                      const senderName = isCustomer ? (data.customer_id || 'お客様') : 'ショップ';
+                      
+                      messagesHtml += `
+                          <div class="chat-bubble ${bubbleClass}">
+                              <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.3rem;">${senderName}</div>
+                              <div style="white-space: pre-wrap; word-break: break-all;">${msg.message || ''}</div>
+                              <div class="chat-meta">${(msg.createdDateTime || '').replace('T', ' ').substring(0, 16)}</div>
+                          </div>
+                      `;
+                  });
+              } else {
+                  messagesHtml += '<p style="text-align:center; color:var(--text-muted); margin:auto;">メッセージ記録がありません。</p>';
+              }
+              messagesHtml += '</div>';
+              document.getElementById('ins-content').innerHTML = messagesHtml;
+          }).catch(err => {
+              document.getElementById('ins-content').innerText = data.content || '読み込み失敗';
+          });
         
         const draft = (data.reply_drafts && data.reply_drafts.length > 0) ? data.reply_drafts[0].ai_suggested_reply : '';
         document.getElementById('reply-textarea').value = draft;
