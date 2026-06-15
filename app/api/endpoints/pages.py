@@ -6,6 +6,7 @@ import httpx
 import math
 import traceback
 import datetime
+from zoneinfo import ZoneInfo
 from urllib.parse import quote
 
 from app.core.config import settings
@@ -13,6 +14,19 @@ from app.core.security import verify_supabase_jwt
 
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
+JST = ZoneInfo("Asia/Tokyo")
+
+
+def format_jst_datetime(value: str | None) -> str:
+    if not value:
+        return "-"
+    try:
+        parsed = datetime.datetime.fromisoformat(value.replace("Z", "+00:00"))
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=datetime.timezone.utc)
+        return parsed.astimezone(JST).strftime("%Y-%m-%d %H:%M:%S")
+    except (TypeError, ValueError):
+        return "-"
 
 async def get_web_user_context(sb_access_token: str | None = Cookie(default=None, alias="sb-access-token")) -> dict | None:
     """ 
@@ -163,6 +177,9 @@ async def dashboard_page(request: Request, user_context: dict | None = Depends(g
                 )
                 if sync_res.status_code == 200 and sync_res.json():
                     sync_status = sync_res.json()[0]
+                    sync_status["last_started_at_jst"] = format_jst_datetime(sync_status.get("last_started_at"))
+                    sync_status["last_completed_at_jst"] = format_jst_datetime(sync_status.get("last_completed_at"))
+                    sync_status["updated_at_jst"] = format_jst_datetime(sync_status.get("updated_at"))
                 
                 # お問い合わせ リスト 수집
                 res = await client.get(inquiry_url, headers=inquiry_headers)

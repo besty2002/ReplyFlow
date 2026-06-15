@@ -44,7 +44,7 @@
                             <span style="font-weight: 700; color: {% if sync_status.status == 'success' %}var(--success){% elif sync_status.status == 'running' or sync_status.status == 'idle' %}#fbbf24{% elif sync_status.status == 'error' %}var(--danger){% else %}var(--text-muted){% endif %};">
                                 {% if sync_status.status == 'success' %}同期正常{% elif sync_status.status == 'running' %}同期実行中{% elif sync_status.status == 'idle' %}未同期{% elif sync_status.status == 'error' %}同期エラー{% else %}同期状態不明{% endif %}
                             </span>
-                            <span>最終完了: {{ sync_status.last_completed_at[:19].replace('T', ' ') if sync_status.last_completed_at else '-' }}</span>
+                            <span>最終完了(JST): {{ sync_status.last_completed_at_jst or '-' }}</span>
                             <span>新規 {{ sync_status.inserted_count or 0 }}件 / 削除 {{ sync_status.deleted_count or 0 }}件</span>
                             {% if sync_status.status == 'error' and sync_status.error_message %}
                                 <span title="{{ sync_status.error_message }}">詳細あり</span>
