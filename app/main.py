@@ -1,7 +1,7 @@
 import asyncio
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
@@ -74,11 +74,18 @@ app.include_router(training.router, prefix=f"{settings.API_V1_STR}/training", ta
 app.include_router(shops.router, prefix=f"{settings.API_V1_STR}/shops", tags=["shops"])
 
 
+def _verify_admin_sync_token(request: Request):
+    token = request.headers.get("x-sync-admin-token") or request.query_params.get("token")
+    if not settings.SYNC_ADMIN_TOKEN or token != settings.SYNC_ADMIN_TOKEN:
+        raise HTTPException(status_code=403, detail="Admin sync token required")
+
+
 # 관리자용 手動 同期化 エンドポイント
 # 使用법: 브라우저で http://127.0.0.1:8000/admin/sync 접속
 @app.get("/admin/sync")
-async def admin_sync():
+async def admin_sync(request: Request):
     """RMS 未返信 リスト과 DB를 대조하여 同期化 (新規 追加 + 完了된 件 削除)"""
+    _verify_admin_sync_token(request)
     from app.workers.sync_bot import reconcile_all_shops
     result = await reconcile_all_shops()
     return result
@@ -86,8 +93,9 @@ async def admin_sync():
 
 # 既存 purge-and-resync도 維持 (호환성)
 @app.get("/admin/purge-and-resync")
-async def admin_purge_and_resync():
+async def admin_purge_and_resync(request: Request):
     """全体 削除 후 재수집 (緊急용)"""
+    _verify_admin_sync_token(request)
     import os
     from dotenv import load_dotenv
     from supabase import create_client

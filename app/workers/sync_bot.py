@@ -6,6 +6,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from supabase import create_client, Client
 from app.core.config import settings
 from app.core.rakuten_client import RakutenRMSClient
+from app.services.thread_context import fetch_and_format_inquiry_thread
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -135,9 +136,12 @@ async def reconcile_shop_inquiries(shop: dict, supabase: Client) -> dict:
                 # AI下書き生成 + カテゴリー/感情分析
                 try:
                     from app.core.ai_client import ai_client
+                    ai_context = dict(new_data)
+                    ai_context["connected_shops"] = shop
+                    ai_context["inquiry_thread"] = await fetch_and_format_inquiry_thread(ai_context)
                     ai_result = await ai_client.generate_reply(
                         inquiry_text=new_data["content"],
-                        context=new_data
+                        context=ai_context
                     )
                     
                     # カテゴリー, 感情, タグ, 優先度 アップデート

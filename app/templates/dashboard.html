@@ -54,7 +54,10 @@
                     {% endif %}
                 </div>
             </div>
-            <div style="display: flex; gap: 1rem;">
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <button id="sync-now-btn" class="btn-primary" style="width: auto; background: rgba(16, 185, 129, 0.16); border: 1px solid rgba(16, 185, 129, 0.35); color: #d1fae5; font-weight: bold; border-radius: 8px; box-shadow: none;" onclick="triggerSyncNow('manual')">
+                    今すぐ同期
+                </button>
                 <!-- データ統計・ダウンロード等ビジネスアクション領域 -->
                 <button class="btn-primary" style="background: linear-gradient(135deg, #ec4899 0%, #a855f7 100%); font-weight: bold; border-radius: 8px; box-shadow: 0 4px 15px rgba(236,72,153,0.3);" onclick="downloadTrainingData(this)">
                     📥 AIファインチューニングデータ(JSONL)抽出
@@ -638,6 +641,54 @@
         const parts = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
+
+async function triggerSyncNow(reason = 'manual') {
+    const btn = document.getElementById('sync-now-btn');
+    const originalText = btn ? btn.textContent : '';
+    if (btn) {
+        btn.disabled = true;
+        btn.textContent = reason === 'manual' ? '同期中...' : '自動同期中...';
+    }
+
+    try {
+        const token = getCookie('sb-access-token');
+        const res = await fetch('/api/v1/inquiries/sync-now', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ reason })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || '同期の開始に失敗しました');
+
+        if (btn) {
+            if (data.status === 'accepted') btn.textContent = '同期開始済み';
+            else if (data.status === 'already_running') btn.textContent = '同期実行中';
+            else if (data.status === 'skipped_recent') btn.textContent = '同期済み';
+            else btn.textContent = '同期確認済み';
+        }
+
+        if (reason === 'manual' && data.status === 'accepted') {
+            setTimeout(() => window.location.reload(), 20000);
+        }
+    } catch (err) {
+        if (btn) btn.textContent = '同期失敗';
+        if (reason === 'manual') alert('同期の開始に失敗しました: ' + err.message);
+    } finally {
+        if (btn) {
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.textContent = originalText || '今すぐ同期';
+            }, 5000);
+        }
+    }
+}
+
+window.addEventListener('load', () => {
+    triggerSyncNow('dashboard_load');
+});
 
 // AI下書き生成呼出し
 async function generateDraft(inquiryId, btnElement) {

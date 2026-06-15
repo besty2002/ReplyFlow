@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     YAMATO_ENV: str = "prod" # test or prod
     RUN_SYNC_BOT: bool = True
     SYNC_INTERVAL_MINUTES: int = 10
+    SYNC_ADMIN_TOKEN: str | None = None
     
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=True, extra="ignore")
 

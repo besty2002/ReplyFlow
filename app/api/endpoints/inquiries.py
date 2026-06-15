@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Response
 from supabase import Client
-from datetime import datetime
+import asyncio
+from datetime import datetime, timedelta, timezone
 from pydantic import BaseModel
 from typing import Dict, Any, List, Optional
 import logging
@@ -9,6 +10,7 @@ from app.models.inquiries import InquiryCreate, InquiryUpdate, InternalNoteCreat
 from app.api.dependencies import get_current_user_context, get_user_supabase_client
 from app.core.ai_client import ai_client
 from app.core.shop_api import ShopAPIAdapter
+from app.services.thread_context import fetch_and_format_inquiry_thread
 
 logger = logging.getLogger(__name__)
 
@@ -41,7 +43,22 @@ class DraftRequest(BaseModel):
     stock_count: int | None = None
     item_name: str | None = None
     sub_code: str | None = None
+    items: List[Dict[str, Any]] | None = None
+    shipping_verdict: str | None = None
+    shipping_reason: str | None = None
     delivery_info: Dict[str, Any] | None = None
+
+class SyncNowRequest(BaseModel):
+    reason: str | None = "manual"
+
+
+def _parse_sync_datetime(value: str | None) -> datetime | None:
+    if not value:
+        return None
+    try:
+        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
 
 @router.get("/attachment")
 async def get_attachment_proxy(
@@ -98,6 +115,49 @@ async def get_attachment_proxy(
     
     return Response(content=content, media_type=media_type)
 
+@router.post("/sync-now")
+async def sync_now(
+    request: SyncNowRequest | None = None,
+    user_context: dict = Depends(get_current_user_context),
+):
+    """
+    ログイン済みユーザー向けの軽量な同期トリガーです。
+    実際の同期はバックグラウンドで開始し、画面表示は待たせません。
+    """
+    from app.workers.sync_bot import _get_admin_supabase_client, reconcile_all_shops
+
+    reason = (request.reason if request else "manual") or "manual"
+    now = datetime.now(timezone.utc)
+    supabase = _get_admin_supabase_client()
+    status_res = supabase.table("sync_status").select("*").eq("sync_key", "rakuten_reconcile").limit(1).execute()
+    sync_status = status_res.data[0] if status_res.data else {}
+
+    last_started = _parse_sync_datetime(sync_status.get("last_started_at"))
+    last_completed = _parse_sync_datetime(sync_status.get("last_completed_at"))
+    last_touch = last_started or last_completed
+
+    if sync_status.get("status") == "running" and last_started and now - last_started < timedelta(minutes=15):
+        return {
+            "status": "already_running",
+            "message": "同期は既に実行中です。",
+            "sync_status": sync_status,
+        }
+
+    if reason == "dashboard_load" and last_touch and now - last_touch < timedelta(minutes=3):
+        return {
+            "status": "skipped_recent",
+            "message": "直近で同期済みのためスキップしました。",
+            "sync_status": sync_status,
+        }
+
+    logger.info("[Sync Now] user=%s role=%s reason=%s", user_context.get("user_id"), user_context.get("role"), reason)
+    asyncio.create_task(reconcile_all_shops())
+    return {
+        "status": "accepted",
+        "message": "同期を開始しました。",
+        "sync_status": sync_status,
+    }
+
 @router.get("/{inquiry_id}")
 async def get_inquiry_detail(
     inquiry_id: str,
@@ -141,8 +201,13 @@ async def generate_draft(
     res = supabase_client.table("inquiries").select("*, connected_shops(*)").eq("id", inquiry_id).execute()
     if not res.data: raise HTTPException(status_code=404, detail="Not found")
     inquiry = res.data[0]
-    
-    ai_result = await ai_client.generate_reply(inquiry_text=inquiry["content"], context=inquiry)
+
+    context = dict(inquiry)
+    if request:
+        context.update(request.dict(exclude_none=True))
+    context["inquiry_thread"] = await fetch_and_format_inquiry_thread(inquiry)
+
+    ai_result = await ai_client.generate_reply(inquiry_text=inquiry["content"], context=context)
     draft_data = {
         "company_id": company_id,
         "inquiry_id": inquiry_id,
