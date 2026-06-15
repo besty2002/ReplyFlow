@@ -78,7 +78,17 @@ async def reconcile_shop_inquiries(shop: dict, supabase: Client) -> dict:
     shop_id = shop.get("id")
     company_id = shop.get("company_id")
 
-    result = {"shop": shop_name, "inserted": 0, "deleted": 0, "unchanged": 0, "errors": []}
+    result = {
+        "shop": shop_name,
+        "rms_count": 0,
+        "db_count": 0,
+        "inserted": 0,
+        "deleted": 0,
+        "unchanged": 0,
+        "to_insert": [],
+        "to_delete": [],
+        "errors": [],
+    }
 
     # 1. RMSから現在の未返信リストを取得
     rms_inquiries = []
@@ -91,6 +101,7 @@ async def reconcile_shop_inquiries(shop: dict, supabase: Client) -> dict:
 
     rms_map = {inq["rakuten_inquiry_id"]: inq for inq in rms_inquiries}
     rms_ids = set(rms_map.keys())
+    result["rms_count"] = len(rms_ids)
     print(f"  [RMS] {shop_name}: 未返信 {len(rms_ids)}件 受信", flush=True)
 
     # 2. DBから現在の該当ショップのお問い合わせリストを照会
@@ -101,6 +112,7 @@ async def reconcile_shop_inquiries(shop: dict, supabase: Client) -> dict:
     db_data = db_res.data or []
     db_map = {row["rakuten_inquiry_id"]: row["id"] for row in db_data if row.get("rakuten_inquiry_id")}
     db_ids = set(db_map.keys())
+    result["db_count"] = len(db_ids)
     print(f"  [DB]  {shop_name}: 既存 {len(db_ids)}件 保有", flush=True)
 
     # 3. 照合比較
@@ -108,7 +120,23 @@ async def reconcile_shop_inquiries(shop: dict, supabase: Client) -> dict:
     to_delete = db_ids - rms_ids    # DBのみ → RMSで完了済み
     unchanged = rms_ids & db_ids    # 両方 → 維持
 
+    if not rms_ids and db_ids:
+        warning = (
+            f"{shop_name}: RMS returned 0 inquiries while DB has {len(db_ids)}. "
+            "Deletion skipped to avoid transient API data loss."
+        )
+        result["errors"].append(warning)
+        print(f"  [WARN] {warning}", flush=True)
+        to_delete = set()
+
+    result["to_insert"] = sorted(to_insert)
+    result["to_delete"] = sorted(to_delete)
+
     print(f"  [照合] 新規={len(to_insert)}件, 削除={len(to_delete)}件, 維持={len(unchanged)}件", flush=True)
+    if to_insert:
+        print(f"  [照合] 新規ID: {', '.join(sorted(to_insert))}", flush=True)
+    if to_delete:
+        print(f"  [照合] 削除ID: {', '.join(sorted(to_delete))}", flush=True)
 
     # 4. 新規 お問い合わせ INSERT
     for rakuten_id in to_insert:
@@ -236,7 +264,10 @@ async def reconcile_all_shops():
         total_errors = sum(len(r["errors"]) for r in all_results)
 
         shop_summaries = [
-            f"{r['shop']}: 新規{r['inserted']} / 削除{r['deleted']} / 維持{r['unchanged']}"
+            (
+                f"{r['shop']}: RMS{r.get('rms_count', 0)} / DB{r.get('db_count', 0)} / "
+                f"新規{r['inserted']} / 削除{r['deleted']} / 維持{r['unchanged']}"
+            )
             for r in all_results
         ]
         summary = (
@@ -245,16 +276,23 @@ async def reconcile_all_shops():
         )
         if total_errors > 0:
             summary += f", エラー {total_errors}件"
+        error_message = None
+        if total_errors > 0:
+            error_message = " | ".join(
+                error
+                for result in all_results
+                for error in result.get("errors", [])
+            )
 
         print(f"[Sync] === {summary} ===\n", flush=True)
         completed_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
         _record_sync_status(
             supabase,
-            status="success",
+            status="warning" if total_errors > 0 else "success",
             started_at=started_at,
             completed_at=completed_at,
             summary=summary,
-            error_message=None,
+            error_message=error_message,
             inserted=total_inserted,
             deleted=total_deleted,
             unchanged=total_unchanged,
