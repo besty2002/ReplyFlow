@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     YAMATO_SITE_PASSWORD: str | None = None
     YAMATO_API_VERSION: str = "1.0"
     YAMATO_ENV: str = "prod" # test or prod
+    RUN_SYNC_BOT: bool = True
+    SYNC_INTERVAL_MINUTES: int = 10
     
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=True, extra="ignore")
 

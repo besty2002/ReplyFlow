@@ -16,12 +16,15 @@ async def lifespan(app: FastAPI):
     print("[START] Server Startup")
     print("=" * 50 + "\n")
 
-    # Reconciliation 기반 sync_bot 開始 (5초 딜레이 후 自動 実行)
-    try:
-        asyncio.create_task(start_bot())
-        print("[OK] Sync bot (reconciliation) started")
-    except Exception as e:
-        print(f"[WARN] Failed to start sync bot: {e}")
+    # Sync bot은 설정이 켜진 프로세스에서만 시작합니다.
+    if settings.RUN_SYNC_BOT:
+        try:
+            asyncio.create_task(start_bot())
+            print("[OK] Sync bot (reconciliation) started")
+        except Exception as e:
+            print(f"[WARN] Failed to start sync bot: {e}")
+    else:
+        print("[INFO] Sync bot auto-start disabled for this process")
 
     yield
 

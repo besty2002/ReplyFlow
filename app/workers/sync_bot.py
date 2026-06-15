@@ -12,6 +12,55 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 
 # スケジューラー グローバル インスタンス
 scheduler = AsyncIOScheduler()
+SYNC_STATUS_KEY = "rakuten_reconcile"
+
+
+def _get_admin_supabase_client() -> Client:
+    from dotenv import load_dotenv
+    load_dotenv()
+    admin_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or settings.SUPABASE_KEY
+    return create_client(settings.SUPABASE_URL, admin_key)
+
+
+def _record_sync_status(
+    supabase: Client,
+    *,
+    status: str,
+    started_at: str | None = None,
+    completed_at: str | None = None,
+    summary: str | None = None,
+    error_message: str | None = None,
+    inserted: int | None = None,
+    deleted: int | None = None,
+    unchanged: int | None = None,
+    run_source: str | None = None,
+) -> None:
+    payload = {
+        "sync_key": SYNC_STATUS_KEY,
+        "status": status,
+        "updated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    }
+    if started_at is not None:
+        payload["last_started_at"] = started_at
+    if completed_at is not None:
+        payload["last_completed_at"] = completed_at
+    if summary is not None:
+        payload["summary"] = summary
+    if error_message is not None:
+        payload["error_message"] = error_message
+    if inserted is not None:
+        payload["inserted_count"] = inserted
+    if deleted is not None:
+        payload["deleted_count"] = deleted
+    if unchanged is not None:
+        payload["unchanged_count"] = unchanged
+    if run_source is not None:
+        payload["run_source"] = run_source
+
+    try:
+        supabase.table("sync_status").upsert(payload).execute()
+    except Exception as sync_status_err:
+        logger.error(f"[Sync Status] Failed to persist sync status: {sync_status_err}")
 
 
 async def reconcile_shop_inquiries(shop: dict, supabase: Client) -> dict:
@@ -139,12 +188,16 @@ async def reconcile_all_shops():
     全ての連携ショップについてreconciliationを実行します。
     """
     print("\n[Sync] === Reconciliation 同期化開始 ===", flush=True)
-
-    from dotenv import load_dotenv
-    load_dotenv()
-
-    admin_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or settings.SUPABASE_KEY
-    supabase: Client = create_client(settings.SUPABASE_URL, admin_key)
+    started_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    supabase: Client = _get_admin_supabase_client()
+    _record_sync_status(
+        supabase,
+        status="running",
+        started_at=started_at,
+        summary="同期化を開始しました。",
+        error_message=None,
+        run_source="scheduler",
+    )
 
     try:
         shops_res = supabase.table("connected_shops").select("*").execute()
@@ -181,6 +234,19 @@ async def reconcile_all_shops():
             summary += f", エラー {total_errors}件"
 
         print(f"[Sync] === {summary} ===\n", flush=True)
+        completed_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        _record_sync_status(
+            supabase,
+            status="success",
+            started_at=started_at,
+            completed_at=completed_at,
+            summary=summary,
+            error_message=None,
+            inserted=total_inserted,
+            deleted=total_deleted,
+            unchanged=total_unchanged,
+            run_source="scheduler",
+        )
 
         return {
             "summary": summary,
@@ -197,6 +263,16 @@ async def reconcile_all_shops():
         import traceback
         print(f"[ERROR] [Sync] Critical Error: {e}", flush=True)
         traceback.print_exc()
+        completed_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        _record_sync_status(
+            supabase,
+            status="error",
+            started_at=started_at,
+            completed_at=completed_at,
+            summary="同期化中にエラーが発生しました。",
+            error_message=str(e),
+            run_source="scheduler",
+        )
         return {"summary": f"エラーが発生しました: {str(e)}", "shops": [], "totals": {}}
 
 
@@ -213,6 +289,6 @@ async def start_bot():
 
     # スケジューラー登録 (10分間隔)
     if not scheduler.running:
-        scheduler.add_job(reconcile_all_shops, 'interval', minutes=10)
+        scheduler.add_job(reconcile_all_shops, 'interval', minutes=settings.SYNC_INTERVAL_MINUTES)
         scheduler.start()
-        print("[Sync Bot] スケジューラー開始 (10分周期 reconciliation)", flush=True)
+        print(f"[Sync Bot] スケジューラー開始 ({settings.SYNC_INTERVAL_MINUTES}分周期 reconciliation)", flush=True)

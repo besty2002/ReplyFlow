@@ -1,5 +1,5 @@
 services:
-  # FastAPI Web Service (バックグラウンド ボット 含む)
+  # FastAPI Web Service
   - type: web
     name: replyflow-web
     env: docker
@@ -18,3 +18,29 @@ services:
         sync: false
       - key: YAMATO_SITE_PASSWORD
         sync: false
+      - key: RUN_SYNC_BOT
+        value: "false"
+  - type: cron
+    name: replyflow-sync-cron
+    runtime: docker
+    plan: starter
+    region: singapore
+    schedule: "*/10 * * * *"
+    dockerCommand: ./start-sync-once.sh
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: YAMATO_SITE_ID
+        sync: false
+      - key: YAMATO_SITE_PASSWORD
+        sync: false
+      - key: RUN_SYNC_BOT
+        value: "false"

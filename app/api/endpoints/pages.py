@@ -6,6 +6,7 @@ import httpx
 import math
 import traceback
 import datetime
+from urllib.parse import quote
 
 from app.core.config import settings
 from app.core.security import verify_supabase_jwt
@@ -93,6 +94,7 @@ async def dashboard_page(request: Request, user_context: dict | None = Depends(g
     unique_categories = []
     total_count = 0
     total_pages = 1
+    sync_status = None
 
     if sb_access_token:
         # 1. フィルター용 ショップ リスト 取得
@@ -108,7 +110,7 @@ async def dashboard_page(request: Request, user_context: dict | None = Depends(g
         }
         
         # 3. お問い合わせ クエリ 구성 (미処理 データ만 基本 노출)
-        query_params = "select=*,reply_drafts(*),connected_shops(*)&order=created_at.desc&status=eq.pending"
+        query_params = "select=*,reply_drafts(*),connected_shops(*)&order=received_at.desc&status=eq.pending"
         if shop_id:
             query_params += f"&shop_id=eq.{shop_id}"
         if category:
@@ -154,6 +156,13 @@ async def dashboard_page(request: Request, user_context: dict | None = Depends(g
                 if cat_res.status_code == 200:
                     raw_cats = [c.get("category") for c in cat_res.json() if c.get("category")]
                     unique_categories = sorted(list(set(raw_cats)))
+
+                sync_res = await client.get(
+                    f"{settings.SUPABASE_URL}/rest/v1/sync_status?sync_key=eq.rakuten_reconcile&select=*",
+                    headers=headers
+                )
+                if sync_res.status_code == 200 and sync_res.json():
+                    sync_status = sync_res.json()[0]
                 
                 # お問い合わせ リスト 수집
                 res = await client.get(inquiry_url, headers=inquiry_headers)
@@ -179,7 +188,7 @@ async def dashboard_page(request: Request, user_context: dict | None = Depends(g
                     stats["pending_drafts"] = int(d_res.headers.get("Content-Range", "0/0").split("/")[-1])
 
                 # 3. 오늘 送信 完了된 카운트 (replied ステータス이고 updated_at 이 오늘인 것)
-                sent_today_url = f"{settings.SUPABASE_URL}/rest/v1/inquiries?status=eq.replied&updated_at=gte.{today_start}&select=id"
+                sent_today_url = f"{settings.SUPABASE_URL}/rest/v1/inquiries?status=eq.replied&updated_at=gte.{quote(today_start, safe='')}&select=id"
                 s_res = await client.get(sent_today_url, headers={**headers, "Prefer": "count=exact", "Range": "0-0"})
                 if s_res.status_code in [200, 206]:
                     stats["sent_today"] = int(s_res.headers.get("Content-Range", "0/0").split("/")[-1])
@@ -203,7 +212,8 @@ async def dashboard_page(request: Request, user_context: dict | None = Depends(g
             "selected_shop": shop_id,
             "selected_category": category,
             "stats": stats,
-            "expiring_shops": expiring_shops if 'expiring_shops' in locals() else []
+            "expiring_shops": expiring_shops if 'expiring_shops' in locals() else [],
+            "sync_status": sync_status,
         }
     )
 

@@ -38,6 +38,21 @@
                 <p style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.95rem;">
                     ようこそ！現在の権限レベル： <strong style="color: var(--primary-color);">{{ user_context.role | upper }}</strong>
                 </p>
+                <div style="margin-top: 0.9rem; display: inline-flex; align-items: center; gap: 0.65rem; padding: 0.55rem 0.85rem; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); font-size: 0.82rem; color: var(--text-muted);">
+                    {% if sync_status %}
+                        <span style="font-weight: 700; color: {% if sync_status.status == 'success' %}var(--success){% elif sync_status.status == 'running' or sync_status.status == 'idle' %}#fbbf24{% elif sync_status.status == 'error' %}var(--danger){% else %}var(--text-muted){% endif %};">
+                            {% if sync_status.status == 'success' %}同期正常{% elif sync_status.status == 'running' %}同期実行中{% elif sync_status.status == 'idle' %}未同期{% elif sync_status.status == 'error' %}同期エラー{% else %}同期状態不明{% endif %}
+                        </span>
+                        <span>最終完了: {{ sync_status.last_completed_at[:19].replace('T', ' ') if sync_status.last_completed_at else '-' }}</span>
+                        <span>新規 {{ sync_status.inserted_count or 0 }}件 / 削除 {{ sync_status.deleted_count or 0 }}件</span>
+                        {% if sync_status.status == 'error' and sync_status.error_message %}
+                            <span title="{{ sync_status.error_message }}">詳細あり</span>
+                        {% endif %}
+                    {% else %}
+                        <span style="font-weight: 700; color: #fbbf24;">同期状態未取得</span>
+                        <span>まだ同期メタデータが記録されていません。</span>
+                    {% endif %}
+                </div>
             </div>
             <div style="display: flex; gap: 1rem;">
                 <!-- データ統計・ダウンロード等ビジネスアクション領域 -->

@@ -26,6 +26,7 @@ COPY . .
 
 # 실행 권한 부여
 RUN chmod +x start.sh
+RUN chmod +x start-sync-once.sh
 
 # 기본 실행 (start.sh를 통해 제어)
 CMD ["./start.sh"]
