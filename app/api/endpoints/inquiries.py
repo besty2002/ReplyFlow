@@ -60,6 +60,15 @@ def _parse_sync_datetime(value: str | None) -> datetime | None:
     except ValueError:
         return None
 
+
+async def _run_sync_now_background() -> None:
+    from app.workers.sync_bot import reconcile_all_shops
+
+    try:
+        await reconcile_all_shops()
+    except Exception:
+        logger.exception("[Sync Now] Background reconciliation failed")
+
 @router.get("/attachment")
 async def get_attachment_proxy(
     path: str,
@@ -124,11 +133,16 @@ async def sync_now(
     ログイン済みユーザー向けの軽量な同期トリガーです。
     実際の同期はバックグラウンドで開始し、画面表示は待たせません。
     """
-    from app.workers.sync_bot import _get_admin_supabase_client, reconcile_all_shops
+    from app.workers.sync_bot import _get_admin_supabase_client
 
     reason = (request.reason if request else "manual") or "manual"
     now = datetime.now(timezone.utc)
-    supabase = _get_admin_supabase_client()
+    try:
+        supabase = _get_admin_supabase_client()
+    except RuntimeError as exc:
+        logger.error("[Sync Now] Misconfigured sync environment: %s", exc)
+        raise HTTPException(status_code=500, detail=str(exc))
+
     status_res = supabase.table("sync_status").select("*").eq("sync_key", "rakuten_reconcile").limit(1).execute()
     sync_status = status_res.data[0] if status_res.data else {}
 
@@ -151,10 +165,23 @@ async def sync_now(
         }
 
     logger.info("[Sync Now] user=%s role=%s reason=%s", user_context.get("user_id"), user_context.get("role"), reason)
-    asyncio.create_task(reconcile_all_shops())
+    asyncio.create_task(_run_sync_now_background())
     return {
         "status": "accepted",
         "message": "同期を開始しました。",
+        "sync_status": sync_status,
+    }
+
+
+@router.get("/sync-status")
+async def get_sync_status(
+    user_context: dict = Depends(get_current_user_context),
+    supabase_client: Client = Depends(get_user_supabase_client),
+):
+    res = supabase_client.table("sync_status").select("*").eq("sync_key", "rakuten_reconcile").limit(1).execute()
+    sync_status = res.data[0] if res.data else None
+    return {
+        "status": "success",
         "sync_status": sync_status,
     }
 

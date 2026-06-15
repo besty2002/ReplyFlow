@@ -644,6 +644,34 @@
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
+const initialSyncCompletedAt = "{{ sync_status.last_completed_at if sync_status and sync_status.last_completed_at else '' }}";
+
+async function pollSyncCompletion(previousCompletedAt, btn) {
+    const token = getCookie('sb-access-token');
+    for (let attempt = 0; attempt < 24; attempt += 1) {
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        const res = await fetch('/api/v1/inquiries/sync-status', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || '同期状態の確認に失敗しました');
+
+        const status = data.sync_status || {};
+        if (btn && status.status === 'running') {
+            btn.textContent = '同期実行中...';
+        }
+        if (status.status === 'error') {
+            throw new Error(status.error_message || '同期処理中にエラーが発生しました');
+        }
+        if (status.last_completed_at && status.last_completed_at !== previousCompletedAt) {
+            if (btn) btn.textContent = '同期完了';
+            window.location.reload();
+            return;
+        }
+    }
+    throw new Error('同期完了を確認できませんでした。しばらく後に再読み込みしてください。');
+}
+
 async function triggerSyncNow(reason = 'manual') {
     const btn = document.getElementById('sync-now-btn');
     const shouldUpdateButton = reason === 'manual';
@@ -674,7 +702,9 @@ async function triggerSyncNow(reason = 'manual') {
         }
 
         if (reason === 'manual' && data.status === 'accepted') {
-            setTimeout(() => window.location.reload(), 20000);
+            await pollSyncCompletion(initialSyncCompletedAt, btn);
+        } else if (reason === 'manual' && data.status === 'already_running') {
+            await pollSyncCompletion(initialSyncCompletedAt, btn);
         }
     } catch (err) {
         if (btn && shouldUpdateButton) btn.textContent = '同期失敗';

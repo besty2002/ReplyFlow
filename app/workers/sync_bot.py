@@ -19,7 +19,9 @@ SYNC_STATUS_KEY = "rakuten_reconcile"
 def _get_admin_supabase_client() -> Client:
     from dotenv import load_dotenv
     load_dotenv()
-    admin_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or settings.SUPABASE_KEY
+    admin_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+    if not admin_key:
+        raise RuntimeError("SUPABASE_SERVICE_ROLE_KEY is required for sync reconciliation.")
     return create_client(settings.SUPABASE_URL, admin_key)
 
 
