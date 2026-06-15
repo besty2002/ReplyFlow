@@ -46,6 +46,13 @@
                             </span>
                             <span>最終完了(JST): {{ sync_status.last_completed_at_jst or '-' }}</span>
                             <span>新規 {{ sync_status.inserted_count or 0 }}件 / 削除 {{ sync_status.deleted_count or 0 }}件</span>
+                            {% if shop_counts %}
+                                <span>現在:
+                                    {% for shop in shop_counts %}
+                                        {{ shop.shop_name }} {{ shop.pending_count }}件{% if not loop.last %} / {% endif %}
+                                    {% endfor %}
+                                </span>
+                            {% endif %}
                             {% if sync_status.status == 'error' and sync_status.error_message %}
                                 <span title="{{ sync_status.error_message }}">詳細あり</span>
                             {% endif %}

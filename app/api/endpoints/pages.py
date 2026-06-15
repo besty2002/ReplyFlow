@@ -105,6 +105,7 @@ async def dashboard_page(request: Request, user_context: dict | None = Depends(g
     
     inquiries = []
     connected_shops = []
+    shop_counts = []
     unique_categories = []
     total_count = 0
     total_pages = 1
@@ -198,6 +199,17 @@ async def dashboard_page(request: Request, user_context: dict | None = Depends(g
                 if p_res.status_code in [200, 206]:
                     stats["pending_inquiries"] = int(p_res.headers.get("Content-Range", "0/0").split("/")[-1])
 
+                for shop in connected_shops:
+                    shop_count_url = f"{settings.SUPABASE_URL}/rest/v1/inquiries?status=eq.pending&shop_id=eq.{shop['id']}&select=id"
+                    shop_count_res = await client.get(shop_count_url, headers={**headers, "Prefer": "count=exact", "Range": "0-0"})
+                    if shop_count_res.status_code in [200, 206]:
+                        count = int(shop_count_res.headers.get("Content-Range", "0/0").split("/")[-1])
+                        shop_counts.append({
+                            "shop_name": shop.get("shop_name") or "Unknown",
+                            "platform": shop.get("platform") or "-",
+                            "pending_count": count,
+                        })
+
                 # 2. 承認 待機 중인 返信(Drafts) 카운트
                 pending_draft_url = f"{settings.SUPABASE_URL}/rest/v1/reply_drafts?status=eq.draft&select=id"
                 d_res = await client.get(pending_draft_url, headers={**headers, "Prefer": "count=exact", "Range": "0-0"})
@@ -222,6 +234,7 @@ async def dashboard_page(request: Request, user_context: dict | None = Depends(g
             "user_context": user_context,
             "inquiries": inquiries,
             "connected_shops": connected_shops,
+            "shop_counts": shop_counts,
             "unique_categories": unique_categories,
             "current_page": page,
             "total_pages": total_pages,

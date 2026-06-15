@@ -235,7 +235,14 @@ async def reconcile_all_shops():
         total_unchanged = sum(r["unchanged"] for r in all_results)
         total_errors = sum(len(r["errors"]) for r in all_results)
 
-        summary = f"同期化完了: 新規 {total_inserted}件, 削除 {total_deleted}件, 維持 {total_unchanged}件"
+        shop_summaries = [
+            f"{r['shop']}: 新規{r['inserted']} / 削除{r['deleted']} / 維持{r['unchanged']}"
+            for r in all_results
+        ]
+        summary = (
+            f"同期化完了: 新規 {total_inserted}件, 削除 {total_deleted}件, 維持 {total_unchanged}件"
+            f" | {'; '.join(shop_summaries)}"
+        )
         if total_errors > 0:
             summary += f", エラー {total_errors}件"
 
